@@ -1,0 +1,68 @@
+body{
+    font-family: 'Segoe UI';
+    margin: 0;
+}
+@page{
+    size: A4 landscape;
+    margin: 8px 0 10px 20px;
+}
+.column{
+    float: left;
+    padding: 5px;
+}
+.box-body{
+    display: block;
+    padding: 5px 10px 0 10px;
+}
+.inv-heading{
+    text-align: center;
+    padding: 20px;
+}
+.inv-heading a{
+    font-weight: 700;
+    float: left;
+    font-size: 18px;
+    text-decoration: none;
+    color: #888888;
+}
+.inv-heading a:hover{
+    color: #494949;
+}
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+td{
+    border: 1px solid black;
+    text-align: left;
+    padding: 12px;
+}
+th{
+    border: 1px solid black;
+    text-align: center;
+    padding: 12px;
+}
+.btnPrint{
+    display: block;
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+}
+button{
+    display: inline-block;
+    border-radius: 50px;
+    border: 1px solid transparent;
+    color: white;
+    background-color: #379237;
+    font-weight: 700;
+    font-size: 16px;
+    height: 45px;
+    width: 125px;
+}
+button:hover{
+    background-color: #1e641e;;
+}
+@media print{
+    .btnPrint{
+        display: none;
+    }
+}

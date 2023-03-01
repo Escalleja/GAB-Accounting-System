@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAB - Accounting - JEV</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <form action="" method="POST">
+    <div class="form-row">
+      <div class="form-group col-lg-4">
+        <label for="dateForm">Date</label>
+        <input type="date" class="form-control col-lg-8" id="dateForm" placeholder="Date"></input>
+      </div>
+
+      <div class="form-group col-lg-4">
+        <label for="jevFund dateForm jevYear jevMonth jevSerial">Reference JEV No.</label>
+        <div class="form-row">
+          <div class="col-lg-3">
+            <select class="form-control" id="jevFund">
+              <option>01</option>
+              <option>05</option>
+              <option>07</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <input type="text" class="form-control" id="jevYear" placeholder="Year"></input>
+          </div>
+          <div class="col-lg-3">
+            <input type="text" class="form-control" id="jevMonth" placeholder="Month"></input>
+          </div>
+          <div class="col-lg-3">
+            <input type="text" class="form-control" id="jevSerial" placeholder="Serial"></input>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-lg-4">
+        <label for="uacs">UACS Code</label>
+        <select id="uacs" class="form-control col-sm-7">
+          <!-- TODO ADD UACS CODE -->
+          <option>100000000</option>
+          <option>100000000</option>
+          <option>100000000</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-lg-5">
+        <label for="description">Description</label>
+        <input type="text" id="description" class="form-control col-sm-12">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-lg-2">
+        <label for="debit">Debit</label>
+        <input type="text" id="debit" class="form-control col-lg-12">
+      </div>
+      <div class="form-group col-lg-2">
+        <label for="credit">Credit</label>
+        <input type="text" id="credit" class="form-control col-lg-12">
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

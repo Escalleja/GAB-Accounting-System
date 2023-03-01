@@ -1,0 +1,172 @@
+/* CONTENT SECTION */
+.content-header {
+    display: flex;
+    margin: 0 16px 0 0;
+}
+
+.content-header-btn {
+    display: none;
+}
+
+.content-header button {
+    font-size: 1.3rem;
+    color:#888888;  
+    border: none;
+    padding: 0 10px;
+    border-radius: 10px;
+    transition: .4s;
+}
+.content-header-btn a{
+    font-size: 1.3rem;
+    text-decoration: none;
+    text-align: center;
+    line-height: 30px;
+    background-color: #EFEFEF;
+    height: 31px;
+    width: 38px;
+    color:#888888;  
+    border: none;
+    border-radius: 10px;
+    transition: .4s;
+}
+.content-header button:hover, .content-header a:hover {
+    background-color: #ccc;
+    color: #293051;
+}
+
+/* TABLE HEADER */
+#content {
+    padding: 1% 3%;
+}
+
+#records-content {
+    width: 100%;
+    margin: 16px 0;
+}
+
+.table-header {
+    font-size: .8rem;
+    color: #888888;
+}
+
+.table-header th {
+    padding: 1rem;
+}
+
+.more-btn {
+    cursor: pointer;
+}
+
+.more-btn input {
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.more-bd {
+    display:none;
+    position: absolute;
+    float:left;
+    background-color: #fff;
+    font-weight: normal;
+    font-size: 1rem;
+    color: #000;
+    width: 120px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.more-bd li {
+    font-size: 14px;
+    list-style: none;
+    text-align: left;
+    padding: 5px 10px;
+}
+
+.more-bd li:hover{
+    background-color: #ccc;
+}
+
+.more-btn:hover .more-bd{
+    display: block;
+}
+
+.th-icon {
+    text-align: center;
+}
+
+/* TABLE CONTENT */
+
+.table-content td {
+    border-top: 1px solid #ccc;
+    font-size: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.table-content:hover {
+    background-color: #ccc;
+    transition: .5s;
+}
+
+.fa-file {
+    color:rgb(88, 88, 249); 
+}
+
+#selected-item{
+    text-align: center;
+}
+
+#selected-item input {
+    cursor: pointer;
+}
+
+/* CREATE BUTTON */
+
+.create-btn {
+    position:fixed;
+    background-color: #fff;
+    font-size: 1rem;
+    color: #379237;
+    width: 100px;
+    height: 3rem;
+    bottom: 0;
+    border: none;
+    right: 0;
+    margin: 3%;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px 0px rgba(41,48,81,0.75); 
+    transition: .5s;
+}
+
+.create-btn:hover {
+    background-color: #ccc;
+}
+.form-btn{
+    display: flex;
+}
+
+.form-left-btn button, .form-left-btn a {
+    background-color: transparent;
+    border: none;
+    color:#293051;
+    border-radius: 10px;
+    margin: 3px;
+    transform: translateY(25%);
+    transition: .4s;
+}
+
+.form-left-btn a{
+    text-align: center;
+    font-size: 17px;
+    line-height: 25px;
+    height: 25px;
+    width: 25px;
+    transform: translateY(30%);
+    
+}
+
+.form-left-btn button:hover, .form-left-btn a:hover{  
+    text-decoration: none;
+    background-color: #ccc;
+}

@@ -1,0 +1,88 @@
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    font-family: 'Segoe UI';
+    overflow: hidden;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.534);
+    /* Black w/ opacity */
+    backdrop-filter: blur(1.5px);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 2rem;
+    width: 70%;
+    /* Could be more or less, depending on screen size */
+}
+
+.btnBack {
+    color: #aaa;
+    width: 7%;
+    padding: 0 0 10px 0;
+    margin: 0 0 25px 0;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.btnBack:hover {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+span.btnBack {
+    font-weight: 400;
+    text-transform: capitalize;
+    font-size: 18px;
+}
+
+.btnCancel{
+       background-color: #fff;
+    font-weight: bold;
+    color: #379237;
+    width: 100px;
+    outline-style: none;
+    border-style: none;
+    border-radius: 100px;
+    box-shadow: 0px 0px 5px 0px rgba(41, 48, 81, 0.75);
+}
+.btnSave{
+    background-color: #379237;
+    font-weight: bold;
+    color: #fff;
+    width: 100px;
+    outline-style: none;
+    border-style: none;
+    border-radius: 100px;
+    box-shadow: 0px 0px 5px 0px rgba(41, 48, 81, 0.75);
+}
+.btnSave:hover{
+    background-color: #64f764;
+    color: white;
+}
+.btnCancel:hover{
+    background-color: #888;
+    color: white;
+}
+.btn{
+    width: 100px;
+    display: block;
+    margin-left: 15px;
+    float: right;
+}
