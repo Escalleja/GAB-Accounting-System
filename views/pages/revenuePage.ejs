@@ -31,7 +31,7 @@
     <section id="title">
         <nav class="navbar-bd">
             <div class="nav-brand">
-                <a href="/pages/home.ejs"><img src="/img/brand.png" alt="logo"></a>
+                <a href="/homepage"><img src="/img/brand.png" alt="logo"></a>
             </div>
 
             <div class="search-bd">
@@ -44,7 +44,7 @@
             <div class="nav-content-bd ml-auto">
                 <ul>
                     <li class="navbar-item dropdown">
-                        Juan Dela Cruz &ThickSpace;<i class="fa-solid fa-caret-down"></i>
+                        <%= `${username}` %> &ThickSpace;<i class="fa-solid fa-caret-down"></i>
                         <div class="dropdown-container">
                             <div class="switch-container">
                                 <div class="drop-item">
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <a href="" class="drop-item"><i class="fa-solid fa-lock"></i> Change password</a>
-                            <a href="login.html" class="drop-item"><i class="fa-solid fa-right-from-bracket"></i>
+                            <a href="/logout" class="drop-item"><i class="fa-solid fa-right-from-bracket"></i>
                                 Logout</a>
                         </div>
                     </li>
@@ -119,88 +119,93 @@
             <div class="create-new-btn">
                 <button type="submit" id="btnNewEntry"><i class="fa-solid fa-circle-plus"></i> Create</button>
             </div>
+            <!-- MODAL -->
             <div id="modalForm" class="modal">
                 <div class="modal-content">
                     <span class="btnBack"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
-                    <form action="" method="POST">
-                        <!-- Date form -->
+                    <form id="entry-form">
                         <div class="form-row">
+
+                            <!-- Date -->
                             <div class="form-group col-lg-4 date-group">
                                 <label for="dateForm" class="date-form">Date</label>
-                                <input type="date" class="form-control col-lg-12 date-form" id="dateForm"
-                                    placeholder="Date"></input>
+                                <input type="text" class="form-control col-lg-12 date-form" id="dateForm"
+                                    name="dateForm" placeholder="dd/mm/yyyy"></input>
                             </div>
+
                             <!-- JEV No. form -->
                             <div class="form-group col-lg-4 jev-group">
                                 <label for="jevFund dateForm jevYear jevMonth jevSerial">Reference JEV No.</label>
-                                <div class="form-row">
-                                    <div class="col-lg-3">
-                                        <select class="form-control" id="jevFund">
-                                            <option>01</option>
-                                            <option>05</option>
-                                            <option>07</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <input type="text" class="form-control" id="jevYear" placeholder="Year"></input>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <input type="text" class="form-control" id="jevMonth"
-                                            placeholder="Month"></input>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <input type="text" class="form-control" id="jevSerial"
-                                            placeholder="Serial"></input>
-                                    </div>
+                                <input type="text" id="jev" class="form-control col-lg-12 " name="jev"
+                                    placeholder="fund-year-month-serial"></input>
+                            </div>
+
+                            <!-- <div class="form-row">
+                                <div class="col-lg-3">
+                                    <select class="form-control" id="jevFund" name="fund">
+                                        <option>01</option>
+                                        <option>05</option>
+                                        <option>07</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" class="form-control" id="jevYear" placeholder="Year" name="jevYear"></input>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" class="form-control" id="jevMonth" placeholder="Month" name="jevMonth"></input>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" class="form-control" id="jevSerial" placeholder="Serial" name="jevSerial"></input>
                                 </div>
                             </div>
-                            <!-- UACS form -->
+                        </div> -->
+                            <!-- UACS Code -->
                             <div class="form-group col-lg-4 uacs-group">
                                 <label for="uacs" class="uacs-form">UACS Code</label>
-                                <select id="uacs" class="form-control col-lg-8 uacs-form">
-                                    <!-- TODO ADD UACS CODE -->
-                                    <<option selected="true" disabled="disabled">Choose UACS Code</option>
-                                </select>
+                                <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs"
+                                    placeholder="uacs"></input>
                             </div>
                         </div>
-                        <!-- Account form -->
+                        <!-- Account -->
                         <div class="form-row">
-                            <div class="form-group description-label">
+                            <div class="form-group col-lg-12 description-label">
                                 <label for="description description-label">Account</label>
-                                <textarea name="text" placeholder="Type Here" rows="2" cols="65" id="description"
-                                    class="form-control col-lg-12"></textarea>
+                                <textarea name="text" id="description" placeholder="Description" rows="2" cols="65"
+                                    id="description" class="form-control col-lg-12" name="description"></textarea>
                             </div>
                         </div>
-                        <!-- Debit and Credit Form -->
+                        <!-- Debit and Credit form -->
                         <div class="form-row">
-                            <div class="form-group col-lg-2">
+                            <div class="form-group col-lg-4">
                                 <label class="debit-form" for="debit">Debit</label>
-                                <input type="text" id="debit" class="form-control col-lg-12 debit-form">
+                                <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit">
                             </div>
-                            <div class="form-group col-lg-2">
+                            <div class="form-group col-lg-4">
                                 <label class="credit-form" for="credit">Credit</label>
-                                <input type="text" id="credit" class="form-control col-lg-12 credit-form">
+                                <input type="text" id="credit" class="form-control col-lg-12 credit-form" name="credit">
                             </div>
                         </div>
-                            <!-- Save and Cancel Button -->
-                            <div class="form-row ml-auto">
-                                <div class="form-group col-lg-12 btn-container">
-                                    <!-- TODO save here -->
-                                    <button type="submit" class="btnSave btn">Save</button>
-                                    <!-- TODO cancel here -->
-                                    <button type="reset" class="btnCancel btn">Cancel</button>
-                                </div>
+                        <!-- Cancel and Save -->
+                        <div class="form-row ml-auto">
+                            <div class="form-group col-lg-12 btn-container">
+                                <!-- TODO save here -->
+                                <button type="submit" class="btnSave btn">Save</button>
+                                <!-- TODO cancel here -->
+                                <button type="reset" class="btnCancel btn">Cancel</button>
                             </div>
+                        </div>
                     </form>
-                    <!-- Delete and Print  -->
+                    <!-- Delete and Print -->
+                    <!-- <div class="form-btn ">
                     <div class="form-left-btn">
                         <button><i class="fa-solid fa-trash"></i></button>
                         <a href="print.html" <i class="fa-solid fa-print"></i></a>
                     </div>
+                </div> -->
                 </div>
-            </div>
         </section>
         <script src="/js/accounting.js"></script>
+        <script src="/js/dataentry-script.js"></script>
 </body>
 
 </html>
