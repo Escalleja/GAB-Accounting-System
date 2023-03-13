@@ -65,6 +65,11 @@ h3, h4, h5 {
     transition: .5s;
 }
 
+.byName{
+    font-size: 14px;
+    font-weight: 700;
+    color: #888888;
+}
 /* media query */
 @media screen and (max-width: 1024px) {
     body {

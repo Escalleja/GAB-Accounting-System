@@ -43,6 +43,7 @@ app.get('/equity', equityPage);
 app.get('/expenses', expensesPage);
 app.get('/liabilities', liabilitiesPage);
 app.get('/revenue', revenuePage);
+app.post('/jevHomepage', dataEntry);
 app.post('/newEntry', dataEntry);
 
     //TODO add the other later

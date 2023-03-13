@@ -109,21 +109,25 @@
                         </div>
                     </th>
                 </tr>
-
+                <% if(data.recordset.length != 0){
+                    for(let i = 0; i < data.recordset.length; i++){ %>
+                <tr class="table-content">
+                    <td id="propertyTag"><i class="fa-solid fa-file"></i>&ThickSpace; <%=data.recordset[i].jevNo.slice(3)%>
+                    </td>
+                    <td><span><%= data.recordset[i].dateCreated %></span> <span class="byName"> by
+                            <%= data.recordset[i].createdBy %></span></td>
+                    <td><span><%= data.recordset[i].dateModified %></span> <span class="byName"> by
+                            <%= data.recordset[i].modifiedBy %></span></td>
+                    <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
+                </tr>
+                <% } %>
+                <%  } else{ %>
+                <tr class="table-content">
+                    <td colspan="4"> No Records Available</td>
+                </tr>
+                <% } %>
                 <!-- TODO PLEASE REMOVE ME LATER -->
-                <tr class="table-content">
-                    <td id="propertyTag"><i class="fa-solid fa-file"></i>&ThickSpace; 2018-07-01-0201-SU</td>
-                    <td>Feb 13, 2023</td>
-                    <td>Feb 14, 2023</td>
-                    <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
-                </tr>
-                <tr class="table-content">
-                    <td id="propertyTag"><i class="fa-solid fa-file"></i>&ThickSpace; 2018-07-01-0201-SU</td>
-                    <td>Feb 13, 2023</td>
-                    <td>Feb 14, 2023</td>
-                    <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
-                </tr>
-            </table>
+
         </div>
     </section>
 
@@ -131,6 +135,32 @@
     <section id="create-new">
         <div class="create-new-btn">
             <button type="submit" id="btnNewEntry"><i class="fa-solid fa-circle-plus"></i> Create</button>
+        </div>
+
+        <!-- JEV MODAL -->
+        <div id="jevModalForm" class="modal-jev">
+            <div class="jev-modal-content">
+                <span class="btnBackJev"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
+                <form id="create-jev">
+                    <div class="form-row">
+                        <div class="form-group col-lg-3"></div>
+                        <div class="form-group col-lg-6">
+                            <input type="text" id="jevInput" name="jevInput" class="form-control col-lg-12 jevInput" placeholder="Enter a Reference JEV #"></input>
+                        </div>
+                        <div class="form-group col-lg-3"></div>
+                    </div>
+
+                <div class="form-row">
+                    <div class="form-group col-lg-3"></div>                    
+                    <div class="form-group col-lg-6 mb-0 next-btn">
+                        <!-- TODO save here -->
+                        <button type="submit" class="btnSaveJev btnJev">Next</button>
+                    </div>
+                    <div class="form-group col-lg-3"></div>
+                </div>
+                </form>
+
+            </div>
         </div>
         <!-- MODAL -->
         <div id="modalForm" class="modal">
@@ -140,40 +170,21 @@
                     <div class="form-row">
 
                         <!-- Date -->
-                        <div class="form-group col-lg-4 date-group">
+                        <div class="form-group col-lg-6 date-group">
                             <label for="dateForm" class="date-form">Date</label>
                             <input type="text" class="form-control col-lg-12 date-form" id="dateForm" name="dateForm"
                                 placeholder="dd/mm/yyyy"></input>
                         </div>
 
-                        <!-- JEV No. form -->
+                        <!-- JEV No. form
                         <div class="form-group col-lg-4 jev-group">
                             <label for="jevFund dateForm jevYear jevMonth jevSerial">Reference JEV No.</label>
                             <input type="text" id="jev" class="form-control col-lg-12 " name="jev"
                                 placeholder="fund-year-month-serial"></input>
-                        </div>
-
-                        <!-- <div class="form-row">
-                                <div class="col-lg-3">
-                                    <select class="form-control" id="jevFund" name="fund">
-                                        <option>01</option>
-                                        <option>05</option>
-                                        <option>07</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control" id="jevYear" placeholder="Year" name="jevYear"></input>
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control" id="jevMonth" placeholder="Month" name="jevMonth"></input>
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control" id="jevSerial" placeholder="Serial" name="jevSerial"></input>
-                                </div>
-                            </div>
                         </div> -->
+
                         <!-- UACS Code -->
-                        <div class="form-group col-lg-4 uacs-group">
+                        <div class="form-group col-lg-6 uacs-group">
                             <label for="uacs" class="uacs-form">UACS Code</label>
                             <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs"
                                 placeholder="uacs"></input>
@@ -189,18 +200,12 @@
                     </div>
                     <!-- Debit and Credit form -->
                     <div class="form-row">
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-6">
                             <label class="debit-form" for="debit">Debit</label>
                             <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit">
                         </div>
-                        <div class="form-group col-lg-4">
-                            <label class="credit-form" for="credit">Credit</label>
-                            <input type="text" id="credit" class="form-control col-lg-12 credit-form" name="credit">
-                        </div>
-                    </div>
                     <!-- Cancel and Save -->
-                    <div class="form-row ml-auto">
-                        <div class="form-group col-lg-12 btn-container">
+                        <div class="form-group col-lg-6 btn-container">
                             <!-- TODO save here -->
                             <button type="submit" class="btnSave btn">Save</button>
                             <!-- TODO cancel here -->
@@ -216,9 +221,11 @@
                     </div>
                 </div> -->
             </div>
+        </div>
     </section>
     <script src="/js/accounting.js"></script>
     <script src="/js/dataentry-script.js"></script>
+    <script src="/js/jeventry-script.js"></script>
 </body>
 
 </html>
