@@ -15,9 +15,13 @@ var jevSpan = document.getElementsByClassName("btnBackJev")[0];
 // Get the <span> element that closes the modal
 var btnCancel = document.getElementsByClassName("btnCancel")[0];
 
+var addBtn = document.getElementById('addInput');
+
+var inputFieldContainer = document.getElementById('inputFieldContainer');
+
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
-    jevModal.style.display = "block";
+    modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -66,6 +70,29 @@ formJev.addEventListener('submit', async (e) => {
     if(jevStatus == 'Success'){
         modal.style.display = "block";
     }
+})
+
+addBtn.addEventListener('click', (e) =>{
+    e.preventDefault();
+
+    const copyUacsInput = document.getElementById('uacs').cloneNode(true);
+    const copyDescriptionInput = document.getElementById('description').cloneNode(true);
+    const copyDebitInput = document.getElementById('debit').cloneNode(true);   
+    
+    copyUacsInput.setAttribute('name', 'uacs[]');
+    copyDescriptionInput.setAttribute('name', 'description[]');
+    copyDebitInput.setAttribute('name', 'debit[]');
+
+    copyUacsInput.classList.add('form-control', 'col-lg-6', 'mb-1');
+    copyDescriptionInput.classList.add('form-control', 'col-lg-12', 'mb-1');
+    copyDebitInput.classList.add('form-control', 'col-lg-6', 'mb-1');
+
+    inputFieldContainer.appendChild(copyUacsInput);
+    inputFieldContainer.appendChild(copyDescriptionInput);
+    inputFieldContainer.appendChild(copyDebitInput); 
+
+    let divider = document.createElement('hr');
+    inputFieldContainer.appendChild(divider);
 })
 
 //Function for new entry

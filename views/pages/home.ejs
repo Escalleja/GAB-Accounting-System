@@ -164,66 +164,66 @@
         </div>
         <!-- MODAL -->
         <div id="modalForm" class="modal">
-            <div class="modal-content">
+            <div class="modal-content" id="style-1">
                 <span class="btnBack"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
                 <form id="entry-form">
                     <div class="form-row">
 
                         <!-- Date -->
                         <div class="form-group col-lg-6 date-group">
-                            <label for="dateForm" class="date-form">Date</label>
                             <input type="text" class="form-control col-lg-12 date-form" id="dateForm" name="dateForm"
-                                placeholder="dd/mm/yyyy"></input>
+                                placeholder="Enter a Date"></input>
                         </div>
-
-                        <!-- JEV No. form
-                        <div class="form-group col-lg-4 jev-group">
-                            <label for="jevFund dateForm jevYear jevMonth jevSerial">Reference JEV No.</label>
-                            <input type="text" id="jev" class="form-control col-lg-12 " name="jev"
-                                placeholder="fund-year-month-serial"></input>
-                        </div> -->
 
                         <!-- UACS Code -->
                         <div class="form-group col-lg-6 uacs-group">
-                            <label for="uacs" class="uacs-form">UACS Code</label>
                             <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs"
-                                placeholder="uacs"></input>
+                                placeholder="Enter Uacs Code"></input>
                         </div>
                     </div>
                     <!-- Account -->
                     <div class="form-row">
                         <div class="form-group col-lg-12 description-label">
-                            <label for="description description-label">Account</label>
-                            <textarea name="text" id="description" placeholder="Description" rows="2" cols="65"
+                            <textarea name="text" id="description" placeholder="Enter Account" rows="2" cols="65"
                                 id="description" class="form-control col-lg-12" name="description"></textarea>
                         </div>
                     </div>
                     <!-- Debit and Credit form -->
                     <div class="form-row">
                         <div class="form-group col-lg-6">
-                            <label class="debit-form" for="debit">Debit</label>
-                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit">
+                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit" placeholder="Enter Debit">
                         </div>
-                    <!-- Cancel and Save -->
-                        <div class="form-group col-lg-6 btn-container">
+                        <!-- Cancel and Save -->
+                    </div>
+                    <!-- For Added Input Fields -->
+                    <div class="form-row">
+                        <div class="form-group col-lg-8">
+                        <!-- Add a container to hold the input fields -->
+                            <div id="inputFieldContainer">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Add a container to hold the input fields -->
+                        <div class="form-group col-lg-6">
+                            <!-- Add input field -->
+                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12 modal-footer">
                             <!-- TODO save here -->
-                            <button type="submit" class="btnSave btn">Save</button>
+                            <button type="submit" class="btnSave btn btn-float">Save</button>
                             <!-- TODO cancel here -->
-                            <button type="reset" class="btnCancel btn">Cancel</button>
+                            <button type="reset" class="btnCancel btn btn-float">Cancel</button>
                         </div>
                     </div>
                 </form>
-                <!-- Delete and Print -->
-                <!-- <div class="form-btn ">
-                    <div class="form-left-btn">
-                        <button><i class="fa-solid fa-trash"></i></button>
-                        <a href="print.html" <i class="fa-solid fa-print"></i></a>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>
     <script src="/js/accounting.js"></script>
+    <script src="/js/modalAdd-script.js"></script>
     <script src="/js/dataentry-script.js"></script>
     <script src="/js/jeventry-script.js"></script>
 </body>

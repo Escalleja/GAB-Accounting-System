@@ -19,7 +19,7 @@
 /* FOR CREATING JEVFOR DATA */
 
 .modal {
-    display: none;
+    display: block;
     /* Hidden by default */
     position: fixed;
     /* Stay in place */
@@ -44,7 +44,7 @@
     margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    border-radius: 2rem;
+    border-radius: 1rem;
     width: 50%;
 }
 
@@ -54,9 +54,30 @@
     /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    border-radius: 2rem;
-    width: 50%;
+    height: 80vh;
+    border-radius: 1rem;
+    overflow-y: scroll;
+    width: 80%;
     /* Could be more or less, depending on screen size */
+}
+/* #style-1::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+} */
+
+#style-1::-webkit-scrollbar
+{
+	width: 6px;
+    z-index: 1;
+}
+
+#style-1::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
 }
 .btnBackJev{
     display: inline-block;
@@ -95,8 +116,19 @@ span.btnBack {
     font-size: 18px;
 }
 
+.btnInput{
+    display: block;
+    background-color: #379237;
+    font-weight: bold;
+    color: #fff;
+    height: 40px;
+    border-style: none;
+    border-radius: 100px;
+    box-shadow: 0px 0px 5px 0px rgba(41, 48, 81, 0.75);
+}
+
 .btnCancel{
-       background-color: #fff;
+    background-color: #fff;
     font-weight: bold;
     color: #379237;
     width: 100px;
@@ -117,8 +149,9 @@ span.btnBack {
     border-radius: 100px;
     box-shadow: 0px 0px 5px 0px rgba(41, 48, 81, 0.75);
 }
-.btnSaveJev:hover{
-    background-color: #64f764;
+.btnSaveJev:hover, .btnInput:hover{
+    background-color: #31af31;
+    border: 1px solid grey;
     color: white;
 }
 .next-btn{
@@ -135,17 +168,21 @@ span.btnBack {
     box-shadow: 0px 0px 5px 0px rgba(41, 48, 81, 0.75);
 }
 .btnSave:hover{
-    background-color: #64f764;
+    background-color: #31af31;
+    border: 1px solid grey;
     color: white;
 }
 .btnCancel:hover{
     background-color: #888;
+    border: 1px solid gray;
     color: white;
+}
+.btn-float{
+    float: right;
+    margin: 0 5px;
 }
 .btn{
     width: 100px;
     text-align: center;
     display: inline-block;
-    margin: 0 3%;
-    transform: translateX(30%) translateY(85%);
 }
