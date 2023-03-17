@@ -19,7 +19,7 @@
 /* FOR CREATING JEVFOR DATA */
 
 .modal {
-    display: block;
+    display: none;
     /* Hidden by default */
     position: fixed;
     /* Stay in place */
@@ -57,7 +57,7 @@
     height: 80vh;
     border-radius: 1rem;
     overflow-y: scroll;
-    width: 80%;
+    width: 70%;
     /* Could be more or less, depending on screen size */
 }
 /* #style-1::-webkit-scrollbar-track

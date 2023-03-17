@@ -21,7 +21,7 @@ var inputFieldContainer = document.getElementById('inputFieldContainer');
 
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
-    modal.style.display = "block";
+    jevModal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -69,31 +69,40 @@ formJev.addEventListener('submit', async (e) => {
 
     if(jevStatus == 'Success'){
         modal.style.display = "block";
+        formJev.reset();
     }
 })
-
-addBtn.addEventListener('click', (e) =>{
+// Added input field dynamically function front-end
+document.getElementById("addInput").addEventListener('click', function(e) {
     e.preventDefault();
+    var inputFieldContainer = document.getElementById('inputFieldContainer');
 
-    const copyUacsInput = document.getElementById('uacs').cloneNode(true);
-    const copyDescriptionInput = document.getElementById('description').cloneNode(true);
-    const copyDebitInput = document.getElementById('debit').cloneNode(true);   
+    var newRow = document.createElement('div');
+    newRow.className = 'form-group col-lg-12';
+
+    var newUacsInput = document.createElement('div');
+    newUacsInput.className = 'form-row col-lg-12 uacs-group';
+    newUacsInput.innerHTML = '<input id="uacs" class="form-control col-lg-8 mb-2 uacs-form dynamic-input" name="uacs" placeholder="Enter Uacs Code"></input>';
+
+    var newDescriptionInput = document.createElement('div');
+    newDescriptionInput.className = 'form-row col-lg-12 description-group'
+    newDescriptionInput.innerHTML = '<textarea name="text" id="description" placeholder="Enter Account" rows="2" cols="65" id="description" class="form-control col-lg-8 mb-2 dynamic-input" name="description"></textarea>';
     
-    copyUacsInput.setAttribute('name', 'uacs[]');
-    copyDescriptionInput.setAttribute('name', 'description[]');
-    copyDebitInput.setAttribute('name', 'debit[]');
+    var newDebitInput = document.createElement('div');
+    newDebitInput.className = 'form-row col-lg-12 debit-group';
+    newDebitInput.innerHTML = '<input type="text" id="debit" class="form-control col-lg-8 mb-2 debit-form dynamic-input" name="debit" placeholder="Enter Debit">';
+    newDebitInput.toLocaleString();
 
-    copyUacsInput.classList.add('form-control', 'col-lg-6', 'mb-1');
-    copyDescriptionInput.classList.add('form-control', 'col-lg-12', 'mb-1');
-    copyDebitInput.classList.add('form-control', 'col-lg-6', 'mb-1');
+    const divider = document.createElement('hr');
 
-    inputFieldContainer.appendChild(copyUacsInput);
-    inputFieldContainer.appendChild(copyDescriptionInput);
-    inputFieldContainer.appendChild(copyDebitInput); 
 
-    let divider = document.createElement('hr');
-    inputFieldContainer.appendChild(divider);
-})
+    newRow.appendChild(newUacsInput);
+    newRow.appendChild(newDescriptionInput);
+    newRow.appendChild(newDebitInput);
+    newRow.appendChild(divider);
+
+    inputFieldContainer.appendChild(newRow);
+});
 
 //Function for new entry
 const form = document.getElementById('entry-form');
@@ -105,9 +114,19 @@ const dateForm = document.getElementById('dateForm').value;
 const uacs = document.getElementById('uacs').value;
 const description = document.getElementById('description').value;
 const debit = document.getElementById('debit').value;
-// document.querySelectorAll().values
 
-const dataForm = {dateForm, uacs, description, debit};
+// THIS DYNAMIC INPUT IS A FUNCTION FOR ADDED INPUT FIELD TO STORE IN DATABASE
+const dynamicInputs = document.querySelectorAll('.dynamic-input');
+const dynamicInputValue = Array.from(dynamicInputs).reduce((acc, input, index) => {
+    const row = Math.floor(index / 3);
+    if (!acc[row]){
+        acc[row] = ['', '', ''];
+    }
+    acc[row][index % 3] = input.value;
+    return acc;
+    }, []);
+
+const dataForm = {dateForm, uacs, description, debit, dynamicInputs: dynamicInputValue};
 
 const response = await fetch('/newEntry', {
 method: 'POST',
@@ -118,6 +137,7 @@ body: JSON.stringify(dataForm)
 const status = await response.text();
 
 if(status == 'Success'){
+form.reset();
 modal.style.display = "none";
 jevModal.style.display = "none";
 }

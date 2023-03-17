@@ -44,17 +44,26 @@ let table = '';
             }) 
     })
 
-dataEntry.post('/newEntry', (req, res) =>{
-    let dateForm = req.body.dateForm;
-    let uacs = req.body.uacs;
-    let description = req.body.description;
-    let debit = req.body.debit;
-
-    database.query(`INSERT INTO [${table}] VALUES ('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${session.fullname}', '${currentDate()}', '${session.fullname}')`, (err, data) => {
-        if(err) throw err;
-    })
-    res.status(200).send('Success');
-})
+    dataEntry.post('/newEntry', (req, res) =>{
+        let dateForm = req.body.dateForm;
+        let uacs = req.body.uacs;
+        let description = req.body.description;
+        let debit = req.body.debit;    
+        let dynamicInputs = req.body.dynamicInputs;
+    
+        let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${session.fullname}', '${currentDate()}', '${session.fullname}')`;
+        for(let i = 0; i < dynamicInputs.length; i++){
+            const [dynamicUacs, dynamicDescription, dynamicDebit] = dynamicInputs[i];
+            values += `,('${dateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${session.fullname}', '${currentDate()}', '${session.fullname}')`;
+        }
+    
+        let query = `INSERT INTO [${table}] VALUES ${values}`;
+        database.query(query, (err, data) => {
+            if(err) throw err;
+            res.status(200).send('Success');
+        });
+    });
+    
 
 const currentDate = () => {
     const newDate = new Date();
