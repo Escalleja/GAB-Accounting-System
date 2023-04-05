@@ -109,25 +109,28 @@
                         </div>
                     </th>
                 </tr>
-                <% if(data.recordset.length != 0){
-                    for(let i = 0; i < data.recordset.length; i++){ %>
-                <tr class="table-content">
-                    <td id="propertyTag"><i class="fa-solid fa-file"></i>&ThickSpace; <%=data.recordset[i].jevNo.slice(3)%>
-                    </td>
-                    <td><span><%= data.recordset[i].dateCreated %></span> <span class="byName"> by
-                            <%= data.recordset[i].createdBy %></span></td>
-                    <td><span><%= data.recordset[i].dateModified %></span> <span class="byName"> by
-                            <%= data.recordset[i].modifiedBy %></span></td>
-                    <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
-                </tr>
-                <% } %>
-                <%  } else{ %>
-                <tr class="table-content">
-                    <td colspan="4"> No Records Available</td>
-                </tr>
-                <% } %>
-                <!-- TODO PLEASE REMOVE ME LATER -->
 
+                <tbody id="tbody-records">
+                    <% if(data.recordset.length != 0){
+                    for(let i = 0; i < data.recordset.length; i++){ %>
+                    <tr class="table-content">
+                        <td id="jev-no"><i class="fa-solid fa-file"></i>&ThickSpace;
+                            <%=data.recordset[i].jevNo.slice(3)%>
+                        </td>
+                        <td><span><%= data.recordset[i].dateCreated %></span> <span class="byName"> by
+                                <%= data.recordset[i].createdBy %></span></td>
+                        <td><span><%= data.recordset[i].dateModified %></span> <span class="byName"> by
+                                <%= data.recordset[i].modifiedBy %></span></td>
+                        <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
+                    </tr>
+                    <% } %>
+                    <%  } else{ %>
+                    <tr class="table-content">
+                        <td colspan="4"> No Records Available</td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
     </section>
 
@@ -140,24 +143,26 @@
         <!-- JEV MODAL -->
         <div id="jevModalForm" class="modal-jev">
             <div class="jev-modal-content">
-                <span class="btnBackJev"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
                 <form id="create-jev">
+                    <span class="btnBackJev"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
                     <div class="form-row">
                         <div class="form-group col-lg-3"></div>
                         <div class="form-group col-lg-6">
-                            <input type="text" id="jevInput" name="jevInput" class="form-control col-lg-12 jevInput" placeholder="Enter a Reference JEV #"></input>
+                            <label for="jevInput" class="jev label">Reference JEV #</label>
+                            <input type="text" id="jevInput" name="jevInput" class="form-control col-lg-12 jevInput"
+                            required></input>
                         </div>
                         <div class="form-group col-lg-3"></div>
                     </div>
 
-                <div class="form-row">
-                    <div class="form-group col-lg-3"></div>                    
-                    <div class="form-group col-lg-6 mb-0 next-btn">
-                        <!-- TODO save here -->
-                        <button type="submit" class="btnSaveJev btnJev">Next</button>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3"></div>
+                        <div class="form-group col-lg-6 mb-0 next-btn">
+                            <!-- TODO save here -->
+                            <button type="submit" class="btnSaveJev btnJev">Next</button>
+                        </div>
+                        <div class="form-group col-lg-3"></div>
                     </div>
-                    <div class="form-group col-lg-3"></div>
-                </div>
                 </form>
 
             </div>
@@ -171,24 +176,32 @@
 
                         <!-- Date -->
                         <div class="form-group col-lg-6 date-group">
-                            <input type="text" class="form-control col-lg-12 date-form" id="dateForm" name="dateForm" placeholder="Enter a Date"></input>
+                            <label for="dateForm" class="label">Date (mm/dd/yyyy)</label>
+                            <input type="data" class="form-control col-lg-12 date-form" id="dateForm" name="dateForm"
+                             required></input>
                         </div>
 
                         <!-- UACS Code -->
                         <div class="form-group col-lg-6 uacs-group">
-                            <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs" placeholder="Enter Uacs Code"></input>
+                            <label for="uacs" class="label">UACS Code</label>
+                            <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs"
+                             required></input>
                         </div>
                     </div>
                     <!-- Account -->
                     <div class="form-row">
                         <div class="form-group col-lg-12 description-group">
-                            <textarea name="text" id="description" placeholder="Enter Account" rows="2" cols="65" id="description" class="form-control col-lg-12" name="description"></textarea>
+                            <label for="description" class="label">Account</label>
+                            <textarea name="text" id="description" rows="2" cols="65"
+                                id="description" class="form-control col-lg-12" name="description"></textarea>
                         </div>
                     </div>
                     <!-- Debit and Credit form -->
                     <div class="form-row">
                         <div class="form-group col-lg-6">
-                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit" placeholder="Enter Debit">
+                            <label for="debit" class="label">Debit</label>
+                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit"
+                             required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -203,7 +216,8 @@
                         <!-- Add a container to hold the input fields -->
                         <div class="form-group col-lg-6">
                             <!-- Add input field -->
-                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i> Add</button>
+                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i>
+                                Add</button>
                         </div>
                     </div>
                     <div class="form-row">
@@ -211,17 +225,43 @@
                             <!-- TODO save here -->
                             <button type="submit" class="btnSave btn btn-float">Save</button>
                             <!-- TODO cancel here -->
-                            <button type="reset" class="btnCancel btn btn-float">Cancel</button>
+                            <button type="reset" id="formCancel" class="btnCancel btn btn-float">Cancel</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <!-- SELECTED MODAL -->
+        <div id="selectedModalForm" class="modal">
+            <div class="modal-content" id="style-1">
+                <span class="btnBack"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
+                <form id="entry-form">
+                    <!-- For Added Input Fields -->
+                    <div class="form-row" id="selectedInputFieldContainer">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-6">
+                            <!-- Add input field -->
+                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12 modal-footer">
+                            <!-- TODO save here -->
+                            <button type="submit" class="btnSave btn btn-float">Save</button>
+                            <!-- TODO cancel here -->
+                            <button type="reset" id="formCancelSelected" class="btnCancel btn btn-float">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
     </section>
+    <script src="socket.io/socket.io.js"></script>
     <script src="/js/accounting.js"></script>
-    <script src="/js/modalAdd-script.js"></script>
     <script src="/js/dataentry-script.js"></script>
-    <script src="/js/jeventry-script.js"></script>
 </body>
 
 </html>

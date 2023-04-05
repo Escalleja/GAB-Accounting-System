@@ -1,13 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const database = require('../configs/database');
+const {insertData} = require('./recordsEventLister');
 const dataEntry = express.Router();
-
-dataEntry.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
 
 let jevInput = '';
 
@@ -59,8 +54,17 @@ let table = '';
     
         let query = `INSERT INTO [${table}] VALUES ${values}`;
         database.query(query, (err, data) => {
-            if(err) throw err;
-            res.status(200).send('Success');
+            if(err) console.log(err);
+
+            if(data != ' '){
+                database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo = '${table}'`, (err, data) => {
+                    if(err) console.log(err);  
+                    insertData(data);
+                    res.status(200).send('Success');
+                })
+            }else {
+                res.status(5).send('Failed');
+            }
         });
     });
     

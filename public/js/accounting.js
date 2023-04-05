@@ -31,12 +31,11 @@ function isNoChkActive(){
     }
 }
 
-//print function{
-    const btnPrint = document.getElementById("printBtn");
-    btnPrint.addEventListener('click', function(){
-        print();
-    });
-
+// //print function{
+//     const btnPrint = document.getElementById("printBtn");
+//     btnPrint.addEventListener('click', function (){
+//         print();
+//     });
 
 
 
@@ -68,11 +67,11 @@ function isNoChkActive(){
 
     ]; 
 
-    for (var i = 0; i < uacsCode.length; i++){
-        var opt = uacsCode[i];
-        var el = document.createElement("option");
-        el.textContent = opt;
-        el.value = opt;
-        select.appendChild(el);
+    // for (var i = 0; i < uacsCode.length; i++){
+    //     var opt = uacsCode[i];
+    //     var el = document.createElement("option");
+    //     el.textContent = opt;
+    //     el.value = opt;
+    //     select.appendChild(el);
        
-    }
+    // }

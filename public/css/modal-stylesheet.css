@@ -186,3 +186,8 @@ span.btnBack {
     text-align: center;
     display: inline-block;
 }
+.label{
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+}
