@@ -21,6 +21,7 @@ let table = '';
         }
         
             database.query(`CREATE TABLE [${table}] (
+                ID      int IDENTITY(1,1)   PRIMARY KEY,
                 date0       VARCHAR(255)    NOT NULL,
                 uacs        VARCHAR(255)    NOT NULL,
                 description VARCHAR(255)    NOT NULL,

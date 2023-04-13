@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="favicon" href="/img/brand.png">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/5bac83b9a1.js" crossorigin="anonymous"></script>
+
+    <!-- Local css -->
+    <link rel="stylesheet" href="/css/home-stylesheet.css">
+    <link rel="stylesheet" href="/css/login-stylesheet.css">
+    <link rel="stylesheet" href="/css/modal-stylesheet.css">
+    <link rel="stylesheet" href="/css/table-stylesheet.css">
+    <link rel="stylesheet" href="/css/navbar-style.css">
+
+</head>
+
+<body>
+
+    <!-- Create New Button -->
+    <section id="create-new">
+        <div class="create-new-btn">
+            <button type="submit" id="btnNewEntry"><i class="fa-solid fa-circle-plus"></i> Create</button>
+        </div>
+
+        <!-- JEV MODAL -->
+        <div id="jevModalForm" class="modal-jev">
+            <div class="jev-modal-content">
+                <form id="create-jev">
+                    <span class="btnBackJev"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3"></div>
+                        <div class="form-group col-lg-6">
+                            <label for="jevInput" class="jev label">Reference JEV #</label>
+                            <input type="text" id="jevInput" name="jevInput" class="form-control col-lg-12 jevInput"
+                                required></input>
+                        </div>
+                        <div class="form-group col-lg-3"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-lg-3"></div>
+                        <div class="form-group col-lg-6 mb-0 next-btn">
+                            <!-- TODO save here -->
+                            <button type="submit" class="btnSaveJev btnJev">Next</button>
+                        </div>
+                        <div class="form-group col-lg-3"></div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        
+        <!-- MODAL -->
+        <div id="modalForm" class="modal">
+            <div class="modal-content" id="style-1">
+                <span class="btnBack"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
+                <form id="entry-form">
+                    <div class="form-row">
+
+                        <!-- Date -->
+                        <div class="form-group col-lg-6 date-group">
+                            <label for="dateForm" class="label">Date (mm/dd/yyyy)</label>
+                            <input type="data" class="form-control col-lg-12 date-form" id="dateForm" name="dateForm"
+                                required></input>
+                        </div>
+
+                        <!-- UACS Code -->
+                        <div class="form-group col-lg-6 uacs-group">
+                            <label for="uacs" class="label">UACS Code</label>
+                            <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs" required></input>
+                        </div>
+                    </div>
+                    <!-- Account -->
+                    <div class="form-row">
+                        <div class="form-group col-lg-12 description-group">
+                            <label for="description" class="label">Account</label>
+                            <textarea name="text" id="description" rows="2" cols="65" id="description"
+                                class="form-control col-lg-12" name="description"></textarea>
+                        </div>
+                    </div>
+                    <!-- Debit and Credit form -->
+                    <div class="form-row">
+                        <div class="form-group col-lg-6">
+                            <label for="debit" class="label">Debit</label>
+                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <hr>
+                        </div>
+                    </div>
+                    <!-- For Added Input Fields -->
+                    <div class="form-row" id="inputFieldContainer">
+                    </div>
+                    <div class="form-row">
+                        <!-- Add a container to hold the input fields -->
+                        <div class="form-group col-lg-6">
+                            <!-- Add input field -->
+                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12 modal-footer">
+                            <!-- TODO save here -->
+                            <button type="submit" class="btnSave btn btn-float">Save</button>
+                            <!-- TODO cancel here -->
+                            <button type="reset" id="formCancel" class="btnCancel btn btn-float">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- SELECTED MODAL -->
+        <div id="selectedModalForm" class="modal">
+            <div class="modal-content" id="style-1">
+                <span class="btnBack" id="btnBackSelected"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
+                <form id="entry-selected-form">
+                    <!-- For Added Input Fields -->
+                    <div class="form-row col-lg-12" id="selectedInputFieldContainer">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-6">
+                            <!-- Add input field -->
+                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12 modal-footer">
+                            <!-- TODO save here -->
+                            <button type="submit" class="btnSave btn btn-float">Save</button>
+                            <!-- TODO cancel here -->
+                            <button type="reset" id="formCancelSelected" class="btnCancel btn btn-float">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+</body>
+
+</html>

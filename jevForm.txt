@@ -1,3 +1,57 @@
+    /* OLD FUNCTION FOR GETTING DATA
+    SET VALUE TO INPUT
+    dateForm.value = data.recordset[0].date0;
+    uacs.value = data.recordset[0].uacs;
+    description.value = data.recordset[0].description;
+    debit.value = data.recordset[0].debit; 
+
+
+     for(let i = 1; i < rowCount; i++)
+         var inputFieldContainer = document.getElementById('inputFieldContainer')
+         var newRow = document.createElement('div');
+         newRow.className = 'form-group col-lg-12';
+    
+        var newUacsInput = document.createElement('div');
+        newUacsInput.className = 'form-row col-lg-12 uacs-group';
+        newUacsInput.innerHTML = '<input id="uacs" class="form-control col-lg-8 mb-2 uacs-form dynamic-input" name="uacs" placeholder="Enter Uacs Code" required></input>';
+    
+         var newDescriptionInput = document.createElement('div');
+         newDescriptionInput.className = 'form-row col-lg-12 description-group'
+         newDescriptionInput.innerHTML = '<textarea name="text" id="description" placeholder="Enter Account" rows="2" cols="65" id="description" class="form-control col-lg-8 mb-2 dynamic-input" name="description"></textarea>';
+    
+         var newDebitInput = document.createElement('div');
+         newDebitInput.className = 'form-row col-lg-12 debit-group';
+         newDebitInput.innerHTML = '<input type="text" id="debit" class="form-control col-lg-8 mb-2 debit-form dynamic-input dynamic-input-debit" name="debit" placeholder="Enter Debit" required>';
+    
+         newDebitInput.querySelector('input').addEventListener('keyup', function (evt) {
+             var n = parseFloat(this.value.replace(/\D/g, ''), 10);
+             if (isNaN(n)) {
+                 this.value = "";
+                 this.placeholder = "Enter Debit";
+             } else {
+                 this.value = n.toLocaleString();
+             }
+         });
+
+         newUacsInput.value = data.recordset[i].uacs;
+         newDescriptionInput.value = data.recordset[i].description;
+         newDebitInput.value = data.recordset[i].debit
+         const divider = document.createElement('hr');
+
+         newRow.appendChild(newUacsInput);
+         newRow.appendChild(newDescriptionInput);
+         newRow.appendChild(newDebitInput);
+         newRow.appendChild(divider);
+
+         inputFieldContainer.appendChild(newRow);
+  
+         //SET VALUE TO INPUT
+         dateForm.value = data.recordset[0].date0;
+         uacs.value = data.recordset[0].uacs;
+         description.value = data.recordset[0].description;
+         debit.value = data.recordset[0].debit
+     } */
+
 <!DOCTYPE html>
 <html lang="en">
 

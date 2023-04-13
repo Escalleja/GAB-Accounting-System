@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="favicon" href="/img/brand.png">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/5bac83b9a1.js" crossorigin="anonymous"></script>
+
+    <!-- Local css -->
+    <link rel="stylesheet" href="/css/home-stylesheet.css">
+    <link rel="stylesheet" href="/css/login-stylesheet.css">
+    <link rel="stylesheet" href="/css/modal-stylesheet.css">
+    <link rel="stylesheet" href="/css/table-stylesheet.css">
+    <link rel="stylesheet" href="/css/navbar-style.css">
+
+</head>
+
+<body>
+
+    <body>
+        <section id="title">
+            <nav class="navbar-bd">
+                <div class="nav-brand">
+                    <a href="/homepage"><img src="/img/brand.png" alt="logo"></a>
+                </div>
+
+                <div class="search-bd">
+                    <form action="" class="search-bar">
+                        <button title="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <input type="search" name="" id="" placeholder="Search JEV No. ">
+                    </form>
+                </div>
+
+                <div class="nav-content-bd ml-auto">
+                    <ul>
+                        <li class="navbar-item dropdown">
+                            <%= `${username}` %> &ThickSpace; <i class="fa-solid fa-caret-down"></i>
+                            <div class="dropdown-container">
+                                <div class="switch-container">
+                                    <div class="drop-item">
+                                        <i class="fa-solid fa-sun switch-item"></i>
+                                        <label class="switch switch-item">
+                                            <input type="checkbox" title="themeBtn" id="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <i class="fa-solid fa-moon switch-item"></i>
+                                    </div>
+                                </div>
+                                <a href="" class="drop-item"><i class="fa-solid fa-lock"></i> Change password</a>
+                                <a href="/logout" class="drop-item"><i class="fa-solid fa-right-from-bracket"></i>
+                                    Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+
+            <div class="suggested">
+                <h5>Suggested</h5>
+                <div class="suggested-item">
+                    <a href="/asset"><button><i class="fa-solid fa-list"></i> Assets</button></a>
+                    <a href="/liabilities"><button><i class="fa-solid fa-list"></i> Liabilities</button></a>
+                    <a href="/equity"><button><i class="fa-solid fa-list"></i> Equity</button></a>
+                    <div class="suggested-item">
+                        <a href="/revenue"><button><i class="fa-solid fa-list"></i> Revenue/Income</button></a>
+                        <a href="/expenses"><button><i class="fa-solid fa-list"></i> Expenses</button></a>
+                    </div>
+                </div>
+        </section>
+    </body>
+
+</html>

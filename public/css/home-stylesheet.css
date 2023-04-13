@@ -9,12 +9,14 @@ h3, h4, h5 {
 /* Suggested */
 .suggested {
     color: #293051;
+    font-size: 14px;
     padding: 5% 3% 0 3%;
 }
 
 .suggested-item button {
+    display: inline;
     background: #fff;
-    width: 170px;
+    width: 100%;
     height: 45px;
     margin: 16px 16px 5px 5px;
     outline-style: none;
@@ -32,12 +34,12 @@ h3, h4, h5 {
 
 /* Accounting Button */
 .suggested-item button i {
-    padding: 0 0 0 10px;
+    padding: 0 0 0 5px;
 }
 
 .suggested-item a{
     text-decoration: none;
-    display: inline-flex;
+    display: inline-block;
     width: 15%
 }
 
