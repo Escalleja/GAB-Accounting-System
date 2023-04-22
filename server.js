@@ -57,8 +57,8 @@ app.get('/revenue', revenuePage);
 app.post('/jevHomepage', dataEntry);
 app.post('/newEntry', dataEntry);
 app.post('/newsubmission', dataEntry);
-app.post('/selectRecord', modifyRecord);
-app.post('/updateRecord', modifyRecord);
+app.post('/selectRecord/:id', modifyRecord);
+app.post('/updateRecord/:id', modifyRecord);
 //TODO add the other later
 
 server.listen(port, () =>{

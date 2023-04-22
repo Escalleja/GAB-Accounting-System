@@ -11,7 +11,6 @@ socket.on('latestData', data => {
     tableRow.innerHTML = '';
 
     data.recordset.forEach((item) => {
-        console.log(item);
         const tr = document.createElement('tr');
         tr.setAttribute('class', 'table-content');
         tr.setAttribute('data-id', 'item.jevNo');

@@ -4,33 +4,47 @@ const database = require('../configs/database');
 const modifyRecord = express.Router();
 const {modifiedData, selectData} = require('./recordsEventLister');
 
-let jevNo;
-modifyRecord.post('/selectRecord', (req, res) => {
+let jevId;
+const currentlyOpen = new Map();
 
-    //GETTING JEV NO. TO SELECT THE TABLE OF THAT JEV 
-    jevNo = req.body.jevNo;
-
-    database.query(`SELECT * FROM tbl${jevNo}`, (err, data) => {
+modifyRecord.post('/selectRecord/:id', (req, res) => {
+    jevId  = req.params.id;
+    
+    database.query(`SELECT * FROM ${jevId}`, (err, data) => {
         if(err) console.log(err);
-        selectData(data);
-        res.status(200).send('Success');
+        if(data.rowsAffect != 0){
+            // if(req.session.sessionId != null){
+            //     if(currentlyOpen.has(id)){
+            //         res.send({status: 'unavailable'})
+            //     }else{
+            //         currentlyOpen.set(id, id);
+            //         res.send({status: 'data retrieved', data});
+            //     }
+            res.send({status: 'data retrieved', data : data})
+        // }
+    }
     })
 })
 
-modifyRecord.post('/updateRecord', (req, res) => {
-    const tblJev = jevNo;
-    const table = `tbl${tblJev}`;
+modifyRecord.post('/updateRecord/:id', (req, res) => {
+    const id = req.params.id;
+    const tblJev = jevId;
 
     console.log("you passed here\n");
     const dateForm = req.body.dateForm;
     const uacs = req.body.uacs;
     const description = req.body.description;
     const debit = req.body.debit;    
-    console.log('table: ', table);
-    console.log(req.body);
-    database.query(`UPDATE ${table} SET date0 = '${dateForm}', uacs = '${uacs}', description = '${description}', debit = '${debit}', dateModify = '${currentDate()}', modifyBy = '${session.fullname}'`, (err, data) => {
+
+    console.log('id: ' + id + '\n' +
+                'table: ' + tblJev + '\n' +
+                'dateForm: ' + dateForm + '\n' +
+                'uacs: ' + uacs + '\n' +
+                'description: ' + description + '\n' +
+                'debit: ' + debit + '\n'); 
+    database.query(`UPDATE ${tblJev} SET date0 = '${dateForm}', uacs = '${uacs}', description = '${description}', debit = '${debit}', dateModify = '${currentDate()}', modifyBy = '${session.fullname}' WHERE ID = '${id}'`, (err, data) => {
         if(data != ' '){
-        database.query(`UPDATE refjevHomepagetbl SET dateModified = '${currentDate()}', modifiedBy = '${session.fullname}' WHERE jevNo = '${table}'`, (err, data) => {
+        database.query(`UPDATE refjevHomepagetbl SET dateModified = '${currentDate()}', modifiedBy = '${session.fullname}' WHERE jevNo = '${tblJev}'`, (err, data) => {
             if(err) console.log(err); 
             modifiedData(data);
             res.status(200).send('Success');

@@ -25,7 +25,6 @@ io.on('connection', socket => {
 
     database.query(`SELECT * FROM refJevHomepagetbl`, (err, data) => {
         if(err) console.log(err);
-        console.log(data);
         this.latestData(data);
     })
     

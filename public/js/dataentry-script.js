@@ -24,6 +24,7 @@ var addBtn = document.getElementById('addInput');
 
 var inputFieldContainer = document.getElementById('inputFieldContainer');
 
+const jevSelector = '';
 let isNewEntry = true;
 
 // When the user clicks on the button, open the modal
@@ -245,40 +246,51 @@ socket.on('insertData', (data) => {
 //TO RETRIEVE SPECIFIC RECORD WHEN USER CLICKED
 const tableContent = document.querySelectorAll('.table-content');
 const entryForm = document.getElementById('entry-form');
+const table = document.querySelector('#tbody-records');
 
 //INITIALIZE INPUT 
 const modalForm = document.querySelector('#selectedModalForm');
 
 const selectedInputFieldContainer = document.getElementById('selectedInputFieldContainer');
 
+// const selectedForm = document.getElementById('entry-selected-form');
 
-socket.on('select', (data) => {
+//TO DETECT WHICH RECORD IS BEING SELECTED 
+table.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (e.target && e.target.parentElement.nodeName === 'TR') {
+        let row = e.target.parentElement;
+        
+        const existingInputFields = document.querySelectorAll('#selectedInputFieldContainer #selectedJev');
+        existingInputFields.forEach(inputField => {
+            inputField.remove();
+        });
+        
+        //TODO DISPLAY PRINT AND DELETE BUTTON
+        
+        const response = await fetch(`/selectRecord/${row.dataset.id}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+        })
+        
+        const result = await response.json();
+        
+        if (result.status === 'data retrieved') {
+            
+            result.data.recordset.forEach((d) => {
+                selectedModal.style.display = 'block';
+                const inputDiv = document.createElement('div');
+                inputDiv.setAttribute('class', 'form-row');
+                inputDiv.setAttribute('id', 'selectedJev');
+                inputDiv.setAttribute('data-id', d.ID);
 
-    selectedInputFieldContainer.innerHTML = '';
-
-    const selectedDateDiv = document.createElement('div');
-    selectedDateDiv.setAttribute('class', 'form-row');
-
-    selectedDateDiv.innerHTML = `                        
-        <!-- Date -->
-        <div class="form-group col-lg-12 date-group">
-            <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
-            <input type="text" class="form-control col-lg-6 date-form" id="selectedDateForm" name="selectedDateForm"
-                placeholder="Enter a Date" value="${data.recordset[0].date0}" required></input>
-                <hr>
-        </div>
-    `;
-
-    selectedInputFieldContainer.append(selectedDateDiv);
-
-    data.recordset.forEach((d) => {
-        selectedModal.style.display = 'block';
-        console.log(d);
-        alert(d.ID);
-        const inputDiv = document.createElement('div');
-        inputDiv.setAttribute('class', 'form-row');
-
-        inputDiv.innerHTML = `
+                inputDiv.innerHTML = `
+                <!-- Date -->
+                <div class="form-group col-lg-12 date-group">
+                    <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
+                    <input type="text" class="form-control col-lg-6 date-form" id="selectedDateForm" name="selectedDateForm"
+                        placeholder="Enter a Date" value="${d.date0}" required></input>
+                </div>
                     <!-- UACS Code -->
                     <div class="form-group col-lg-6 uacs-group">
                         <label for="uacs" class="label">UACS</label>
@@ -295,101 +307,100 @@ socket.on('select', (data) => {
                     <div class="form-group col-lg-6 description-group">
                         <label for="description" class="label">Description</label>
                             <textarea name="text" id="selectedDescription" placeholder="Enter Account" rows="4" cols="90"
-                                id="description" class="form-control col-lg-12" name="description">${d.description}</textarea>
-                    </div>`;
+                                id="description" class="form-control col-lg-12 description-form" name="description">${d.description}</textarea>
+                    </div>
+                    <div class="form-group col-lg-12">
+                    <hr>
+                    </div>
+                    `;
                     
 
         selectedInputFieldContainer.append(inputDiv);
-
-    })
-    
+            })
+        } else if (result.status === 'unavailable') {
+            alert('Someone is interacting with this record');
+        }
+    }
 })
 
 
 const selectedForm = document.getElementById('entry-selected-form');
 selectedForm.addEventListener('submit', async (e) => {
-e.preventDefault();
+    e.preventDefault();
 
     const text = "Are you sure you want to save it?";
+    let confirmed = false; // Initialize confirmation flag to false
 
-    const dateForm = document.getElementById('selectedDateForm').value;
-    const uacs = document.getElementById('selectedUacs').value;
-    const description = document.getElementById('selectedDescription').value;
-    const debit = document.getElementById('selectedDebit').value;
+    const rows = document.querySelectorAll('#selectedJev');
 
-    const data = {
-        dateForm,
-        uacs,
-        description,
-        debit
-    };
-    alert('dateForm:' + dateForm + '\n' +
-          'uacs:' + uacs + '\n' +
-          'description:' + description + '\n' +
-          'debit:' + debit);
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        if (row && row.hasAttribute('data-id')) {
+            const dateForm = row.querySelector('.date-form').value;
+            const uacs = row.querySelector('.uacs-form').value;
+            const description = row.querySelector('.description-form').value;
+            const debit = row.querySelector('.debit-form').value;
+            const inputDivId = row.getAttribute('data-id');
 
-    if (confirm(text) == true){
-        
-        let insertUpdate = '/updateRecord';
+            const data = {
+                dateForm,
+                uacs,
+                description,
+                debit
+            };
+            console.log('ID: ' + inputDivId + '\n' +
+                'dateForm:' + dateForm + '\n' +
+                'uacs:' + uacs + '\n' +
+                'description:' + description + '\n' +
+                'debit:' + debit);
 
-        const response = await fetch(insertUpdate, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        
-        const status = await response.text();
+            if (!confirmed) { // Check if confirmation is not yet shown
+                confirmed = confirm(text); // Show confirmation dialog and set flag to true
+            }
 
-        if(status == 'Success'){
-            alert('Record updated successfully');
-            selectedModal.style.display = "none";
+            if (confirmed) { // Check if confirmation is true
+                let insertUpdate = `/updateRecord/${inputDivId}`;
+
+                const response = await fetch(insertUpdate, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+
+                const status = await response.text();
+
+                if (status == 'Success') {
+                    
+                } else {
+                    alert('Error!');
+                    console.log(error);
+                }
+            }
         } else {
-            alert('Error!');
-            console.log(error);
-        }
-    }  
-})
-    // FUNCTION FOR BUTTON IN CANCEL IF CANCEL BUTTON NOT WORKING
-    btnCancelSelected.onclick = function (e) {
-        var bool = confirm("Are you sure you want to cancel?");
-        if (bool == true) {
-            modal.style.display = "none";
-            selectedModal.style.display = "none";
-
-        } else {
-            e.preventDefault();
+            alert("row has no data-id");
         }
     }
-    btnBackSelected = document.getElementById('btnBackSelected');
-    btnBackSelected.onclick = function (e) {
+
+    if (confirmed) { // Display success alert after loop completion
+        alert('Record updated successfully');
         selectedModal.style.display = "none";
     }
+});
 
-//TO DETECT WHICH RECORD IS BEING SELECTED 
-for (let i = 0; i < tableContent.length; i++) {
+// FUNCTION FOR BUTTON IN CANCEL IF CANCEL BUTTON NOT WORKING
+btnCancelSelected.onclick = function (e) {
+    var bool = confirm("Are you sure you want to cancel?");
+    if (bool == true) {
+        modal.style.display = "none";
+        selectedModal.style.display = "none";
 
-    const eachContent = document.querySelectorAll('.table-content')[i];
-
-    //PREVENT CHECKBOX TO BE CLICKABLE
-    document.querySelectorAll('#selected-item')[i].addEventListener('click', (e) => {
-        e.stopPropagation();
-    })
-
-    eachContent.addEventListener('click', async (e) => {
+    } else {
         e.preventDefault();
-        isNewEntry = false;
-        const jevNo = eachContent.firstElementChild.textContent.trim();
-        const jevRef = {
-            jevNo
-        };
-        const response = await fetch('/selectRecord', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jevRef)
-        })
-    })
+    }
+}
+btnBackSelected = document.getElementById('btnBackSelected');
+btnBackSelected.onclick = function (e) {
+    selectedModal.style.display = "none";
 }

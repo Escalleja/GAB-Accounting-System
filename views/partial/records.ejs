@@ -58,9 +58,10 @@
                 </tr>
 
                 <tbody id="tbody-records">
+                    
                     <% if(data.recordset.length != 0){
                     for(let i = 0; i < data.recordset.length; i++){ %>
-                    <tr class="table-content">
+                    <tr class="table-content" data-id = "<%= data.recordset[i].jevNo %>">
                         <td id="jev-no"><i class="fa-solid fa-file"></i>&ThickSpace;
                             <%=data.recordset[i].jevNo.slice(3)%>
                         </td>
