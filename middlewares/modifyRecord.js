@@ -8,22 +8,33 @@ let jevId;
 const currentlyOpen = new Map();
 
 modifyRecord.post('/selectRecord/:id', (req, res) => {
-    jevId  = req.params.id;
+    jevId = req.params.id;
     
     database.query(`SELECT * FROM ${jevId}`, (err, data) => {
         if(err) console.log(err);
-        if(data.rowsAffect != 0){
-            // if(req.session.sessionId != null){
-            //     if(currentlyOpen.has(id)){
-            //         res.send({status: 'unavailable'})
-            //     }else{
-            //         currentlyOpen.set(id, id);
-            //         res.send({status: 'data retrieved', data});
-            //     }
-            res.send({status: 'data retrieved', data : data})
-        // }
+
+        if(data.rowsAffected != 0){
+
+            if(req.session.id != null){
+                
+                if(currentlyOpen.has(jevId)){
+                    res.send({status: 'unavailable'})
+                }else{
+                    currentlyOpen.set(jevId, jevId);
+                    res.send({status: 'data retrieved', data});
+                }
+
+            // res.send({status: 'data retrieved', data : data})
+        }
     }
     })
+})
+
+modifyRecord.post('/removeFromMap', (req, res) => {
+    const jevId = req.body.jevId;
+    if(currentlyOpen.has(jevId)){
+        currentlyOpen.delete(jevId);
+    }
 })
 
 modifyRecord.post('/updateRecord/:id', (req, res) => {

@@ -28,3 +28,27 @@ socket.on('latestData', data => {
         tableRow.append(tr);
     })
 })
+
+// //UPDATING UI REAL-TIME WITH NEW INSERTED DATA
+// socket.on('insertData', async (data) => {
+//     const tableRow = document.querySelector('#tbody-records');
+    
+//     const newTableRow = document.createElement('tr');
+//     newTableRow.setAttribute('class', 'table-content');
+//     newTableRow.setAttribute('data-id', `${data.recordset[0].jevNo}`);
+//     console.log(data.recordset[0].jevNo);
+    
+//     newTableRow.innerHTML = `
+//     <td id="jev-no"><i class="fa-solid fa-file"></i>&ThickSpace;
+//         ${item.jevNo.slice(3)}
+//     </td>
+//     <td><span>${ item.dateCreated }</span> <span class="byName"> by
+//             ${ item.createdBy }</span></td>
+//     <td><span>${ item.dateModified }</span> <span class="byName"> by
+//             ${ item.modifiedBy }</span></td>
+//     <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
+//         `;
+
+//     tableRow.prepend(newTableRow);
+
+// });

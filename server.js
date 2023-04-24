@@ -47,18 +47,23 @@ app.set('view engine', 'ejs')
 //Middleware Initialized
 app.get('/', login);        
 app.post('/auth', login);
+
 app.get('/homepage', homepage);
 app.get('/logout', homepage);
+
 app.get('/asset', assetPage);
 app.get('/equity', equityPage);
 app.get('/expenses', expensesPage);
 app.get('/liabilities', liabilitiesPage);
 app.get('/revenue', revenuePage);
+
 app.post('/jevHomepage', dataEntry);
 app.post('/newEntry', dataEntry);
 app.post('/newsubmission', dataEntry);
+
 app.post('/selectRecord/:id', modifyRecord);
 app.post('/updateRecord/:id', modifyRecord);
+app.post('/removeFromMap', modifyRecord);
 //TODO add the other later
 
 server.listen(port, () =>{

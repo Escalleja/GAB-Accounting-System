@@ -24,8 +24,9 @@ var addBtn = document.getElementById('addInput');
 
 var inputFieldContainer = document.getElementById('inputFieldContainer');
 
-const jevSelector = '';
 let isNewEntry = true;
+
+let jevId; 
 
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
@@ -43,28 +44,18 @@ jevSpan.onclick = function () {
     isNewEntry = true
 }
 
-btnCancel.onclick = function () {
+btnCancel.onclick = function (e) {
     var bool = confirm("Are you sure you want to cancel?");
     if (bool == true) {
         modal.style.display = "none";
         selectedModal.style.display = "none";
     } else {
-        event.preventDefault();
+        e.preventDefault();
     }
 }
 
-// btnCancelSelected.onclick = function () {
-//     var bool = confirm("Are you sure you want to cancel?");
-//     if (bool == true) {
-//         modal.style.display = "none";
-//     } else {
-//         event.preventDefault();
-//     }
-// }
-
 //FUNCTION FOR CREATING JEV 
 const formJev = document.getElementById('create-jev');
-
 formJev.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -84,6 +75,7 @@ formJev.addEventListener('submit', async (e) => {
     const jevStatus = await jevResponse.text();
 
     if (jevStatus == 'Success') {
+        formJev.style.display = "none";
         modal.style.display = "block";
         formJev.reset();
     }
@@ -161,7 +153,7 @@ form.addEventListener('submit', async (e) => {
 
     const dateForm = document.getElementById('dateForm').value;
     const uacs = document.getElementById('uacs').value;
-    const description = document.getElementById('description').value;
+    let description = document.getElementById('description').value;
     const debit = document.getElementById('debit').value;
 
     // THIS DYNAMIC INPUT IS A FUNCTION FOR ADDED INPUT FIELD TO STORE IN DATABASE
@@ -174,6 +166,10 @@ form.addEventListener('submit', async (e) => {
         acc[row][index % 3] = input.value;
         return acc;
     }, []);
+
+    let descriptionInput = description;
+    let descriptionModified = descriptionInput.replace(/'/g, "''");
+    description = descriptionModified;
 
     const dataForm = {
         dateForm,
@@ -198,6 +194,7 @@ form.addEventListener('submit', async (e) => {
         const status = await response.text();
 
         if (status == 'Success') {
+            
             form.reset();
             modal.style.display = "none";
             jevModal.style.display = "none";
@@ -219,10 +216,11 @@ socket.on('insertData', (data) => {
     const tableContent = document.querySelector('#tbody-records');
 
     if (tableContent) {
-        const tableRow = document.createElement('tr');
-        tableRow.setAttribute('class', 'table-content');
+        const newTableRow = document.createElement('tr');
+        newTableRow.setAttribute('class', 'table-content');
+        newTableRow.setAttribute('data-id', `${data.recordset[0].jevNo}`);
 
-        tableRow.innerHTML = `
+        newTableRow.innerHTML = `
         <td id="propertyTag">
             <i class="fa-solid fa-file"></i>&ThickSpace;
             ${data.recordset[0].jevNo.slice(3)}
@@ -238,8 +236,9 @@ socket.on('insertData', (data) => {
 
         <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
     `;
-        tableContent.prepend(tableRow);
+        tableContent.prepend(newTableRow);
     }
+
 });
 
 
@@ -260,7 +259,7 @@ table.addEventListener('click', async (e) => {
     e.preventDefault();
     if (e.target && e.target.parentElement.nodeName === 'TR') {
         let row = e.target.parentElement;
-        
+
         const existingInputFields = document.querySelectorAll('#selectedInputFieldContainer #selectedJev');
         existingInputFields.forEach(inputField => {
             inputField.remove();
@@ -276,7 +275,7 @@ table.addEventListener('click', async (e) => {
         const result = await response.json();
         
         if (result.status === 'data retrieved') {
-            
+            jevId = row.dataset.id;
             result.data.recordset.forEach((d) => {
                 selectedModal.style.display = 'block';
                 const inputDiv = document.createElement('div');
@@ -386,8 +385,19 @@ selectedForm.addEventListener('submit', async (e) => {
     if (confirmed) { // Display success alert after loop completion
         alert('Record updated successfully');
         selectedModal.style.display = "none";
+        removeFromMap(jevId);
     }
 });
+
+//TO MAKE THE MODAL AVAILABLE AGAIN AFTER USER CLOSE IT
+async function removeFromMap(jevId){
+    const _jevId = {jevId};
+    const response = await fetch('/removeFromMap', {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify(_jevId)
+    });
+}
 
 // FUNCTION FOR BUTTON IN CANCEL IF CANCEL BUTTON NOT WORKING
 btnCancelSelected.onclick = function (e) {
@@ -395,7 +405,7 @@ btnCancelSelected.onclick = function (e) {
     if (bool == true) {
         modal.style.display = "none";
         selectedModal.style.display = "none";
-
+        removeFromMap(jevId);
     } else {
         e.preventDefault();
     }
@@ -403,4 +413,5 @@ btnCancelSelected.onclick = function (e) {
 btnBackSelected = document.getElementById('btnBackSelected');
 btnBackSelected.onclick = function (e) {
     selectedModal.style.display = "none";
+    removeFromMap(jevId);
 }
