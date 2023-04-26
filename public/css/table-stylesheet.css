@@ -146,7 +146,7 @@
     display: flex;
 }
 
-.form-left-btn button, .form-left-btn a {
+/* .form-left-btn button, .form-left-btn a {
     background-color: transparent;
     border: none;
     color:#293051;
@@ -169,7 +169,32 @@
 .form-left-btn button:hover, .form-left-btn a:hover{  
     text-decoration: none;
     background-color: #ccc;
+} */
+.modal-footer{
+    display: inline-flex;
 }
+/* .form-left-btn {
+    transform: translateY(25%);
+} */
+ .printDelBtn {
+    display: block;
+    float:left;
+    font-size: 18px;
+    text-align: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: .4s;
+    cursor: pointer;
+}
+.printDelBtn i {
+    transform: translateY(25%);
+}
+
+.printDelBtn:hover{
+    background-color: #ccc;
+}
+
 .byName{
     color: #888888;
     font-size: 12px;

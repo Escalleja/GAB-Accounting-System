@@ -16,7 +16,7 @@ homepage.get('/homepage', (req, res) => {
     database.query(`SELECT * FROM refJevHomepagetbl`, (err, data) => {
         if(err) throw err;
         res.render('pages/home', {
-            username: session.fullname,
+            username: req.session.username,
             data: data
         })
     })

@@ -17,10 +17,10 @@ modifyRecord.post('/selectRecord/:id', (req, res) => {
 
             if(req.session.id != null){
                 
-                if(currentlyOpen.has(jevId)){
+                if(currentlyOpen.has(jevId) && currentlyOpen.values(req.session.employeeId)){
                     res.send({status: 'unavailable'})
                 }else{
-                    currentlyOpen.set(jevId, jevId);
+                    currentlyOpen.set(jevId, req.session.employeeId);
                     res.send({status: 'data retrieved', data});
                 }
 

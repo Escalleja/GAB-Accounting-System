@@ -26,7 +26,69 @@ var inputFieldContainer = document.getElementById('inputFieldContainer');
 
 let isNewEntry = true;
 
-let jevId; 
+let jevId;
+
+//TO STOP RECORD BEING USED AFTER REFRESHED
+async function isRecordOpen() {
+    if (localStorage.getItem('recordOpen') === 'true' && localStorage.getItem('jevId') != null) {
+        const response = await fetch(`/selectRecord/${localStorage.getItem('jevId')}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const result = await response.json();
+
+        if (result.status === 'data retrieved') {
+
+            result.data.recordset.forEach((d) => {
+                selectedModal.style.display = 'block';
+                const inputDiv = document.createElement('div');
+                inputDiv.setAttribute('class', 'form-row');
+                inputDiv.setAttribute('id', 'selectedJev');
+                inputDiv.setAttribute('data-id', d.ID);
+
+                inputDiv.innerHTML = `
+                <!-- Date -->
+                <div class="form-group col-lg-12 date-group">
+                    <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
+                    <input type="text" class="form-control col-lg-6 date-form" id="selectedDateForm" name="selectedDateForm"
+                        placeholder="Enter a Date" value="${d.date0}" required></input>
+                </div>
+                    <!-- UACS Code -->
+                    <div class="form-group col-lg-6 uacs-group">
+                        <label for="uacs" class="label">UACS</label>
+                        <input id="selectedUacs" class="form-control col-lg-12 mb-2 uacs-form" name="uacs"
+                            placeholder="Enter Uacs Code" value="${d.uacs}" required></input>
+                    
+                        <!-- Debit and Credit form -->
+                        <label for="debit" class="label">Debit</label>
+                        <input type="text" id="selectedDebit" class="form-control col-lg-12 debit-form" name="debit"
+                        placeholder="Enter Debit" value="${d.debit}" required>
+                        
+                    </div>
+                    <!-- Account -->  
+                    <div class="form-group col-lg-6 description-group">
+                        <label for="description" class="label">Description</label>
+                            <textarea name="text" id="selectedDescription" placeholder="Enter Account" rows="4" cols="90"
+                                id="description" class="form-control col-lg-12 description-form" name="description">${d.description}</textarea>
+                    </div>
+                    <div class="form-group col-lg-12">
+                    <hr>
+                    </div>
+                    `;
+
+                selectedInputFieldContainer.append(inputDiv);
+            })
+        } else if (result.status === 'unavailable') {
+            alert('Someone is interacting with this record');
+        }
+
+    }else{
+        console.log("not working")
+    }
+}
 
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
@@ -53,6 +115,7 @@ btnCancel.onclick = function (e) {
         e.preventDefault();
     }
 }
+
 
 //FUNCTION FOR CREATING JEV 
 const formJev = document.getElementById('create-jev');
@@ -194,7 +257,7 @@ form.addEventListener('submit', async (e) => {
         const status = await response.text();
 
         if (status == 'Success') {
-            
+
             form.reset();
             modal.style.display = "none";
             jevModal.style.display = "none";
@@ -252,7 +315,6 @@ const modalForm = document.querySelector('#selectedModalForm');
 
 const selectedInputFieldContainer = document.getElementById('selectedInputFieldContainer');
 
-// const selectedForm = document.getElementById('entry-selected-form');
 
 //TO DETECT WHICH RECORD IS BEING SELECTED 
 table.addEventListener('click', async (e) => {
@@ -264,18 +326,22 @@ table.addEventListener('click', async (e) => {
         existingInputFields.forEach(inputField => {
             inputField.remove();
         });
-        
+
         //TODO DISPLAY PRINT AND DELETE BUTTON
-        
+
         const response = await fetch(`/selectRecord/${row.dataset.id}`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
-        
+
         const result = await response.json();
-        
+
         if (result.status === 'data retrieved') {
             jevId = row.dataset.id;
+            localStorage.setItem('recordOpen', 'true');
+            localStorage.setItem('jevId', `${jevId}`);
             result.data.recordset.forEach((d) => {
                 selectedModal.style.display = 'block';
                 const inputDiv = document.createElement('div');
@@ -312,9 +378,9 @@ table.addEventListener('click', async (e) => {
                     <hr>
                     </div>
                     `;
-                    
 
-        selectedInputFieldContainer.append(inputDiv);
+
+                selectedInputFieldContainer.append(inputDiv);
             })
         } else if (result.status === 'unavailable') {
             alert('Someone is interacting with this record');
@@ -371,7 +437,7 @@ selectedForm.addEventListener('submit', async (e) => {
                 const status = await response.text();
 
                 if (status == 'Success') {
-                    
+
                 } else {
                     alert('Error!');
                     console.log(error);
@@ -386,15 +452,21 @@ selectedForm.addEventListener('submit', async (e) => {
         alert('Record updated successfully');
         selectedModal.style.display = "none";
         removeFromMap(jevId);
+        localStorage.removeItem('jevId');
+        localStorage.removeItem('recordOpen');
     }
 });
 
 //TO MAKE THE MODAL AVAILABLE AGAIN AFTER USER CLOSE IT
-async function removeFromMap(jevId){
-    const _jevId = {jevId};
+async function removeFromMap(jevId) {
+    const _jevId = {
+        jevId
+    };
     const response = await fetch('/removeFromMap', {
         method: 'POST',
-        headers: {'Content-Type' : 'application/json'},
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(_jevId)
     });
 }
@@ -406,6 +478,8 @@ btnCancelSelected.onclick = function (e) {
         modal.style.display = "none";
         selectedModal.style.display = "none";
         removeFromMap(jevId);
+        localStorage.removeItem('jevId');
+        localStorage.removeItem('recordOpen');
     } else {
         e.preventDefault();
     }
@@ -414,4 +488,6 @@ btnBackSelected = document.getElementById('btnBackSelected');
 btnBackSelected.onclick = function (e) {
     selectedModal.style.display = "none";
     removeFromMap(jevId);
+    localStorage.removeItem('jevId');
+    localStorage.removeItem('recordOpen');
 }

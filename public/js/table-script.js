@@ -31,6 +31,7 @@ socket.on('latestData', data => {
 
 // //UPDATING UI REAL-TIME WITH NEW INSERTED DATA
 // socket.on('insertData', async (data) => {
+    
 //     const tableRow = document.querySelector('#tbody-records');
     
 //     const newTableRow = document.createElement('tr');

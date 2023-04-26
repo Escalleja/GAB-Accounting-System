@@ -1,62 +1,48 @@
 const express = require('express');
 const database = require('../configs/database');
-const session = require('express-session'); 
 require('dotenv').config();
 const login = express.Router();
 
-
 login.get('/', (req, res) => {
-    let error = '';
-
-    if(req.query.error){
-        error = 'Invalid Username or Password';
-    }
-    if(req.session.loggedin){
-		let route = '/homepage';
-        setUserInfo
-		res.redirect(route);
-	} else {
-    res.render('pages/login' , { error: error });
+    if(req.session.loggedin && !req.session.isAdmin){
+        res.redirect('/homepage');
+    }else if(req.session.loggedin && req.session.isAdmin){
+        res.redirect('/adminHomepage');
+    }else{
+        res.render('pages/login');
     }
 })
 
-//Authenticating user input
 login.post('/auth', (req, res) => {
 
-    let username = req.body.username;
-    let password = req.body.password;
+    const employeeId = req.body.username;
+    const password = req.body.password;
 
-    database.query(`SELECT * FROM account_Tbl WHERE fk_employee_id = '${username}' AND acc_password = '${password}'`, (err, data) =>{
-        if(err) throw err;
+    database.query(`SELECT * FROM accountTbl WHERE employee_id = '${employeeId}' AND pass = '${password}'`, (err, data) => {
+        if(err) console.log(err);
 
-        if(data.recordsets.length === 1){
-            //SESSION ID
-            console.log(req.session.id);
+        if(data.recordset.length === 1){
             const sessionId = req.session.id;
-            
-
             req.session.loggedin = true;
-            session.employeeId = username;
-            setUserInfo();
-            res.redirect('/homepage');
+            req.session.employeeId = data.recordset[0].employee_id
+            req.session.username = `${data.recordset[0].fName} ${data.recordset[0].lName}`;
+            req.session.isAdmin = data.recordset[0].isAdmin;
+            req.session.isAction = data.recordset[0].isAction;
             req.session.sessionId = sessionId;
+
+            console.log(data.recordset);
+            
+        if(req.session.isAdmin){
+            res.status(200).send({redirect: '/adminHomepage'});
+        } else{
+            res.status(200).send({redirect: '/homepage'});
         }
-        else{
-            res.redirect('/?error=1');
+        }else{
+            res.status(401).send({redirect: 'invalid'})
         }
     })
+
+
 })
-    
-
-//User's Name 
-const setUserInfo = () =>{
-    database.query(`SELECT * FROM employee_Tbl WHERE employee_id = '${session.employeeId}'`, (err, data) => {
-        if (err) throw err;
-
-        let fullname = data.recordsets[0][0].fName + ' ' + data.recordsets[0][0].lName;
-
-        session.fullname = fullname;
-    })
-}
 
 module.exports = login;
