@@ -19,6 +19,10 @@ exports.modifiedData = (data) => {
     io.emit('modifiedData', data )
 }
 
+exports.deleteRecords = (data) => {
+    io.emit('deleteRecords', data);
+}
+
 //TO CHECK THE CONNECTION IS ESTABLISHED
 io.on('connection', socket => {
     console.log('Socket connected: ', socket.id);

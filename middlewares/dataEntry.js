@@ -14,7 +14,7 @@ let table = '';
 
         table = `tbl${jevInput}`;
 
-        database.query(`INSERT INTO refJevHomepagetbl VALUES ('${table}', '${currentDate()}', '${session.fullname}', '${currentDate()}', '${session.fullname}')`, (err) => {
+        database.query(`INSERT INTO refJevHomepagetbl VALUES ('${table}', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`, (err) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Error');
@@ -47,10 +47,10 @@ let table = '';
         let debit = req.body.debit;    
         let dynamicInputs = req.body.dynamicInputs;
     
-        let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${session.fullname}', '${currentDate()}', '${session.fullname}')`;
+        let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
         for(let i = 0; i < dynamicInputs.length; i++){
             const [dynamicUacs, dynamicDescription, dynamicDebit] = dynamicInputs[i];
-            values += `,('${dateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${session.fullname}', '${currentDate()}', '${session.fullname}')`;
+            values += `,('${dateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
         }
     
         let query = `INSERT INTO [${table}] VALUES ${values}`;
@@ -82,7 +82,7 @@ const currentDate = () => {
     const currentDay = newDate.getDate();
     const currentYear = newDate.getFullYear();
 
-    const formattedDate = currentMonth + ' ' + currentDay + ' ' + currentYear;
+    const formattedDate = currentMonth + ' ' + currentDay + ', ' + currentYear;
 
     return formattedDate;
 }

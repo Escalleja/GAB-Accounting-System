@@ -134,11 +134,11 @@
                     <!-- For Added Input Fields -->
                     <div class="form-row col-lg-12" id="selectedInputFieldContainer">
                     </div>
-                    <div class="form-row">
+                    <div class="form-row" id="selectedAdd">
                         <div class="form-group col-lg-6">
                             <!-- Add input field -->
-                            <button id="addInput" class="btnInput btn"><i class="fa-solid fa-circle-plus"></i>
-                                Add</button>
+                            <span id="selectedAdd" class="btnInput btn selectedAdd"><i class="fa-solid fa-circle-plus"></i>
+                                Add</span>
                         </div>
                     </div>
                     <div class="form-row">                                                  
@@ -148,7 +148,7 @@
                             </div>
                             
                             <div class="form-right-btn ml-auto">
-                                <button type="submit" class="btnSave btn btn-float">Save</button>
+                                <button type="submit" id="selectedSave" class="btnSave btn btn-float">Save</button>
                                 <button type="reset" id="formCancelSelected" class="btnCancel btn btn-float">Cancel</button>
                             </div>    
                     </div>
@@ -157,6 +157,7 @@
         </div>
 
     </section>
+
 
 </body>
 

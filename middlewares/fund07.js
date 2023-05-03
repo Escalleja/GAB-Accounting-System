@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const database = require('../configs/database');
-const assetPage = require('./asset');
+const assetPage = require('./fund01');
 const expensesPage = express.Router();
 
 expensesPage.use(session({
@@ -10,9 +10,14 @@ expensesPage.use(session({
     saveUninitialized: true
 }));
 
-expensesPage.get('/expenses', (req, res) => {
+expensesPage.get('/fund07', (req, res) => {
     if(req.session.loggedin){
-        res.render('pages/equityPage', {username: session.fullname});
+        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE 'tbl7%'`, (err, data) => {
+            
+            res.render('pages/trustFund', {
+                username: req.session.username,
+                data: data});
+        })
     }
     else{
         res.redirect('/');

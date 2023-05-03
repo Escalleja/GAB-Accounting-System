@@ -29,33 +29,45 @@ let isNewEntry = true;
 let jevId;
 
 //TO STOP RECORD BEING USED AFTER REFRESHED
-async function isRecordOpen() {
-    if (localStorage.getItem('recordOpen') === 'true' && localStorage.getItem('jevId') != null) {
+isRecordOpen();
+async function isRecordOpen(){
+    if(localStorage.getItem('recordOpen') === 'true' && localStorage.getItem('jevId') != null){
+
+        const selectedModal = document.getElementById('selectedModalForm');
+        
+        const selectedInputFieldContainer = document.getElementById('selectedInputFieldContainer');
+        
         const response = await fetch(`/selectRecord/${localStorage.getItem('jevId')}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: {'Content-Type' : 'application/json'},
         })
-
+        
         const result = await response.json();
-
+        
         if (result.status === 'data retrieved') {
+            
+            selectedModal.style.display = 'block';
+            jevId = localStorage.getItem('jevId');
+                // localStorage.setItem('recordOpen', 'true');
+                // localStorage.setItem('jevId', `${jevId}`);
 
             result.data.recordset.forEach((d) => {
-                selectedModal.style.display = 'block';
+
+                // selectedModal.style.display = 'block';
+
                 const inputDiv = document.createElement('div');
+
                 inputDiv.setAttribute('class', 'form-row');
                 inputDiv.setAttribute('id', 'selectedJev');
                 inputDiv.setAttribute('data-id', d.ID);
-
+                
                 inputDiv.innerHTML = `
-                <!-- Date -->
-                <div class="form-group col-lg-12 date-group">
-                    <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
-                    <input type="text" class="form-control col-lg-6 date-form" id="selectedDateForm" name="selectedDateForm"
-                        placeholder="Enter a Date" value="${d.date0}" required></input>
-                </div>
+                    <!-- Date -->
+                    <div class="form-group col-lg-12 date-group">
+                        <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
+                        <input type="text" class="form-control col-lg-6 date-form" id="selectedDateForm" name="selectedDateForm"
+                            placeholder="Enter a Date" value="${d.date0}" required></input>
+                    </div>
                     <!-- UACS Code -->
                     <div class="form-group col-lg-6 uacs-group">
                         <label for="uacs" class="label">UACS</label>
@@ -66,7 +78,6 @@ async function isRecordOpen() {
                         <label for="debit" class="label">Debit</label>
                         <input type="text" id="selectedDebit" class="form-control col-lg-12 debit-form" name="debit"
                         placeholder="Enter Debit" value="${d.debit}" required>
-                        
                     </div>
                     <!-- Account -->  
                     <div class="form-group col-lg-6 description-group">
@@ -77,16 +88,16 @@ async function isRecordOpen() {
                     <div class="form-group col-lg-12">
                     <hr>
                     </div>
-                    `;
+                `;
 
                 selectedInputFieldContainer.append(inputDiv);
             })
-        } else if (result.status === 'unavailable') {
+        } else if (result.status === 'unavailable'){
             alert('Someone is interacting with this record');
+        } else{
+            alert('Something went wrong.');
         }
-
-    }else{
-        console.log("not working")
+            
     }
 }
 
@@ -123,7 +134,7 @@ formJev.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const jevInput = document.getElementById('jevInput').value;
-
+    
     const jevDataForm = {
         jevInput
     };
@@ -136,9 +147,9 @@ formJev.addEventListener('submit', async (e) => {
         body: JSON.stringify(jevDataForm)
     })
     const jevStatus = await jevResponse.text();
-
+    
     if (jevStatus == 'Success') {
-        formJev.style.display = "none";
+        // formJev.style.display = "none";
         modal.style.display = "block";
         formJev.reset();
     }
@@ -261,10 +272,11 @@ form.addEventListener('submit', async (e) => {
             form.reset();
             modal.style.display = "none";
             jevModal.style.display = "none";
+            
         }
     }
 })
-
+/*
 //INITIALIZE SOCKET.IO
 const socket = io.connect();
 
@@ -273,37 +285,7 @@ socket.on('connect', () => {
     console.log('Successfully connected');
 })
 
-// UPDATE FRONT END TABLE REALTIME WHEN DATA WAS INSERTED
-socket.on('insertData', (data) => {
-
-    const tableContent = document.querySelector('#tbody-records');
-
-    if (tableContent) {
-        const newTableRow = document.createElement('tr');
-        newTableRow.setAttribute('class', 'table-content');
-        newTableRow.setAttribute('data-id', `${data.recordset[0].jevNo}`);
-
-        newTableRow.innerHTML = `
-        <td id="propertyTag">
-            <i class="fa-solid fa-file"></i>&ThickSpace;
-            ${data.recordset[0].jevNo.slice(3)}
-        </td>
-        <td>
-            <span> ${data.recordset[0].dateCreated} </span> 
-            <span class="byName"> by ${data.recordset[0].createdBy} </span>
-        </td>
-        <td>
-            <span>${data.recordset[0].dateModified} </span> 
-            <span class="byName"> by ${data.recordset[0].modifiedBy} </span>
-        </td>
-
-        <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
-    `;
-        tableContent.prepend(newTableRow);
-    }
-
-});
-
+*/
 
 //TO RETRIEVE SPECIFIC RECORD WHEN USER CLICKED
 const tableContent = document.querySelectorAll('.table-content');
@@ -326,6 +308,11 @@ table.addEventListener('click', async (e) => {
         existingInputFields.forEach(inputField => {
             inputField.remove();
         });
+
+        //TODO HIDE ADD BUTTON
+        const addBtn = document.getElementById('selectedAdd');
+
+        addBtn.style.display = "none";
 
         //TODO DISPLAY PRINT AND DELETE BUTTON
 
@@ -384,6 +371,8 @@ table.addEventListener('click', async (e) => {
             })
         } else if (result.status === 'unavailable') {
             alert('Someone is interacting with this record');
+        } else{
+            alert('Something went wrong.');
         }
     }
 })
@@ -413,11 +402,11 @@ selectedForm.addEventListener('submit', async (e) => {
                 description,
                 debit
             };
-            console.log('ID: ' + inputDivId + '\n' +
-                'dateForm:' + dateForm + '\n' +
-                'uacs:' + uacs + '\n' +
-                'description:' + description + '\n' +
-                'debit:' + debit);
+            // console.log('ID: ' + inputDivId + '\n' +
+            //     'dateForm:' + dateForm + '\n' +
+            //     'uacs:' + uacs + '\n' +
+            //     'description:' + description + '\n' +
+            //     'debit:' + debit);
 
             if (!confirmed) { // Check if confirmation is not yet shown
                 confirmed = confirm(text); // Show confirmation dialog and set flag to true
@@ -449,7 +438,7 @@ selectedForm.addEventListener('submit', async (e) => {
     }
 
     if (confirmed) { // Display success alert after loop completion
-        alert('Record updated successfully');
+        // alert('Record updated successfully');
         selectedModal.style.display = "none";
         removeFromMap(jevId);
         localStorage.removeItem('jevId');
@@ -471,7 +460,7 @@ async function removeFromMap(jevId) {
     });
 }
 
-// FUNCTION FOR BUTTON IN CANCEL IF CANCEL BUTTON NOT WORKING
+// FUNCTION FOR SELECTED MODAL BUTTONS
 btnCancelSelected.onclick = function (e) {
     var bool = confirm("Are you sure you want to cancel?");
     if (bool == true) {
@@ -491,3 +480,39 @@ btnBackSelected.onclick = function (e) {
     localStorage.removeItem('jevId');
     localStorage.removeItem('recordOpen');
 }
+
+btnDelBtn = document.getElementById('del-btn');
+btnDelBtn.addEventListener('click', async () => {
+    
+    const response = await fetch(`/authDelete`, {
+        method: 'GET',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+    const result = await response.json();
+
+    if(result.status === 'unauthorized'){
+        let message = "Are you sure you want to delete this record?";
+        
+        if(confirm(message) === true) {
+            const response = await fetch(`/jevDelete/${jevId}`, {
+                method: 'POST',
+                headers: { 'Content-Type' : 'application/json'}
+            })
+
+            const result = await response.json();
+            if(result.status === 'Success'){
+                alert('Record Deleted');
+                selectedModal.style.display = "none";
+            } else{
+                alert('Deletion Failed');
+            }
+        }
+    }
+    else {
+        alert("You are not authorized to make this action.");
+        removeFromMap(jevId);
+        localStorage.removeItem('jevId');
+        localStorage.removeItem('recordOpen');
+    }
+})

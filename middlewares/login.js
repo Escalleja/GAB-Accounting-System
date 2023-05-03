@@ -1,7 +1,17 @@
 const express = require('express');
+const session = require('express-session');
 const database = require('../configs/database');
 require('dotenv').config();
 const login = express.Router();
+
+login.use(express.static(('public')));
+
+login.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true	
+}));
+
 
 login.get('/', (req, res) => {
     if(req.session.loggedin && !req.session.isAdmin){
@@ -30,7 +40,6 @@ login.post('/auth', (req, res) => {
             req.session.isAction = data.recordset[0].isAction;
             req.session.sessionId = sessionId;
 
-            console.log(data.recordset);
             
         if(req.session.isAdmin){
             res.status(200).send({redirect: '/adminHomepage'});
