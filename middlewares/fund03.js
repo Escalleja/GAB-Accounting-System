@@ -11,7 +11,8 @@ fund03.use(session({
 
 fund03.get('/fund03', (req, res) => {
     if(req.session.loggedin){
-        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE 'tbl6%'`, (err, data) => {
+        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE 'tbl03%'`, (err, data) => {
+            if(err) console.log(err);
             res.render('pages/specialFund', {
                 username: req.session.username,
                 data: data});

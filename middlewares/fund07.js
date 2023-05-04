@@ -12,8 +12,8 @@ expensesPage.use(session({
 
 expensesPage.get('/fund07', (req, res) => {
     if(req.session.loggedin){
-        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE 'tbl7%'`, (err, data) => {
-            
+        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE 'tbl07%'`, (err, data) => {
+            if(err) console.log(err);
             res.render('pages/trustFund', {
                 username: req.session.username,
                 data: data});

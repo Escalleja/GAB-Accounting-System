@@ -1,7 +1,6 @@
 const express = require('express');
-const session = require('express-session');
 const database = require('../configs/database');
-const {insertData} = require('./recordsEventLister');
+const {insertData, deleteRecords} = require('./recordsEventLister');
 const dataEntry = express.Router();
 
 let jevInput = '';
@@ -68,6 +67,22 @@ let table = '';
             }
         });
     });
+    
+    dataEntry.post('/refJevDelete/:id', (req, res) => {
+        // const jevId = req.params.id;
+    
+        database.query(`DELETE FROM refJevHomepagetbl WHERE jevNo = '${table}'`, (err, data) => {
+            if(err){ 
+                console.log(err);
+                res.status(401).send({status: 'Failed'});
+            } else{
+                deleteRecords(data);
+                database.query(`DROP TABLE [${table}]`);
+                res.status(200).send({status: 'Success'});
+            }    
+        })
+
+    })
     
 
 const currentDate = () => {

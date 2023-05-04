@@ -7,6 +7,7 @@ require('dotenv').config();
 const port = process.env.DB_ACCOUNTING_PORT;
 const login = require('./middlewares/login');
 const homepage = require('./middlewares/homepage');
+const adminHomepage = require('./middlewares/adminHomepage');
 
 const fund01 = require('./middlewares/fund01');
 const fund03 = require('./middlewares/fund03');
@@ -57,6 +58,8 @@ app.post('/auth', login);
 app.get('/homepage', homepage);
 app.get('/logout', homepage);
 
+app.get('/adminHomepage', adminHomepage);
+
 app.get('/fund01', fund01);
 app.get('/fund03', fund03);
 app.get('/fund07', fund07);
@@ -64,6 +67,7 @@ app.get('/fund07', fund07);
 app.post('/jevHomepage', dataEntry);
 app.post('/newEntry', dataEntry);
 app.post('/newsubmission', dataEntry);
+app.post('/refJevDelete/:id', dataEntry);
 
 app.post('/selectRecord/:id', modifyRecord);
 app.post('/updateRecord/:id', modifyRecord);

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting - Fund 03</title>
+    <title>Accounting</title>
 
     <!-- favicon -->
     <link rel="icon" type="favicon" href="/img/brand.png">
@@ -23,15 +23,23 @@
     <link rel="stylesheet" href="/css/modal-stylesheet.css">
     <link rel="stylesheet" href="/css/table-stylesheet.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
-    <link rel="stylesheet" href="/css/pages-main-stylesheet.css">
 
 </head>
-
 <body>
-
     <!--PARTIAL OF NAVBAR-->
     <section id="navbar-partial">
         <%- include('../partial/navbar', {username}); %>   
+    </section>
+
+    <section>
+        <div class="suggested">
+            <h5>Suggested</h5>
+            <div class="suggested-item">
+                <a href="/fund01"><button><i class="fa-solid fa-list"></i> Fund 01 - Regular</button></a>
+                <a href="/fund03"><button><i class="fa-solid fa-list"></i> Fund 03 - Special</button></a>
+                <a href="/fund07"><button><i class="fa-solid fa-list"></i> Fund 07 - Trust</button></a>
+            </div>
+        </div>
     </section>
 
     <!--PARTIAL OF RECORDS-->
@@ -40,15 +48,14 @@
     </section>
 
     <!--PARTIAL OF ALL MODALS-->
-    <section id="modal-partial">
+   <section id="modal-partial">
         <%- include('../partial/modal'); %>
-    </section>
+   </section>
 
-        <script src="socket.io/socket.io.js"></script>
-        <script src="/js/accounting.js"></script>
-        <script src="/js/dataentry-script.js"></script>
-        <script src="/js/specialFund-script.js"></script>
-
+    <script src="socket.io/socket.io.js"></script>
+    <script src="/js/accounting.js"></script>
+    <script src="/js/dataentry-script.js"></script>
+    <script src="/js/table-script.js"></script>
 </body>
 
 </html>

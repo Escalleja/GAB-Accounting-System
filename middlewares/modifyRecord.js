@@ -56,7 +56,7 @@ modifyRecord.post('/updateRecord/:id', (req, res) => {
                 'uacs: ' + uacs + '\n' +
                 'description: ' + description + '\n' +
                 'debit: ' + debit + '\n'); 
-    database.query(`UPDATE ${tblJev} SET date0 = '${dateForm}', uacs = '${uacs}', description = '${description}', debit = '${debit}', dateModify = '${currentDate()}', modifyBy = '${session.fullname}' WHERE ID = '${id}'`, (err, data) => {
+    database.query(`UPDATE [${tblJev}] SET date0 = '${dateForm}', uacs = '${uacs}', description = '${description}', debit = '${debit}', dateModify = '${currentDate()}', modifyBy = '${session.fullname}' WHERE ID = '${id}'`, (err, data) => {
         
         if(data != ' '){
             database.query(`UPDATE refjevHomepagetbl SET dateModified = '${currentDate()}', modifiedBy = '${req.session.username}' WHERE jevNo = '${tblJev}'`, (err, data) => {
@@ -87,7 +87,7 @@ const currentDate = () => {
     const currentMonth = (monthNames[dateNow.getMonth()]);
     const currentDay = (dateNow.getDate()); 
     const currentYear = dateNow.getFullYear();
-    const formattedDate = `${currentMonth} ${currentDay} ${currentYear}`;
+    const formattedDate = `${currentMonth} ${currentDay}, ${currentYear}`;
    
     return formattedDate;
 }

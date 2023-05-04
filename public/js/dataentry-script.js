@@ -29,6 +29,7 @@ let isNewEntry = true;
 let jevId;
 
 //TO STOP RECORD BEING USED AFTER REFRESHED
+/*
 isRecordOpen();
 async function isRecordOpen(){
     if(localStorage.getItem('recordOpen') === 'true' && localStorage.getItem('jevId') != null){
@@ -100,7 +101,7 @@ async function isRecordOpen(){
             
     }
 }
-
+*/
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
     jevModal.style.display = "block";
@@ -117,17 +118,26 @@ jevSpan.onclick = function () {
     isNewEntry = true
 }
 
-btnCancel.onclick = function (e) {
-    var bool = confirm("Are you sure you want to cancel?");
-    if (bool == true) {
-        modal.style.display = "none";
-        selectedModal.style.display = "none";
-    } else {
-        e.preventDefault();
+btnCancel.addEventListener('click', async (e) => {
+    const text = "Are you sure you want to cancel?";
+
+    if(confirm(text) === true){
+
+        const response = await fetch(`/refJevDelete/${jevId}`, {
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'}
+        })
+
+        const result = await response.json();
+
+        if(result.status === 'Success'){
+            jevModal.style.display = "none";
+            modal.style.display = "none";
+        }
     }
-}
+})
 
-
+//#region 
 //FUNCTION FOR CREATING JEV 
 const formJev = document.getElementById('create-jev');
 formJev.addEventListener('submit', async (e) => {
@@ -157,15 +167,16 @@ formJev.addEventListener('submit', async (e) => {
 
 //COMMA FOR CURRENCY INPUT FIELD
 var fnf = document.getElementById("debit");
-fnf.addEventListener('keyup', function (evt) {
-    var n = parseFloat(this.value.replace(/\D/g, ''), 10);
-    if (isNaN(n)) {
-        fnf.value = "";
-        fnf.placeholder = "Enter Debit";
-    } else {
-        fnf.value = n.toLocaleString();
+fnf.addEventListener('keypress', function (e) {
+    
+    const key = e.key;
+    
+    if(/\d|\.|,/.test(key)) {
+        return true;
     }
-}, false);
+
+    e.preventDefault();
+});
 
 
 // FUNCTION FOR ADDING INPUT FIELD DYNAMICALLY
@@ -196,13 +207,13 @@ document.getElementById("addInput").addEventListener('click', function (e) {
     <hr>`;
 
     newDebitInput.querySelector('input').addEventListener('keyup', function (evt) {
-        var n = parseFloat(this.value.replace(/\D/g, ''), 10);
-        if (isNaN(n)) {
-            this.value = "";
-            this.placeholder = "Enter Debit";
-        } else {
-            this.value = n.toLocaleString();
+        const key = e.key;
+    
+        if(/\d|\.|,/.test(key)) {
+            return true;
         }
+    
+        e.preventDefault();
     });
 
     const divider = document.createElement('hr');
@@ -215,7 +226,6 @@ document.getElementById("addInput").addEventListener('click', function (e) {
 
     inputFieldContainer.appendChild(newRow);
 });
-
 
 //FUNCTION FOR NEW ENTRY OF JEV
 const form = document.getElementById('entry-form');
@@ -365,15 +375,24 @@ table.addEventListener('click', async (e) => {
                     <hr>
                     </div>
                     `;
+                                    
+                    selectedInputFieldContainer.append(inputDiv);
 
-
-                selectedInputFieldContainer.append(inputDiv);
             })
         } else if (result.status === 'unavailable') {
             alert('Someone is interacting with this record');
         } else{
             alert('Something went wrong.');
         }
+        
+        const selectedDebit = document.getElementById('selectedDebit');
+        selectedDebit.addEventListener('input', function (e) {
+          const key = e.data;
+          if (!/\d|\./.test(key)) {
+            e.target.value = e.target.value.replace(key, '');
+          }
+        });
+
     }
 })
 
@@ -480,7 +499,7 @@ btnBackSelected.onclick = function (e) {
     localStorage.removeItem('jevId');
     localStorage.removeItem('recordOpen');
 }
-
+//#endregion
 btnDelBtn = document.getElementById('del-btn');
 btnDelBtn.addEventListener('click', async () => {
     
@@ -491,7 +510,7 @@ btnDelBtn.addEventListener('click', async () => {
 
     const result = await response.json();
 
-    if(result.status === 'unauthorized'){
+    if(result.status === 'authorized'){
         let message = "Are you sure you want to delete this record?";
         
         if(confirm(message) === true) {
@@ -503,9 +522,12 @@ btnDelBtn.addEventListener('click', async () => {
             const result = await response.json();
             if(result.status === 'Success'){
                 alert('Record Deleted');
+                removeFromMap(jevId);
                 selectedModal.style.display = "none";
             } else{
+                removeFromMap(jevId);
                 alert('Deletion Failed');
+                selectedModal.style.display = "none";
             }
         }
     }

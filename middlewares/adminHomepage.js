@@ -1,21 +1,21 @@
 const express = require('express');
 const session = require('express-session');
 const database = require('../configs/database');
-const homepage = express.Router();
+const adminHomepage = express.Router();
 
-homepage.use(session({
+adminHomepage.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true	
 }));
 
-homepage.get('/homepage', (req, res) => {
+adminHomepage.get('/adminHomepage', (req, res) => {
 
-    if(req.session.loggedin && !req.session.isAdmin){
-        // res.render('pages/home', {username: session.fullname});
+    if(req.session.loggedin && req.session.isAdmin){
+        // res.render('pages/adminHomepage', {username: session.fullname});
     database.query(`SELECT * FROM refJevHomepagetbl`, (err, data) => {
         if(err) throw err;
-        res.render('pages/home', {
+        res.render('pages/admin', {
             username: req.session.username,
             data: data
         })
@@ -25,11 +25,4 @@ homepage.get('/homepage', (req, res) => {
     }
 });
 
-//LOGOUT
-homepage.get('/logout', (req, res) =>{
-    req.session.destroy();
-    res.redirect('/');
-    res.end();
-})
-
-module.exports = homepage;
+module.exports = adminHomepage;
