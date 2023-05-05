@@ -16,7 +16,11 @@ let table = '';
         database.query(`INSERT INTO refJevHomepagetbl VALUES ('${table}', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`, (err) => {
         if (err) {
             console.error(err);
+            if(err.number === 2627){
+                return res.status(400).send('Primary Key already exists');
+            }else{
             return res.status(500).send('Error');
+            }
         }
         
             database.query(`CREATE TABLE [${table}] (

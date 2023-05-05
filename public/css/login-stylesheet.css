@@ -1,6 +1,7 @@
 body {
     background-color: #EEECF8;
     font-family: 'Segoe UI';
+    overflow-x: hidden;
 }
 
 h3,

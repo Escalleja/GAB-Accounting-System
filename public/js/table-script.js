@@ -89,3 +89,35 @@ socket.on('insertData', (data) => {
     }
 
 });
+
+//FOR CHECKBOX
+// CHECKBOX EVENTLISTENER THIS WILL TRIGGER IF CHECKBOXES HAS BEEN CHECKED OR UNCHECKED!!
+const checkBoxLen = document.querySelectorAll('#checkbox').length;
+let checkedCount = 0;
+
+// THIS FUNCTION WILL LOOP TO COUNT ALL THE EXISTING TABLE 
+for(let i=0; i<checkBoxLen; i++){
+    document.querySelectorAll('[name="chk"]')[i].addEventListener('change', function(e){
+
+        let tableContent = document.querySelectorAll(".table-content");
+        
+        document.querySelector('.content-header-btn').style.display = "block";
+        if(this.checked){
+            tableContent[i].style.backgroundColor = "#C2DBFF";
+            checkedCount++;
+            
+        }else {
+            tableContent[i].style.backgroundColor = "inherit";
+            checkedCount--;
+        }
+        
+        isNoChkActive();
+    })
+} 
+
+// THIS WILL DETERMINE IF NONE OF THE CHECKBOXES ARE CHECKED!!
+function isNoChkActive(){ 
+    if(checkedCount == 0){
+        document.querySelector('.content-header-btn').style.display = "none";
+    }
+}

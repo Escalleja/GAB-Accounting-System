@@ -108,10 +108,24 @@ btn.onclick = function () {
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-    modal.style.display = "none";
-    modal.reset();
-}
+span.addEventListener('click', async (e) => {
+    const text = "Are you sure you want to cancel?";
+
+    if(confirm(text) === true){
+
+        const response = await fetch(`/refJevDelete/${jevId}`, {
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'}
+        })
+
+        const result = await response.json();
+
+        if(result.status === 'Success'){
+            jevModal.style.display = "none";
+            modal.style.display = "none";
+        }
+    }
+})
 //MODAL
 jevSpan.onclick = function () {
     jevModal.style.display = "none";
@@ -158,9 +172,18 @@ formJev.addEventListener('submit', async (e) => {
     })
     const jevStatus = await jevResponse.text();
     
-    if (jevStatus == 'Success') {
+    if (jevStatus === 'Success') {
         // formJev.style.display = "none";
         modal.style.display = "block";
+        formJev.reset();
+    }
+    else if(jevStatus === 'Error'){
+        alert('Something went wrong.');
+        formJev.style.display = 'none';
+        modal.style.display = 'none';
+    }
+    else if(jevStatus === 'Primary Key already exists'){
+        alert('JEV No. already exists');
         formJev.reset();
     }
 })
@@ -322,7 +345,7 @@ table.addEventListener('click', async (e) => {
         //TODO HIDE ADD BUTTON
         const addBtn = document.getElementById('selectedAdd');
 
-        addBtn.style.display = "none";
+        // addBtn.style.display = "none";
 
         //TODO DISPLAY PRINT AND DELETE BUTTON
 
@@ -396,6 +419,53 @@ table.addEventListener('click', async (e) => {
     }
 })
 
+//DYNAMICALLY ADDED INPUT FIELD
+document.getElementById("selectedAdd").addEventListener('click', function (e) {
+    e.preventDefault();
+    var inputFieldContainer = document.getElementById('selectedInputFieldContainer');
+
+    var newRow = document.createElement('div');
+    newRow.className = 'form-row col-lg-12';
+
+    var newUacsInput = document.createElement('div');
+    newUacsInput.className = 'form-group col-lg-6 uacs-group mb-0';
+        newUacsInput.innerHTML = `
+        <label for="uacs" class="label">UACS Code</label> 
+        <input id="uacs" class="form-control col-lg-12 mb-2 uacs-form dynamic-input" name="uacs" required></input>`;
+
+        var newDescriptionInput = document.createElement('div');
+        newDescriptionInput.className = 'form-group col-lg-6 description-group'
+        newDescriptionInput.innerHTML = `
+        <label for="description" class="label">Account</label> 
+        <textarea name="text" id="description" rows="2" cols="65" id="description" class="form-control col-lg-12 mb-2 dynamic-input" name="description"></textarea>`;
+
+        var newDebitInput = document.createElement('div');
+        newDebitInput.className = 'form-group col-lg-6 debit-group';
+        newDebitInput.innerHTML = `
+        <label for="debit" class="label">Debit</label> 
+        <input type="text" id="debit" class="form-control col-lg-12 mb-2 debit-form dynamic-input dynamic-input-debit" name="debit" required> 
+        <hr>`;
+
+    newDebitInput.querySelector('input').addEventListener('keyup', function (evt) {
+        const key = e.key;
+    
+        if(/\d|\.|,/.test(key)) {
+            return true;
+        }
+    
+        e.preventDefault();
+    });
+
+    const divider = document.createElement('hr');
+
+
+    newRow.appendChild(newUacsInput);
+    newRow.appendChild(newDescriptionInput);
+    newRow.appendChild(newDebitInput);
+    newRow.appendChild(divider);
+
+    inputFieldContainer.appendChild(newRow);
+});
 
 const selectedForm = document.getElementById('entry-selected-form');
 selectedForm.addEventListener('submit', async (e) => {

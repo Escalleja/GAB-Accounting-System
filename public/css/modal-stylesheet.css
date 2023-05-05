@@ -14,7 +14,11 @@
     background-color: rgba(0, 0, 0, 0.534);
     /* Black w/ opacity */
     backdrop-filter: blur(1.5px);
+}
 
+textarea{
+    resize: none;
+    overflow: auto;
 }
 /* FOR CREATING JEVFOR DATA */
 

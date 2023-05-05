@@ -1,7 +1,7 @@
 const regularTxt = document.getElementById('title-label');
 const hrHide = document.getElementById('content-hr')
 
-regularTxt.textContent ="Fund 07 - Trust";
+regularTxt.textContent = "Fund 07 - Trust";
 regularTxt.style.marginTop = '50px'
 hrHide.style.display = "none";
 
@@ -39,17 +39,17 @@ socket.on('trustLatestData', (data) => {
 
 //UPDATING UI WITH UPDATED DATA
 socket.on('modifiedData', (data) => {
-    
-    const updateRow =  document.querySelector(`.table-content[data-id='${data.recordset[0].jevNo}']`);
-    
+
+    const updateRow = document.querySelector(`.table-content[data-id='${data.recordset[0].jevNo}']`);
+
     updateRow.querySelector('#date-modified').textContent = data.recordset[0].dateModified;
-    updateRow.querySelector('#name-modified').innerHTML =`
+    updateRow.querySelector('#name-modified').innerHTML = `
         <span id="name-modified" class="byName"> by
             ${data.recordset[0].modifiedBy}
         </span>`;
 
     updateRow.parentNode.removeChild(updateRow);
- 
+
     const firstRow = document.querySelector('.table-content');
     firstRow.parentNode.insertBefore(updateRow, firstRow);
 })
@@ -59,7 +59,7 @@ socket.on('deleteRecords', (data) => {
     const rows = document.querySelectorAll('.table-content');
 
     rows.forEach((row) => {
-        if(row.dataset.id === data){
+        if (row.dataset.id === data) {
             row.remove();
         }
     })
