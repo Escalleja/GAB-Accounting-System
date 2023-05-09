@@ -1,3 +1,4 @@
+//#region
 //get jev modal
 var jevModal = document.getElementById("jevModalForm")
 
@@ -27,18 +28,18 @@ var inputFieldContainer = document.getElementById('inputFieldContainer');
 let isNewEntry = true;
 
 let jevId;
-
+//#endregion
 //TO STOP RECORD BEING USED AFTER REFRESHED
-/*
+
 isRecordOpen();
 async function isRecordOpen(){
-    if(localStorage.getItem('recordOpen') === 'true' && localStorage.getItem('jevId') != null){
+    if(sessionStorage.getItem('recordOpen') === 'true' && sessionStorage.getItem('jevId') != null){
 
         const selectedModal = document.getElementById('selectedModalForm');
         
         const selectedInputFieldContainer = document.getElementById('selectedInputFieldContainer');
         
-        const response = await fetch(`/selectRecord/${localStorage.getItem('jevId')}`, {
+        const response = await fetch(`/selectRecord/${sessionStorage.getItem('jevId')}`, {
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
         })
@@ -48,9 +49,9 @@ async function isRecordOpen(){
         if (result.status === 'data retrieved') {
             
             selectedModal.style.display = 'block';
-            jevId = localStorage.getItem('jevId');
-                // localStorage.setItem('recordOpen', 'true');
-                // localStorage.setItem('jevId', `${jevId}`);
+            jevId = sessionStorage.getItem('jevId');
+                sessionStorage.setItem('recordOpen', 'true');
+                sessionStorage.setItem('jevId', `${jevId}`);
 
             result.data.recordset.forEach((d) => {
 
@@ -92,16 +93,37 @@ async function isRecordOpen(){
                 `;
 
                 selectedInputFieldContainer.append(inputDiv);
+
+                var fnf = document.getElementById("selectedDebit");
+                fnf.addEventListener('keypress', function (e) {
+                    
+                    const key = e.key;
+                    
+                    if(/\d|\.|,/.test(key)) {
+                        return true;
+                    }
+                
+                    e.preventDefault();
+                });
             })
         } else if (result.status === 'unavailable'){
             alert('Someone is interacting with this record');
         } else{
             alert('Something went wrong.');
+            jevModal.style.display = 'none';
         }
             
     }
 }
-*/
+
+function clearDynamicInput() {
+    var dynamicInput = document.querySelectorAll('.dynamic-input-field');
+
+    dynamicInput.forEach(function(input) {
+        input.parentNode.removeChild(input);
+    });
+}
+
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
     jevModal.style.display = "block";
@@ -118,18 +140,22 @@ span.addEventListener('click', async (e) => {
             headers: {'Content-Type' : 'application/json'}
         })
 
+        clearDynamicInput();
         const result = await response.json();
 
         if(result.status === 'Success'){
+            clearDynamicInput();
+            formJev.reset();
             jevModal.style.display = "none";
             modal.style.display = "none";
         }
     }
 })
+
 //MODAL
 jevSpan.onclick = function () {
     jevModal.style.display = "none";
-    isNewEntry = true
+    // isNewEntry = true
 }
 
 btnCancel.addEventListener('click', async (e) => {
@@ -141,10 +167,12 @@ btnCancel.addEventListener('click', async (e) => {
             method: 'POST',
             headers: {'Content-Type' : 'application/json'}
         })
-
+        clearDynamicInput();
         const result = await response.json();
 
         if(result.status === 'Success'){
+            clearDynamicInput();
+            form.reset();
             jevModal.style.display = "none";
             modal.style.display = "none";
         }
@@ -152,7 +180,7 @@ btnCancel.addEventListener('click', async (e) => {
 })
 
 //#region 
-//FUNCTION FOR CREATING JEV 
+//FUNCTION FOR CREATING JEV NO.
 const formJev = document.getElementById('create-jev');
 formJev.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -174,11 +202,13 @@ formJev.addEventListener('submit', async (e) => {
     
     if (jevStatus === 'Success') {
         // formJev.style.display = "none";
-        modal.style.display = "block";
         formJev.reset();
+        jevModal.style.display = "none";
+        modal.style.display = "block";
     }
     else if(jevStatus === 'Error'){
         alert('Something went wrong.');
+        jevModal.style.display = 'none';
         formJev.style.display = 'none';
         modal.style.display = 'none';
     }
@@ -208,43 +238,38 @@ document.getElementById("addInput").addEventListener('click', function (e) {
     var inputFieldContainer = document.getElementById('inputFieldContainer');
 
     var newRow = document.createElement('div');
-    newRow.className = 'form-row col-lg-12';
+    newRow.className = 'form-row col-lg-12 dynamic-input-field';
 
-    var newUacsInput = document.createElement('div');
-    newUacsInput.className = 'form-group col-lg-12 uacs-group';
-    newUacsInput.innerHTML = `
-    <label for="uacs" class="label">UACS Code</label> 
-    <input id="uacs" class="form-control col-lg-8 mb-2 uacs-form dynamic-input" name="uacs" required></input>`;
+    var newDateInput = document.createElement('div');
+    newDateInput.className = 'form-group col-lg-12 date-group';
+    newDateInput.innerHTML = `
+    <label for="dateForm" class="label dynamic-label">Date (mm/dd/yyyy)</label> 
+    <input id="dateForm" class="form-control col-lg-6 mb-2 date-form dynamic-input" name="date" required></input>`;
 
     var newDescriptionInput = document.createElement('div');
-    newDescriptionInput.className = 'form-group col-lg-12 description-group'
+    newDescriptionInput.className = 'form-group col-lg-6 description-group'
     newDescriptionInput.innerHTML = `
-    <label for="description" class="label">Account</label> 
-    <textarea name="text" id="description" rows="2" cols="65" id="description" class="form-control col-lg-8 mb-2 dynamic-input" name="description"></textarea>`;
+    <label for="description" class="label dynamic-label">Account</label> 
+    <textarea name="text" id="description" rows="4" cols="90" id="description" class="form-control col-lg-12 mb-2 dynamic-input" name="description"></textarea>`;
 
-    var newDebitInput = document.createElement('div');
-    newDebitInput.className = 'form-group col-lg-12 debit-group';
-    newDebitInput.innerHTML = `
-    <label for="debit" class="label">Debit</label> 
-    <input type="text" id="debit" class="form-control col-lg-8 mb-2 debit-form dynamic-input dynamic-input-debit" name="debit" required> 
+    var newUacsDebitInput = document.createElement('div');
+    newUacsDebitInput.className = 'form-group col-lg-6 debit-group';
+    newUacsDebitInput.innerHTML = `
+    <label for="uacs" class="label dynamic-label">UACS Code</label>
+    <input id="uacs" class="form-control col-lg-12 uacs-form dynamic-input" name="uacs" required></input>
+
+
+    <label for="debit" class="label dynamic-label">Debit</label> 
+    <input type="text" id="debit" class="form-control col-lg-12 mb-2 debit-form dynamic-input dynamic-input-debit" name="debit" required> 
     <hr>`;
 
-    newDebitInput.querySelector('input').addEventListener('keyup', function (evt) {
-        const key = e.key;
-    
-        if(/\d|\.|,/.test(key)) {
-            return true;
-        }
-    
-        e.preventDefault();
-    });
-
     const divider = document.createElement('hr');
+    divider.className = 'form-row col-lg-12 dynamic-input-field';
 
 
-    newRow.appendChild(newUacsInput);
+    newRow.appendChild(newDateInput);
+    newRow.appendChild(newUacsDebitInput);
     newRow.appendChild(newDescriptionInput);
-    newRow.appendChild(newDebitInput);
     newRow.appendChild(divider);
 
     inputFieldContainer.appendChild(newRow);
@@ -266,11 +291,11 @@ form.addEventListener('submit', async (e) => {
     // THIS DYNAMIC INPUT IS A FUNCTION FOR ADDED INPUT FIELD TO STORE IN DATABASE
     const dynamicInputs = document.querySelectorAll('.dynamic-input');
     const dynamicInputValue = Array.from(dynamicInputs).reduce((acc, input, index) => {
-        const row = Math.floor(index / 3);
+        const row = Math.floor(index / 4);
         if (!acc[row]) {
-            acc[row] = ['', '', ''];
+            acc[row] = ['', '', '', ''];
         }
-        acc[row][index % 3] = input.value;
+        acc[row][index % 4] = input.value;
         return acc;
     }, []);
 
@@ -301,8 +326,9 @@ form.addEventListener('submit', async (e) => {
         const status = await response.text();
 
         if (status == 'Success') {
-
+            clearDynamicInput();
             form.reset();
+            formJev.reset();
             modal.style.display = "none";
             jevModal.style.display = "none";
             
@@ -359,9 +385,11 @@ table.addEventListener('click', async (e) => {
         const result = await response.json();
 
         if (result.status === 'data retrieved') {
+            
             jevId = row.dataset.id;
-            localStorage.setItem('recordOpen', 'true');
-            localStorage.setItem('jevId', `${jevId}`);
+            sessionStorage.setItem('recordOpen', 'true');
+            sessionStorage.setItem('jevId', `${jevId}`);
+
             result.data.recordset.forEach((d) => {
                 selectedModal.style.display = 'block';
                 const inputDiv = document.createElement('div');
@@ -372,7 +400,7 @@ table.addEventListener('click', async (e) => {
                 inputDiv.innerHTML = `
                 <!-- Date -->
                 <div class="form-group col-lg-12 date-group">
-                    <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
+                    <label for="selectedDateForm" class="label">Date (mm/dd/yyyy)</label>
                     <input type="text" class="form-control col-lg-6 date-form" id="selectedDateForm" name="selectedDateForm"
                         placeholder="Enter a Date" value="${d.date0}" required></input>
                 </div>
@@ -401,11 +429,23 @@ table.addEventListener('click', async (e) => {
                                     
                     selectedInputFieldContainer.append(inputDiv);
 
+                    var fnf = document.getElementById("selectedDebit");
+                    fnf.addEventListener('keypress', function (e) {
+                        
+                        const key = e.key;
+                        
+                        if(/\d|\.|,/.test(key)) {
+                            return true;
+                        }
+                    
+                        e.preventDefault();
+                    });
             })
         } else if (result.status === 'unavailable') {
             alert('Someone is interacting with this record');
         } else{
             alert('Something went wrong.');
+            jevModal.style.display = 'none';
         }
         
         const selectedDebit = document.getElementById('selectedDebit');
@@ -419,7 +459,7 @@ table.addEventListener('click', async (e) => {
     }
 })
 
-//DYNAMICALLY ADDED INPUT FIELD
+//DYNAMICALLY ADDED INPUT FIELD IN EXISTING DATA
 document.getElementById("selectedAdd").addEventListener('click', function (e) {
     e.preventDefault();
     var inputFieldContainer = document.getElementById('selectedInputFieldContainer');
@@ -427,47 +467,52 @@ document.getElementById("selectedAdd").addEventListener('click', function (e) {
     var newRow = document.createElement('div');
     newRow.className = 'form-row col-lg-12';
 
-    var newUacsInput = document.createElement('div');
-    newUacsInput.className = 'form-group col-lg-6 uacs-group mb-0';
-        newUacsInput.innerHTML = `
-        <label for="uacs" class="label">UACS Code</label> 
-        <input id="uacs" class="form-control col-lg-12 mb-2 uacs-form dynamic-input" name="uacs" required></input>`;
+        var newDateInput = document.createElement('div');
+        newDateInput.className = 'form-group col-lg-12 date-group';
+        newDateInput.innerHTML = `
+        <label for="dateForm" class="label">Date (mm/dd/yyyy)</label> 
+        <input id="dateForm" class="form-control col-lg-6 mb-2 selected-date-form selected-dynamic-input" name="dateForm" required></input>`;
 
+    
         var newDescriptionInput = document.createElement('div');
         newDescriptionInput.className = 'form-group col-lg-6 description-group'
         newDescriptionInput.innerHTML = `
         <label for="description" class="label">Account</label> 
-        <textarea name="text" id="description" rows="2" cols="65" id="description" class="form-control col-lg-12 mb-2 dynamic-input" name="description"></textarea>`;
+        <textarea name="text" id="description" rows="4" cols="90" id="description" class="form-control col-lg-12 selected-dynamic-input selected-description-form" name="description"></textarea>`;
 
-        var newDebitInput = document.createElement('div');
-        newDebitInput.className = 'form-group col-lg-6 debit-group';
-        newDebitInput.innerHTML = `
+        var newUacsDebitInput = document.createElement('div');
+        newUacsDebitInput.className = 'form-group col-lg-6 debit-group';
+        newUacsDebitInput.innerHTML = `
+        <label for="uacs" class="label">UACS Code</label>
+        <input id="uacs" class="form-control col-lg-12 selected-uacs-form selected-dynamic-input"  name="uacs" required></input>
+
         <label for="debit" class="label">Debit</label> 
-        <input type="text" id="debit" class="form-control col-lg-12 mb-2 debit-form dynamic-input dynamic-input-debit" name="debit" required> 
-        <hr>`;
+        <input type="text" id="debit" class="form-control col-lg-12 mb-2 selected-debit-form selected-dynamic-input dynamic-input-debit" name="debit" required> 
+        `;
 
-    newDebitInput.querySelector('input').addEventListener('keyup', function (evt) {
-        const key = e.key;
-    
-        if(/\d|\.|,/.test(key)) {
-            return true;
-        }
-    
-        e.preventDefault();
-    });
 
     const divider = document.createElement('hr');
 
 
-    newRow.appendChild(newUacsInput);
+    newRow.appendChild(newDateInput);
+    newRow.appendChild(newUacsDebitInput);
     newRow.appendChild(newDescriptionInput);
-    newRow.appendChild(newDebitInput);
     newRow.appendChild(divider);
 
     inputFieldContainer.appendChild(newRow);
 });
 
 const selectedForm = document.getElementById('entry-selected-form');
+// FOR INSERTING A NEW DATA IN EXISTING JEV
+selectedForm.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+   
+})
+
+
+//FOR UPDATING THE DATA IN EXISTING JEV
 selectedForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -485,17 +530,13 @@ selectedForm.addEventListener('submit', async (e) => {
             const debit = row.querySelector('.debit-form').value;
             const inputDivId = row.getAttribute('data-id');
 
+
             const data = {
                 dateForm,
                 uacs,
                 description,
                 debit
             };
-            // console.log('ID: ' + inputDivId + '\n' +
-            //     'dateForm:' + dateForm + '\n' +
-            //     'uacs:' + uacs + '\n' +
-            //     'description:' + description + '\n' +
-            //     'debit:' + debit);
 
             if (!confirmed) { // Check if confirmation is not yet shown
                 confirmed = confirm(text); // Show confirmation dialog and set flag to true
@@ -515,23 +556,74 @@ selectedForm.addEventListener('submit', async (e) => {
                 const status = await response.text();
 
                 if (status == 'Success') {
-
+                    selectedModal.style.display = "none";
+                    removeFromMap(jevId);
+                    sessionStorage.removeItem('jevId');
+                    sessionStorage.removeItem('recordOpen');
                 } else {
-                    alert('Error!');
+                    alert('Something went wrong.');
+                    selectedModal.style.display = "none";
+                    removeFromMap(jevId);
+                    sessionStorage.removeItem('jevId');
+                    sessionStorage.removeItem('recordOpen');
                     console.log(error);
                 }
             }
         } else {
-            alert("row has no data-id");
+            alert("Please try again.");
+            selectedModal.style.display = "none";
+            removeFromMap(jevId);
+            sessionStorage.removeItem('jevId');
+            sessionStorage.removeItem('recordOpen');
         }
     }
 
-    if (confirmed) { // Display success alert after loop completion
-        // alert('Record updated successfully');
+    if (confirmed) {
+        const dateForm = document.querySelector('.selected-date-form').value;
+        const uacs = document.querySelector('.selected-uacs-form').value;
+        const description = document.querySelector('.selected-description-form').value;
+        const debit = document.querySelector('.selected-debit-form').value;
+    
+        const dynamicInput = document.querySelectorAll('.selected-dynamic-input');
+        const dynamicInputValue = Array.from(dynamicInput).reduce((acc, input, index) => {
+            const row = Math.floor(index / 4);
+            if(!acc[row]) {
+                acc[row] = ['', '', '', ''];
+            }
+            acc[row][index % 4] = input.value;
+            return acc;
+        }, []);
+    
+        const data = {dateForm, uacs, description, debit, dynamicInput: dynamicInputValue};
+    
+        const response = await fetch(`/insertRecord`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+        const status = await response.text();
+    
+        if(status === 'Success') {
+            selectedModal.style.display = "none";
+            removeFromMap(jevId);
+            sessionStorage.removeItem('jevId');
+            sessionStorage.removeItem('recordOpen');
+        } else if(status === 'Failed') {
+            selectedModal.style.display = "none";
+            removeFromMap(jevId);
+            sessionStorage.removeItem('jevId');
+            sessionStorage.removeItem('recordOpen');
+        } else{
+            selectedModal.style.display = "none";
+            removeFromMap(jevId);
+            sessionStorage.removeItem('jevId');
+            sessionStorage.removeItem('recordOpen');
+            alert('Something went wrong.');
+        }
         selectedModal.style.display = "none";
         removeFromMap(jevId);
-        localStorage.removeItem('jevId');
-        localStorage.removeItem('recordOpen');
+        sessionStorage.removeItem('jevId');
+        sessionStorage.removeItem('recordOpen');
     }
 });
 
@@ -549,6 +641,18 @@ async function removeFromMap(jevId) {
     });
 }
 
+window.addEventListener('beforeunload', async (e) => {
+    const myJevId = jevId;
+    console.log("myJevId: ", myJevId);
+    const _jevId = {jevId: myJevId};
+    
+    const response = await fetch('/removeFromMap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(_jevId)
+    })
+})
+
 // FUNCTION FOR SELECTED MODAL BUTTONS
 btnCancelSelected.onclick = function (e) {
     var bool = confirm("Are you sure you want to cancel?");
@@ -556,8 +660,8 @@ btnCancelSelected.onclick = function (e) {
         modal.style.display = "none";
         selectedModal.style.display = "none";
         removeFromMap(jevId);
-        localStorage.removeItem('jevId');
-        localStorage.removeItem('recordOpen');
+        sessionStorage.removeItem('jevId');
+        sessionStorage.removeItem('recordOpen');
     } else {
         e.preventDefault();
     }
@@ -566,8 +670,8 @@ btnBackSelected = document.getElementById('btnBackSelected');
 btnBackSelected.onclick = function (e) {
     selectedModal.style.display = "none";
     removeFromMap(jevId);
-    localStorage.removeItem('jevId');
-    localStorage.removeItem('recordOpen');
+    sessionStorage.removeItem('jevId');
+    sessionStorage.removeItem('recordOpen');
 }
 //#endregion
 btnDelBtn = document.getElementById('del-btn');
@@ -593,18 +697,20 @@ btnDelBtn.addEventListener('click', async () => {
             if(result.status === 'Success'){
                 alert('Record Deleted');
                 removeFromMap(jevId);
+                sessionStorage.removeItem('jevId');
+                sessionStorage.removeItem('recordOpen');
                 selectedModal.style.display = "none";
             } else{
                 removeFromMap(jevId);
                 alert('Deletion Failed');
+                sessionStorage.removeItem('jevId');
+                sessionStorage.removeItem('recordOpen');
                 selectedModal.style.display = "none";
             }
         }
     }
     else {
         alert("You are not authorized to make this action.");
-        removeFromMap(jevId);
-        localStorage.removeItem('jevId');
-        localStorage.removeItem('recordOpen');
+        selectedModal.style.display = "block";
     }
 })

@@ -70,39 +70,36 @@
                     <div class="form-row">
 
                         <!-- Date -->
-                        <div class="form-group col-lg-6 date-group">
+                        <div class="form-group col-lg-12 date-group">
                             <label for="dateForm" class="label">Date (mm/dd/yyyy)</label>
-                            <input type="data" class="form-control col-lg-12 date-form" id="dateForm" name="dateForm"
+                            <input type="data" class="form-control col-lg-6 date-form" id="dateForm" name="dateForm"
                                 required></input>
                         </div>
 
-                        <!-- UACS Code -->
+                        <!-- UACS and DEBIT -->
                         <div class="form-group col-lg-6 uacs-group">
                             <label for="uacs" class="label">UACS Code</label>
                             <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs" required></input>
-                        </div>
-                    </div>
-                    <!-- Account -->
-                    <div class="form-row">
-                        <div class="form-group col-lg-12 description-group">
-                            <label for="description" class="label">Account</label>
-                            <textarea name="text" id="description" rows="2" cols="65" id="description"
-                                class="form-control col-lg-12" name="description"></textarea>
-                        </div>
-                    </div>
-                    <!-- Debit and Credit form -->
-                    <div class="form-row">
-                        <div class="form-group col-lg-6">
+
                             <label for="debit" class="label">Debit</label>
                             <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit"
                                 required>
                         </div>
+
+                        <!-- Account -->
+                        <div class="form-group col-lg-6 description-group">
+                            <label for="description" class="label">Account</label>
+                            <textarea name="text" id="description" rows="4" cols="90" id="description"
+                                class="form-control col-lg-12" name="description"></textarea>
+                        </div>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group col-lg-12">
                             <hr>
                         </div>
                     </div>
+                    
                     <!-- For Added Input Fields -->
                     <div class="form-row" id="inputFieldContainer">
                     </div>

@@ -52,8 +52,8 @@ let table = '';
     
         let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
         for(let i = 0; i < dynamicInputs.length; i++){
-            const [dynamicUacs, dynamicDescription, dynamicDebit] = dynamicInputs[i];
-            values += `,('${dateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
+            const [dynamicDateForm, dynamicUacs, dynamicDescription, dynamicDebit] = dynamicInputs[i];
+            values += `,('${dynamicDateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
         }
     
         let query = `INSERT INTO [${table}] VALUES ${values}`;

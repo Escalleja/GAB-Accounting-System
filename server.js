@@ -71,6 +71,7 @@ app.post('/refJevDelete/:id', dataEntry);
 
 app.post('/selectRecord/:id', modifyRecord);
 app.post('/updateRecord/:id', modifyRecord);
+app.post('/insertRecord', modifyRecord);
 app.post('/removeFromMap', modifyRecord);
 
 app.get('/authDelete', deleteRecord);
