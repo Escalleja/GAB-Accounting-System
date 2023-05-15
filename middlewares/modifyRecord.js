@@ -44,36 +44,28 @@ modifyRecord.post('/updateRecord/:id', (req, res) => {
     const id = req.params.id;
     const tblJev = jevId;
 
-    console.log("you passed here\n");
-    const dateForm = req.body.dateForm;
+    const date = req.body.dateForm;
     const uacs = req.body.uacs;
     const description = req.body.description;
     const debit = req.body.debit;    
+    const credit = req.body.credit;
 
-    console.log('id: ' + id + '\n' +
-                'table: ' + tblJev + '\n' +
-                'dateForm: ' + dateForm + '\n' +
-                'uacs: ' + uacs + '\n' +
-                'description: ' + description + '\n' +
-                'debit: ' + debit + '\n'); 
-    database.query(`UPDATE [${tblJev}] SET date0 = '${dateForm}', uacs = '${uacs}', description = '${description}', debit = '${debit}', dateModify = '${currentDate()}', modifyBy = '${req.session.username}' WHERE ID = '${id}'`, (err, data) => {
-        
-        if(data != ' '){
-            database.query(`UPDATE refjevHomepagetbl SET dateModified = '${currentDate()}', modifiedBy = '${req.session.username}' WHERE jevNo = '${tblJev}'`, (err, data) => {
-                if(err) console.log(err); 
-
-                if(data){
-                    database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo = '${tblJev}'`, (err, data) => {
-                        modifiedData(data);
-                        res.status(200).send('Success');
-                    })
-                }
-            })
-        }else {
-            res.status(5).send('Failed');
+    console.log("you passed here");
+    database.query(`UPDATE [${tblJev}] SET date0 = '${date}', uacs = '${uacs}', description = '${description}', debit = '${debit}', credit = '${credit}', dateModify = '${currentDate()}', modifyBy = '${req.session.username}' WHERE ID = '${id}'`, (err, data) => {
+        if(err) {
+            console.log(err);
         }
+            if (data){
+                database.query(`SELECT * FROM refjevHomepagetbl where jevNo = '${tblJev}'`, (err, data) => {
+                    if(err) console.log(data);
+                    modifiedData(data);
+                    res.status(200).send('Success');
+                })
+            }else{
+                res.status(401).send('Failed');
+            }
    })
-   
+        
 })
 
 modifyRecord.post('/insertRecord', (req, res) => {
@@ -82,30 +74,29 @@ modifyRecord.post('/insertRecord', (req, res) => {
     let dateForm = req.body.dateForm;
     let uacs = req.body.uacs;
     let description = req.body.description;
-    let debit = req.body.debit;    
+    let debit = req.body.debit;
+    let credit = req.body.credit;    
     let dynamicInputs = req.body.dynamicInput;
 
-    let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
+
+    let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '${credit}', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
 
     for(let i = 1; i < dynamicInputs.length; i++){
-        const [dynamicDateForm, dynamicUacs, dynamicDescription, dynamicDebit] = dynamicInputs[i];
+        const [dynamicDateForm, dynamicUacs, dynamicDescription, dynamicDebit, dynamicCredit] = dynamicInputs[i];
 
-        values += `,('${dynamicDateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
+        values += `,('${dynamicDateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '${dynamicCredit}', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
     }
 
     let query = `INSERT INTO [${jev}] VALUES ${values}`;
     database.query(query, (err, data) => {
         if(err) console.log(err);
-    })
 
-    console.log(
-        'jev: ' + jev + '\n' +
-        'date: ' + dateForm + '\n' +
-        'uacs: ' + uacs + '\n' + 
-        'description: ' + description + '\n' +
-        'debit: ' + debit + '\n' +
-        'dynamicInputs: ' + dynamicInputs + '\n' 
-    );
+        if(data != ' '){
+            res.status(200).send('Success');
+        } else{
+            res.status(400).send('Failed');
+        }
+    })
 
 })
 

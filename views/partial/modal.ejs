@@ -34,7 +34,7 @@
             <button type="submit" id="btnNewEntry"><i class="fa-solid fa-circle-plus"></i> Create</button>
         </div>
 
-        <!-- JEV MODAL -->
+        <!-- JEV NO. MODAL -->
         <div id="jevModalForm" class="modal-jev">
             <div class="jev-modal-content">
                 <form id="create-jev">
@@ -69,21 +69,14 @@
                 <form id="entry-form">
                     <div class="form-row">
 
-                        <!-- Date -->
-                        <div class="form-group col-lg-12 date-group">
+                        <!-- Date and UACS-->
+                        <div class="form-group col-lg-6 date-group">
                             <label for="dateForm" class="label">Date (mm/dd/yyyy)</label>
-                            <input type="data" class="form-control col-lg-6 date-form" id="dateForm" name="dateForm"
+                            <input type="text" class="form-control col-lg-12 date-form mb-0" id="dateForm" name="dateForm"
                                 required></input>
-                        </div>
 
-                        <!-- UACS and DEBIT -->
-                        <div class="form-group col-lg-6 uacs-group">
                             <label for="uacs" class="label">UACS Code</label>
-                            <input id="uacs" class="form-control col-lg-12 uacs-form" name="uacs" required></input>
-
-                            <label for="debit" class="label">Debit</label>
-                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit"
-                                required>
+                            <input id="uacs" class="form-control col-lg-12 mb-2 uacs-form" name="uacs" required></input>
                         </div>
 
                         <!-- Account -->
@@ -91,6 +84,18 @@
                             <label for="description" class="label">Account</label>
                             <textarea name="text" id="description" rows="4" cols="90" id="description"
                                 class="form-control col-lg-12" name="description"></textarea>
+                        </div>
+
+                        <!-- DEBIT -->
+                        <div class="form-group col-lg-6 debit-group">
+                            <label for="debit" class="label">Debit</label>
+                            <input type="text" id="debit" class="form-control col-lg-12 debit-form" name="debit">
+                        </div>
+
+                        <!-- CREDIT -->
+                        <div class="form-group col-lg-6 credit-group">
+                            <label for="credit" class="label">Credit</label>
+                            <input type="text" id="credit" class="form-control col-lg-12 credit-form" name="credit">
                         </div>
                     </div>
 

@@ -47,13 +47,15 @@ let table = '';
         let dateForm = req.body.dateForm;
         let uacs = req.body.uacs;
         let description = req.body.description;
-        let debit = req.body.debit;    
+        let debit = req.body.debit;
+        let credit = req.body.credit;    
         let dynamicInputs = req.body.dynamicInputs;
-    
-        let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
+
+
+        let values = `('${dateForm}', '${uacs}', '${description}', '${debit}', '${credit}', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
         for(let i = 0; i < dynamicInputs.length; i++){
-            const [dynamicDateForm, dynamicUacs, dynamicDescription, dynamicDebit] = dynamicInputs[i];
-            values += `,('${dynamicDateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
+            const [dynamicDateForm, dynamicUacs, dynamicDescription, dynamicDebit, dynamicCredit] = dynamicInputs[i];
+            values += `,('${dynamicDateForm}', '${dynamicUacs}', '${dynamicDescription}', '${dynamicDebit}', '${dynamicCredit}', '${currentDate()}', '${req.session.username}', '${currentDate()}', '${req.session.username}')`;
         }
     
         let query = `INSERT INTO [${table}] VALUES ${values}`;
