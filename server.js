@@ -76,6 +76,7 @@ app.post('/removeFromMap', modifyRecord);
 
 app.get('/authDelete', deleteRecord);
 app.post('/jevDelete/:id', deleteRecord);
+app.post('/deleteRow/:id', deleteRecord);
 //TODO add the other later
 
 server.listen(port, () =>{

@@ -61,7 +61,6 @@ io.on('connection', socket => {
     })
     
 })
-
 //THIS IS FOR FUND 03 PAGE
 io.on('connection', socket => {
 
@@ -71,7 +70,6 @@ io.on('connection', socket => {
     })
     
 })
-
 //THIS IS FOR FUND 07 PAGE
 io.on('connection', socket => {
 

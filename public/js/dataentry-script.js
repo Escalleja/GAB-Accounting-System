@@ -305,6 +305,7 @@ document.getElementById("addInput").addEventListener('click', function (e) {
 //#endregion
 
 //#region FUNCTION FOR NEW ENTRY OF JEV
+
 const form = document.getElementById('entry-form');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -445,12 +446,16 @@ table.addEventListener('click', async (e) => {
                     value="${d.credit}"></input>
                 </div>
 
+                <!-- Delete Button -->
+                <div class="form-group col-lg-12 delete-btn" style="padding: 0 25px">
+                    <button id="deleteBtn" class="delete-button">Delete</button>
+                </div>
 
                     <div class="form-group col-lg-12">
                     <hr>
                     </div>
                     `;
-                                    
+                
                     selectedInputFieldContainer.append(inputDiv);
 
             })
@@ -463,6 +468,51 @@ table.addEventListener('click', async (e) => {
         
     }
 })
+
+//#region FOR DELETING ROW 
+selectedInputFieldContainer.addEventListener('click', (e) => {
+    const deleteButton = e.target.closest('.delete-button');
+    if (deleteButton) {
+      e.preventDefault();
+      const rowElement = deleteButton.closest('.form-row');
+      const rowId = rowElement.getAttribute('data-id');
+      deleteRow(rowId);
+    }
+  });
+
+
+async function deleteRow(rowId){
+    const message= "Are you sure you want to delete this row?";
+
+    if(confirm(message)){
+        const jev = sessionStorage.getItem('jevId');
+        const _jev = {jev};
+
+        const response = await fetch(`/deleteRow/${rowId}`, {
+            method: 'POST',
+            headers: { 'Content-Type' : 'application/json'},
+            body: JSON.stringify(_jev)
+        });
+
+        const result = await response.json();
+
+        if(result.status === 'Success'){
+            // Removing in UI 
+            alert("Row Deleted");
+            const rowElement = document.querySelector(`#selectedJev[data-id="${rowId}"]`);
+            if(rowElement){
+                rowElement.remove();
+            }
+        } else{
+            alert('Failed to delete');
+        }
+    } else {
+
+    }
+}
+
+//#endregion 
+
 //#endregion
 let forInsert = false;
 //#region DYNAMICALLY ADDED INPUT FIELD IN EXISTING DATA
@@ -511,144 +561,126 @@ document.getElementById("selectedAdd").addEventListener('click', function (e) {
         const divider = document.createElement('hr');
     divider.className = 'form-row col-lg-12 dynamic-input-field';
 
-    let selectedDebit = document.getElementById('debit');
-    selectedDebit.addEventListener('input', function (e) {
-        const key = e.data;
-        if (!/\d|\./.test(key)) {
-        e.target.value = e.target.value.replace(key, '');
-      }
-    }); 
-    let credit = document.getElementById("credit");
-    credit.addEventListener('input', function (e) {
-        const key = e.data;
-        if(/\d|\.|,/.test(key)) {
+        newRow.appendChild(newDateUacsInput);
+        newRow.appendChild(newDescriptionInput);
+        newRow.appendChild(newDebitInput);
+        newRow.appendChild(newCreditInput);
+        newRow.appendChild(divider);
+        
+        let selectedDebit = document.getElementById('debit');
+        selectedDebit.addEventListener('input', function (e) {
+            const key = e.data;
+            if (!/\d|\./.test(key)) {
             e.target.value = e.target.value.replace(key, '');
-        }
-    });
+          }
+        }); 
+        let credit = document.getElementById("credit");
+        credit.addEventListener('input', function (e) {
+            const key = e.data;
+            if(/\d|\.|,/.test(key)) {
+                e.target.value = e.target.value.replace(key, '');
+            }
+        });
 
-    newRow.appendChild(newDateUacsInput);
-    newRow.appendChild(newDescriptionInput);
-    newRow.appendChild(newDebitInput);
-    newRow.appendChild(newCreditInput);
-    newRow.appendChild(divider);
-    
-    inputFieldContainer.appendChild(newRow);
-    
+        inputFieldContainer.appendChild(newRow);
+        
 });
 //#endregion
 
 //#region FOR UPDATING AND INSERTING THE DATA IN EXISTING JEV
-//FOR UPDATE
 const selectedForm = document.getElementById('entry-selected-form');
 selectedForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const text = "Are you sure you want to save it?";
-    let confirmed = false; // Initialize confirmation flag to false
-    if(forInsert){
-        alert("here");
-    }
 
-    const rows = document.querySelectorAll('#selectedJev');
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        if (row && row.hasAttribute('data-id')) {
-            const dateForm = row.querySelector('.date-form').value;
-            const uacs = row.querySelector('.uacs-form').value;
-            const description = row.querySelector('.description-form').value;
-            const debit = row.querySelector('.debit-form').value;
-            const credit = row.querySelector('.credit-form').value;
-            const inputDivId = row.getAttribute('data-id');
+    const text = "Are you sure you want to save it?";
+
+    if (confirm(text)){
+        if (forInsert) {
+            console.log("Insert");
+            const dateForm = document.querySelector('#insertedDate').value;
+            const uacs = document.querySelector('#insertedUacs').value;
+            const description = document.querySelector('#insertedDescription').value;
+            const debit = document.querySelector('#insertedDebit').value;
+            const credit = document.querySelector('#insertedCredit').value;
+
+            const dynamicInput = document.querySelectorAll('.selected-dynamic-input');
+            const dynamicInputValue = Array.from(dynamicInput).reduce((acc, input, index) => {
+                const row = Math.floor(index / 5);
+                if(!acc[row]) {
+                    acc[row] = ['', '', '', '', ''];
+                }
+                acc[row][index % 5] = input.value;
+                return acc;
+            }, []);
+            
             const data = {
-                dateForm,
-                uacs,
-                description,
-                debit,
-                credit
-            };
-            console.log('ID: ' + inputDivId + '\n' +
-                'dateForm:' + dateForm + '\n' +
-                'uacs:' + uacs + '\n' +
-                'description:' + description + '\n' +
-                'debit:' + debit + '\n' +
-                'credit:' + credit);
-            if (!confirmed) { // Check if confirmation is not yet shown
-                confirmed = confirm(text); // Show confirmation dialog and set flag to true
+                dateForm, uacs, description, debit, credit, dynamicInput: dynamicInputValue
             }
-            if (confirmed) { // Check if confirmation is true
-                let insertUpdate = `/updateRecord/${inputDivId}`;
-                const response = await fetch(insertUpdate, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                const status = await response.text();
-                if (status == 'Success') {
-                } else {
-                    alert('Error!');
-                    console.log(error);
+
+            const response = await fetch(`/insertRecord`, {
+                method: 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify(data)
+            })
+            const result = await response.json();
+
+            if(result.status === 'Success'){
+                alert('Insert Successfully');
+                removeFromMap(jevId);
+                sessionStorage.removeItem('jevId');
+                sessionStorage.removeItem('recordOpen');
+                selectedModal.style.display = "none";
+            }else{
+                removeFromMap(jevId);
+                sessionStorage.removeItem('jevId');
+                sessionStorage.removeItem('recordOpen');
+                selectedModal.style.display = "none";
+                alert('Something went wrong.');
+            }
+        }else {
+            alert("Update");
+            const rows = document.querySelectorAll('#selectedJev');
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+
+                if (row && row.hasAttribute('data-id')) {
+                    const dateForm = row.querySelector('.date-form').value;
+                    const uacs = row.querySelector('.uacs-form').value;
+                    const description = row.querySelector('.description-form').value;
+                    const debit = row.querySelector('.debit-form').value;
+                    const credit = row.querySelector('.credit-form').value;
+                    const inputDivId = row.getAttribute('data-id');
+
+                    const data = {
+                        dateForm, uacs, description, debit, credit
+                    };
+
+                    const response = await fetch (`/updateRecord/${inputDivId}`, {
+                        method: 'POST',
+                        headers: {'Content-Type' : 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+
+                    const result = await response.json();
+
+                    if(result.status === 'Success'){
+                        alert('Updated Successfully');
+                        removeFromMap(jevId);
+                        sessionStorage.removeItem('jevId');
+                        sessionStorage.removeItem('recordOpen');
+                        selectedModal.style.display = "none";
+                    }else{
+                        removeFromMap(jevId);
+                        sessionStorage.removeItem('jevId');
+                        sessionStorage.removeItem('recordOpen');
+                        selectedModal.style.display = "none";
+                        alert('Something went wrong.');
+                    }
                 }
             }
-        } else {
-            alert("row has no data-id");
         }
     }
-
-
-    if (confirmed) { // Display success alert after loop completion
-        // alert('Record updated successfully');
-        selectedModal.style.display = "none";
-        removeFromMap(jevId);
-        localStorage.removeItem('jevId');
-        localStorage.removeItem('recordOpen');
-    }
-});
-//#endregion
-
-//#region FOR INSERT IN EXISTING TABLE
-selectedForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-        const dateForm = document.querySelector('#insertedDate').value;
-        const uacs = document.querySelector('#insertedUacs').value;
-        const description = document.querySelector('#insertedDescription').value;
-        const debit = document.querySelector('#insertedDebit').value;
-        const credit = document.querySelector('#insertedCredit').value;
-
-        const dynamicInput = document.querySelectorAll('.selected-dynamic-input');
-        const dynamicInputValue = Array.from(dynamicInput).reduce((acc, input, index) => {
-            const row = Math.floor(index / 5);
-            if(!acc[row]) {
-                acc[row] = ['', '', '', '', ''];
-            }
-            acc[row][index % 5] = input.value;
-            return acc;
-        }, []);
-
-        const data = {dateForm, uacs, description, debit, credit, dynamicInput: dynamicInputValue};
-
-        const response = await fetch(`/insertRecord`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        })
-        const status = await response.text();
-
-        if(status === 'Success') {
-            alert("insert successfully");
-            clearDynamicInput();
-            removeFromMap(jevId);
-            sessionStorage.removeItem('jevId');
-            sessionStorage.removeItem('recordOpen');
-            selectedModal.style.display = "none";
-        } else{
-            removeFromMap(jevId);
-            sessionStorage.removeItem('jevId');
-            sessionStorage.removeItem('recordOpen');
-            selectedModal.style.display = "none";
-            alert('Something went wrong.');
-        }
-
 })
 // #endregion
 

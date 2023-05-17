@@ -2,7 +2,7 @@ const express = require('express');
 const database = require('../configs/database');
 const deleteRecord = express.Router();
 const {deleteRecords} = require('./recordsEventLister');
-
+let jevId;
 deleteRecord.get('/authDelete', (req, res) => {
     if(req.session.isAdmin || req.session.isAction){
         res.status(200).send({status: 'authorized'});
@@ -24,6 +24,17 @@ deleteRecord.post('/jevDelete/:id', (req, res) => {
             res.status(200).send({status: 'Success'});
         }
     });
+})
+
+deleteRecord.post('/deleteRow/:id', (req, res) => {
+    const rowId = req.params.id;
+    const jev = req.body.jev;
+    console.log(jev + ''+ rowId);
+
+    database.query(`DELETE FROM [${jev}] WHERE ID = ${rowId}`, (err, data) => {
+        if(err) console.log(err)
+        res.status(200).send({status: 'Success'})
+    })
 })
 
 

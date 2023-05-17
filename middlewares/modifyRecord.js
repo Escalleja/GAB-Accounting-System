@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const database = require('../configs/database');
 const modifyRecord = express.Router();
-const {modifiedData, io} = require('./recordsEventLister');
+const {modifiedData, insertData} = require('./recordsEventLister');
 
 let jevId;
 const currentlyOpen = new Map();
@@ -59,10 +59,10 @@ modifyRecord.post('/updateRecord/:id', (req, res) => {
                 database.query(`SELECT * FROM refjevHomepagetbl where jevNo = '${tblJev}'`, (err, data) => {
                     if(err) console.log(data);
                     modifiedData(data);
-                    res.status(200).send('Success');
+                    res.status(200).send({status: 'Success'});
                 })
             }else{
-                res.status(401).send('Failed');
+                res.status(401).send({status: 'Failed'});
             }
    })
         
@@ -92,9 +92,9 @@ modifyRecord.post('/insertRecord', (req, res) => {
         if(err) console.log(err);
 
         if(data != ' '){
-            res.status(200).send('Success');
+            res.status(200).send({status: 'Success'});
         } else{
-            res.status(400).send('Failed');
+            res.status(400).send({status: 'Failed'});
         }
     })
 
