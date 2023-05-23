@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Games and Amusements Board</title>
+
+        <!-- favicon -->
+        <link rel="icon" type="favicon" href="images/brand.png">
+
+        <!-- Google Font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+        <!-- Fontawesome -->
+        <script src="https://kit.fontawesome.com/5bac83b9a1.js" crossorigin="anonymous"></script>
+    
+        <!-- Local CSS -->
+        <link rel="stylesheet" href="home-stylesheet.css">
+        <link rel="stylesheet" href="print-stylesheet.css">
+    </head>
+    <body>
+        
+        <section id="header">
+            <div class="btns">
+                <i id="back-btn" class="icon fa-solid fa-circle-arrow-left"></i>
+                <i id="check-btn" class="icon fa-solid fa-check"></i>
+                <i id="edit-btn" class="icon fa-solid fa-pen"></i>
+                <i id="print-btn" class="icon fa-solid fa-print"></i>
+            </div>
+
+            <div class="header">
+                <p class="header-title">Add Title</p>
+            </div>
+        </section>
+
+        <section id="table-section">
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Reference Jev No.</th>
+                    <th>Account</th>
+                    <th>UACSC CODE</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+
+                <tbody id="content-row">
+                </tbody>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td id="total">Total</td>
+                    <td></td>
+                    <td></td> <!-- todo make this editable for total-->
+                    <td></td> <!-- todo make this editable for total-->
+                </tr>
+            </table>
+        </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/print-script.js"></script>
+    </body>
+</html>

@@ -25,8 +25,6 @@ var addBtn = document.getElementById('addInput');
 
 var inputFieldContainer = document.getElementById('inputFieldContainer');
 
-let isNewEntry = true;
-
 let jevId;
 //#endregion
 
@@ -171,7 +169,6 @@ span.addEventListener('click', async (e) => {
 //MODAL
 jevSpan.onclick = function () {
     jevModal.style.display = "none";
-    // isNewEntry = true
 }
 
 btnCancel.addEventListener('click', async (e) => {
@@ -369,9 +366,7 @@ form.addEventListener('submit', async (e) => {
 //#endregion
 
 //TO RETRIEVE SPECIFIC RECORD WHEN USER CLICKED
-const tableContent = document.querySelectorAll('.table-content');
-const entryForm = document.getElementById('entry-form');
-const table = document.querySelector('#tbody-records');
+let table = document.querySelector('#tbody-records');
 
 //INITIALIZE INPUT 
 const modalForm = document.querySelector('#selectedModalForm');
@@ -380,7 +375,6 @@ const selectedInputFieldContainer = document.getElementById('selectedInputFieldC
 
 //#region TO DETECT WHICH RECORD IS BEING SELECTED 
 table.addEventListener('click', async (e) => {
-    e.preventDefault();
     if (e.target && e.target.parentElement.nodeName === 'TR') {
         let row = e.target.parentElement;
 

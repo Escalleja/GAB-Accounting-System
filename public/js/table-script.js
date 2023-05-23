@@ -9,8 +9,7 @@ socket.on('connect', () => {
 //THIS WILL UPDATE THE UI WITH LATEST DATA THIS WILL TRIGGER DURING THE ESTABLISHMENT OF CONNECTION WHEN PAGE LOADS
 socket.on('latestData', (data) => {
     const tableRow = document.querySelector('#tbody-records');
-    tableRow.innerHTML = '';
-
+    tableRow.innerHTML = ``;
     data.recordset.forEach((item) => {
         const tr = document.createElement('tr');
         tr.setAttribute('class', 'table-content');
@@ -20,15 +19,24 @@ socket.on('latestData', (data) => {
         <td id="jev-no"><i class="fa-solid fa-file"></i>&ThickSpace;
             ${item.jevNo.slice(3)}
         </td>
-        <td><span>${ item.dateCreated }</span> <span class="byName"> by
-                ${ item.createdBy }</span></td>
-        <td><span id="date-modified">${ item.dateModified }</span> <span id="name-modified" class="byName"> by
-                ${ item.modifiedBy }</span></td>
-        <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
+        <td>
+            <span class="date">${ item.dateCreated }</span> 
+            <span class="byName"> by </span>
+            <span class="byName"> ${ item.createdBy }</span>
+        </td>
+        <td>
+            <span id="date-modified" class="date">${ item.dateModified }</span> 
+            <span class="byName"> by </span>
+            <span id="name-modified" class="byName">${ item.modifiedBy }</span>
+        </td>
+        <td id="selected-item">
+            <input type="checkbox" name="chk" id="">
+        </td>
             `;
         tableRow.append(tr);
     })
 })
+
 
 //UPDATING UI WITH UPDATED DATA
 socket.on('modifiedData', (data) => {
@@ -75,49 +83,143 @@ socket.on('insertData', (data) => {
             ${data.recordset[0].jevNo.slice(3)}
         </td>
         <td>
-            <span> ${data.recordset[0].dateCreated} </span> 
+            <span class="date"> ${data.recordset[0].dateCreated} </span> 
             <span class="byName"> by ${data.recordset[0].createdBy} </span>
         </td>
         <td>
-            <span id="date-modified">${data.recordset[0].dateModified} </span> 
-            <span id="name-modified"class="byName"> by ${data.recordset[0].modifiedBy} </span>
+            <span id="date-modified" class="date">${data.recordset[0].dateModified} </span> 
+            <span class="byName"> by </span>
+            <span id="name-modified" class="byName">${data.recordset[0].modifiedBy} </span>
         </td>
 
-        <td id="selected-item"><input type="checkbox" name="chk" id=""></td>
-    `;
+        <td id="selected-item">
+            <input type="checkbox" name="chk" id="">
+        </td>
+        `;
         tableContent.prepend(newTableRow);
     }
 
 });
+    //#region FUNCTION FOR CHECKBOX
+    let chktable = document.querySelector('#tbody-records');
+    let checkedRow = new Set();
 
-//FOR CHECKBOX
-// CHECKBOX EVENTLISTENER THIS WILL TRIGGER IF CHECKBOXES HAS BEEN CHECKED OR UNCHECKED!!
-const checkBoxLen = document.querySelectorAll('#checkbox').length;
-let checkedCount = 0;
-
-// THIS FUNCTION WILL LOOP TO COUNT ALL THE EXISTING TABLE 
-for(let i=0; i<checkBoxLen; i++){
-    document.querySelectorAll('[name="chk"]')[i].addEventListener('change', function(e){
-
-        let tableContent = document.querySelectorAll(".table-content");
+    chktable.addEventListener('click', async (e) => {
+        if(e.target && e.target.nodeName == 'INPUT'){
+            let row = e.target;
         
-        document.querySelector('.content-header-btn').style.display = "block";
-        if(this.checked){
-            tableContent[i].style.backgroundColor = "#C2DBFF";
-            checkedCount++;
-            
-        }else {
-            tableContent[i].style.backgroundColor = "inherit";
-            checkedCount--;
+            row.addEventListener('change', () => {
+
+                isAllCheck(); 
+
+                let trRow = row.parentElement.parentElement;
+
+                if(e.target.checked){
+                    trRow.style.backgroundColor = "#C2DBFF";
+                    checkedRow.add(trRow.dataset.id);
+                    document.querySelector('.content-header-btn').style.display = "block";
+                } else{
+                    checkedRow.delete(trRow.dataset.id);
+
+                    trRow.removeAttribute('style');
+                    trRow.setAttribute('class', 'table-content');
+                }
+            }) 
         }
-        
-        isNoChkActive();
     })
-} 
+    // #endregion
 
-// THIS WILL DETERMINE IF NONE OF THE CHECKBOXES ARE CHECKED!!
-function isNoChkActive(){ 
-    if(checkedCount == 0){
-        document.querySelector('.content-header-btn').style.display = "none";
+    //#region FUNCTION TO CHECK IF CHECKBOX IS CHECKED OR NOT
+    function isAllCheck(){
+        const tblHeadBtn = document.querySelector('.content-header-btn');
+
+        if(checkedRow.size === 0){
+            tblHeadBtn.style.display = "none";
+        } else{
+            tblHeadBtn.style.display = "block";
+        }
     }
-}
+    // #endregion
+    
+    //#region CANCEL BUTTON FOR DESELECT CHECKBOX
+    const cancelBtn = document.getElementById('checkbox-cancel');
+
+    cancelBtn.addEventListener('click', () => {
+        const checkboxes = document.querySelectorAll('[name="chk"]');
+
+        checkboxes.forEach((checkbox) => {
+            const trRow = checkbox.parentElement.parentElement;
+
+            if(checkbox.checked){
+                checkbox.checked = false;
+                trRow.removeAttribute('style');
+                trRow.setAttribute('class', 'table-content');
+            }
+        })
+        checkedRow.clear();
+        isAllCheck()
+    })
+    // #endregion
+    
+    //#region MULTIPLE DELETION OF JEV TABLE
+    const deleteBtn = document.getElementById('checkbox-delete');
+
+    deleteBtn.addEventListener('click', async () => {
+        const stringJevIds = [...checkedRow];
+
+        const encodedJevIds = encodeURIComponent(stringJevIds);
+
+        const response = await fetch('/authDelete', {
+            method: 'GET',
+            headers: {'Content-Type' : 'application/json'}
+        })
+        
+        const result = await response.json();
+
+        if(result.status === 'authorized'){
+            let message = "Are you sure you want to delete this?"
+
+            if(confirm(message) === true){
+                
+                const response = await fetch(`/jevDelete/${encodedJevIds}`, {
+                    method: 'POST',
+                    headers: {'Content-Type' : 'application/json'}
+                })
+
+                const result = await response.json();
+
+                if(result.status === 'Success') {
+                    checkedRow.clear();
+                    isAllCheck();
+                    alert('JEV Deleted.');
+                } else {
+                    alert('Something went wrong.');
+                    return;
+                }
+            }
+        } else{
+            alert("You are not authorized to delete.");
+        }
+    })
+    // #endregion
+    
+    ////#region MULTIPLE PRINT OF JEV TABLE
+    const printBtn = document.getElementById('checkbox-print');
+
+    printBtn.addEventListener('click', async () => {
+        const stringJevIds = [...checkedRow];
+
+        const encodedJevIds = encodeURIComponent(stringJevIds);
+
+        const response = await fetch(`/print/${encodedJevIds}`, {
+            method: 'GET',
+            headers: {'Content-Type' : 'application/json'}
+        })
+
+        const result = await response.json();
+
+        if (result.url != null){
+            window.location.href = `${result.url}/${result.id}`;
+        }
+    })
+    //#endregion

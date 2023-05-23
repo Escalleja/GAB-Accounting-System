@@ -17,6 +17,7 @@ const dataEntry = require('./middlewares/dataEntry');
 
 const modifyRecord = require('./middlewares/modifyRecord');
 const deleteRecord = require('./middlewares/deleteRecord');
+const printRecords = require('./middlewares/printRecords');
 
 const server = require('http').createServer(app);
 const bodyParser = require('body-parser');
@@ -77,6 +78,9 @@ app.post('/removeFromMap', modifyRecord);
 app.get('/authDelete', deleteRecord);
 app.post('/jevDelete/:id', deleteRecord);
 app.post('/deleteRow/:id', deleteRecord);
+
+app.get('/print/:id', printRecords);
+app.get('/printFormat/:id', printRecords);
 //TODO add the other later
 
 server.listen(port, () =>{
