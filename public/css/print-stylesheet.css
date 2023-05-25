@@ -1,4 +1,100 @@
+*{
+    margin: 0;
+    padding: 0;
+}
 body{
+    font-family: 'Segoe UI';
+    background-color: #fff;
+    padding: 0 1%;
+}
+/* #region HEADER */
+
+    /* #region BUTTONS */
+    #header{
+        padding: 1% 0;
+        font-family: Calibri;
+        text-align: center;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+    .btns{
+        display: flex;
+        color: #EDF2FA;
+        width: fit-content;
+        border-radius: 10px;
+    }
+
+    .btns i{
+        padding: 10px;
+    }
+
+    .fa-solid{
+        color: #39423f;
+        cursor: pointer;
+    }
+
+    .fa-solid:hover{
+        color: rgb(255, 255, 255);
+        background-color: rgba(0, 0, 0, 0.36);
+        border-radius: 20px;
+    }
+
+    .fa-check{
+        display: none;
+    }
+
+    .icon{
+        font-size: 14pt;
+    }
+    /* #endregion */
+
+    /* #region Header */
+    .header p{
+        line-height: .5rem;
+        display: inline;
+    }
+    .red{
+        color: red;
+    }
+    /* #endregion */
+/* #endregion */
+
+/* #region TABLE */
+table{
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+th{
+    padding: 3px;
+    text-align: center;
+    font-family: Calibri;
+    border: 1px solid #000;
+    font-size: 11pt;
+}
+td{
+    font-size: 11pt;
+    font-family: Calibri;
+    border: 1px solid #000;
+    font-weight: bold;
+}
+.edit-input{
+    width: 10%;
+    height: 16pt;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+.edit-total{
+    height: 16pt;
+    padding: 0;  
+    font-weight: bold;
+}
+#totalDebit, #totalCredit{
+    margin: 0;
+}
+/* #endregion */
+/* body{
     font-family: 'Segoe UI';
     margin: 0;
 }
@@ -65,4 +161,4 @@ button:hover{
     .btnPrint{
         display: none;
     }
-}
+} */

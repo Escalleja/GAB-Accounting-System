@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -7,7 +6,7 @@
         <title>Games and Amusements Board</title>
 
         <!-- favicon -->
-        <link rel="icon" type="favicon" href="images/brand.png">
+        <link rel="icon" type="favicon" href="/img/brand.png">
 
         <!-- Google Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,8 +20,8 @@
         <script src="https://kit.fontawesome.com/5bac83b9a1.js" crossorigin="anonymous"></script>
     
         <!-- Local CSS -->
-        <link rel="stylesheet" href="home-stylesheet.css">
-        <link rel="stylesheet" href="print-stylesheet.css">
+        <!-- <link rel="stylesheet" href="home-stylesheet.css"> -->
+        <link rel="stylesheet" href="/css/print-stylesheet.css">
     </head>
     <body>
         
@@ -35,19 +34,25 @@
             </div>
 
             <div class="header">
-                <p class="header-title">Add Title</p>
+                <p class="header-title">General Journal FY</p>
+                <p class="header-title" id="year">Add Year</p>
+                <p class="header-title red">FUND</p>
+                <p class="header-title red" id="fundNo">Add Fund No.</p>
+
+
+                
             </div>
         </section>
 
         <section id="table-section">
             <table>
                 <tr>
-                    <th>Date</th>
-                    <th>Reference Jev No.</th>
-                    <th>Account</th>
-                    <th>UACSC CODE</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
+                    <th width="12%">Date</th>
+                    <th width="15%">Reference Jev No.</th>
+                    <th width="30%">Account</th>
+                    <th width="15%">UACSC CODE</th>
+                    <th width="12%">Debit</th>
+                    <th width="12%">Credit</th>
                 </tr>
 
                 <tbody id="content-row">
@@ -58,13 +63,13 @@
                     <td></td>
                     <td id="total">Total</td>
                     <td></td>
-                    <td></td> <!-- todo make this editable for total-->
-                    <td></td> <!-- todo make this editable for total-->
+                    <td> <p id="totalCredit">Add Total Credit  </p> </td> <!-- todo make this editable for total-->
+                    <td> <p id="totalDebit">Add Total Debit </p> </td> <!-- todo make this editable for total-->
                 </tr>
             </table>
         </section>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
     <script src="/js/print-script.js"></script>
     </body>
 </html>

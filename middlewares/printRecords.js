@@ -16,15 +16,14 @@ printRecords.get('/printFormat/:id', (req, res) => {
     const jevIds = new Set(idString.split(','));
     const ids = `[${Array.from(jevIds).join("],[")}]`;
     console.log(ids);
-
-    if(req.session.loggedin){
+    // if(req.session.loggedin){
         database.query(`SELECT * FROM ${ids} `, (err, data) => {
             if(err) console.log(err);
-            res.render('pages/printFormat', {jsonData : JSON.stringify(data.recordset).replace(/'/g, "\\'").replace(/"/g, '\\"')});
+            res.render('pages/printFormat');
         });
-    } else {
-        res.redirect('/');
-    }
+    // } else {
+    //     res.redirect('/');
+    // }
 })
 
 module.exports = printRecords;
