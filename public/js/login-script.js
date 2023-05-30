@@ -1,9 +1,14 @@
 const form = document.getElementById('login-form');
 const submitBtn = document.getElementById('submit-btn');
 const message = document.querySelector('.invalid-error');
+const preloader = document.querySelector('.loader');
+const loginText = document.querySelector('.login-btn-text');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    preloader.style.display = 'block';
+    loginText.style.display = 'none';
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -23,4 +28,7 @@ form.addEventListener('submit', async (e) => {
     } else{
         window.location.href = result.redirect;
     }
+
+    preloader.style.display = 'none';
+    loginText.style.display = 'block';
 })

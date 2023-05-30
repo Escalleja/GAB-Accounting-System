@@ -1,4 +1,34 @@
+const socket = io.connect();
+
+displayPrint();
 printFunc();
+
+function displayPrint(){
+    const dataFeedLine = printData.replace(/\n/g, '[LF]');
+
+    const sanitizedData = dataFeedLine.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+    const withFeedLine = sanitizedData.replace(/\[LF\]/g, '\<br>');
+    const parsedData = JSON.parse(withFeedLine);
+
+    console.log(printData)
+
+    parsedData.forEach((data) => {
+        const contentRow = document.getElementById('content-row');
+        const footer = document.getElementById('tfoot');
+        const tr = document.createElement('TR');
+
+        console.log(data);
+        tr.innerHTML = `
+        <td class="center">${data.date0}</td>
+        <td class="center">${data.TableName.slice(3)} </td>
+        <td>${data.description}</td>
+        <td class="center">${data.uacs}</td>
+        <td class="right">${data.debit}</td>
+        <td class="right">${data.credit}</td>
+        `;
+        contentRow.append(tr);
+    });
+}
 
 function printFunc(){
 const printBtn = document.getElementById('print-btn');
@@ -11,81 +41,47 @@ printBtn.addEventListener('click', () => {
 const editBtn = document.getElementById('edit-btn');
 const checkBtn = document.getElementById('check-btn');
 
-editBtn.onclick = () => {
-    editBtn.style.display = "none";
-    checkBtn.style.display = "block";
+editBtn.addEventListener('click', () => {
+    editBtn.style.display = 'none';
+    checkBtn.style.display = 'block';
 
     let editTitleYear = document.getElementById('year');
     let editFundNo = document.getElementById('fundNo');
-    let editTotalDebit = document.getElementById('totalDebit');
-    let editTotalCredit = document.getElementById('totalCredit');
 
     let inputTitleYear = document.createElement('input');
     let inputFundNo = document.createElement('input');
-    let inputTotalDebit = document.createElement('input');
-    let inputTotalCredit = document.createElement('input');
 
     inputTitleYear.setAttribute('class', 'edit-input');
     inputFundNo.classList.add('edit-input', 'red');
-    inputTotalDebit.setAttribute('class', 'edit-total');
-    inputTotalCredit.setAttribute('class', 'edit-total');
 
     inputTitleYear.value = editTitleYear.innerHTML;
     inputFundNo.value = editFundNo.innerHTML;
-    inputTotalDebit.value = editTotalDebit.innerHTML;
-    inputTotalCredit.value = editTotalCredit.innerHTML;
 
-    checkBtn.onclick = () => {
+    editTitleYear.parentNode.replaceChild(inputTitleYear, editTitleYear);
+    editFundNo.parentNode.replaceChild(inputFundNo, editFundNo);
+
+    checkBtn.addEventListener('click', () => {
         editBtn.style.display = 'block';
-        checkBtn.style.display = "none";
+        checkBtn.style.display = 'none';
 
         let pTitleYear = document.createElement('p');
         let pFundNo = document.createElement('p');
-        let pTotalDebit = document.createElement('p');
-        let pTotalCredit = document.createElement('p');
 
         pTitleYear.innerHTML = inputTitleYear.value;
         pFundNo.innerHTML = inputFundNo.value;
-        pTotalDebit.innerHTML = inputTotalDebit.value;
-        pTotalCredit.innerHTML = inputTotalCredit.value;
 
         pTitleYear.setAttribute('id', 'year');
         pFundNo.setAttribute('id', 'fundNo');
         pFundNo.setAttribute('class', 'red');
-        pTotalDebit.setAttribute('id', 'totalDebit');
-        pTotalCredit.setAttribute('id', 'totalCredit');
 
-        if (pTitleYear.innerHTML === 'Add Year'){
-            alert('Year is blank');
-            return;
-        }
-        if (pFundNo.innerHTML === 'Add Fund No.'){
-            alert('Fund No. is blank');
-            return;
-        }
-        if (pTotalDebit.innerHTML === "Add Total Credit"){
-            alert('Total Debit is blank');
-            return;
-        }
-        if (pTotalCredit.innerHTML === 'Add Total Debit'){
-            alert('Total Credit is blank');
-            return;
-        }
-        
-        if (inputTitleYear.parentNode) {
-            inputTitleYear.parentNode.replaceChild(pTitleYear, inputTitleYear);
-        }
-
-        if (inputFundNo.parentNode) {
+        inputTitleYear.parentNode.replaceChild(pTitleYear, inputTitleYear);
         inputFundNo.parentNode.replaceChild(pFundNo, inputFundNo);
-        }
 
-        if (inputTotalDebit.parentNode) {
-                inputTotalDebit.parentNode.replaceChild(pTotalDebit, inputTotalDebit);
-        }
+    });
+});
 
-        if (inputTotalCredit.parentNode) {
-            inputTotalCredit.parentNode.replaceChild(pTotalCredit, inputTotalCredit);
-        }
-    };
-};
+const backBtn = document.getElementById('back-btn');
+
+backBtn.addEventListener('click', () => {
+    window.location.href = '/';
+})

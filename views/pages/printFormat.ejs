@@ -47,29 +47,33 @@
         <section id="table-section">
             <table>
                 <tr>
-                    <th width="12%">Date</th>
-                    <th width="15%">Reference Jev No.</th>
+                    <th width="5%">Date</th>
+                    <th width="6%">Reference Jev No.</th>
                     <th width="30%">Account</th>
-                    <th width="15%">UACSC CODE</th>
-                    <th width="12%">Debit</th>
-                    <th width="12%">Credit</th>
+                    <th width="8%">UACSC CODE</th>
+                    <th width="6%">Debit</th>
+                    <th width="6%">Credit</th>
                 </tr>
-
+ 
                 <tbody id="content-row">
                 </tbody>
 
-                <tr>
+                <tr class="total-table">
                     <td></td>
                     <td></td>
                     <td id="total">Total</td>
                     <td></td>
-                    <td> <p id="totalCredit">Add Total Credit  </p> </td> <!-- todo make this editable for total-->
-                    <td> <p id="totalDebit">Add Total Debit </p> </td> <!-- todo make this editable for total-->
+                    <td class="right" contenteditable="true"> <p id="totalDebit">Add Total Debit </p> </td> <!-- todo make this editable for total-->
+                    <td class="right" contenteditable="true"> <p id="totalCredit">Add Total Credit </p> </td> <!-- todo make this editable for total-->
                 </tr>
             </table>
         </section>
 
-    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script>
+        var printData = '<%-jsonData%>';
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/js/print-script.js"></script>
     </body>
 </html>

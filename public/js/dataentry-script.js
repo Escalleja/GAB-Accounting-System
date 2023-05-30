@@ -308,6 +308,9 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const text = "Are you sure you want to save?";
+    const preloader = document.querySelector('.loader');
+    const saveText = document.querySelector('.save-text');
+    const saveBtn = document.getElementById('save');
 
     const dateForm = document.getElementById('dateForm').value;
     const uacs = document.getElementById('uacs').value;
@@ -340,7 +343,10 @@ form.addEventListener('submit', async (e) => {
     };
 
     if (confirm(text) == true) {
-
+        preloader.style.display = 'block';
+        saveText.style.display = 'none';
+        saveBtn.disabled = true;
+        
         let insertUpdate = '/newEntry';
 
         const response = await fetch(insertUpdate, {
@@ -359,6 +365,9 @@ form.addEventListener('submit', async (e) => {
             formJev.reset();
             modal.style.display = "none";
             jevModal.style.display = "none";
+            preloader.style.display = 'none';
+            saveText.style.display = 'none';
+            saveBtn.disabled = false;
             
         }
     }
@@ -586,11 +595,16 @@ const selectedForm = document.getElementById('entry-selected-form');
 selectedForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const preloader = document.querySelector('.loader');
+    const saveText = document.querySelector('.save-btn-text');
+    const saveBtn = document.getElementById('selectedSave');
     const text = "Are you sure you want to save it?";
 
     if (confirm(text)){
+        preloader.style.display = 'block';
+        saveText.style.display = 'none';
+        saveBtn.disabled = 'true';
         if (forInsert) {
-            console.log("Insert");
             const dateForm = document.querySelector('#insertedDate').value;
             const uacs = document.querySelector('#insertedUacs').value;
             const description = document.querySelector('#insertedDescription').value;
@@ -619,7 +633,6 @@ selectedForm.addEventListener('submit', async (e) => {
             const result = await response.json();
 
             if(result.status === 'Success'){
-                alert('Insert Successfully');
                 removeFromMap(jevId);
                 sessionStorage.removeItem('jevId');
                 sessionStorage.removeItem('recordOpen');
@@ -632,7 +645,6 @@ selectedForm.addEventListener('submit', async (e) => {
                 alert('Something went wrong.');
             }
         }else {
-            alert("Update");
             const rows = document.querySelectorAll('#selectedJev');
 
             for (let i = 0; i < rows.length; i++) {
@@ -659,7 +671,6 @@ selectedForm.addEventListener('submit', async (e) => {
                     const result = await response.json();
 
                     if(result.status === 'Success'){
-                        alert('Updated Successfully');
                         removeFromMap(jevId);
                         sessionStorage.removeItem('jevId');
                         sessionStorage.removeItem('recordOpen');

@@ -58,9 +58,12 @@ socket.on('modifiedData', (data) => {
 //UPDATING UI TO REMOVE THE DELETED DATA
 socket.on('deleteRecords', (data) => {
     const rows = document.querySelectorAll('.table-content');
+    const jevIdStr = `"${data}"`
+    const jevArray = jevIdStr.match(/\w+/g);
+    const deleteJev = new Set(jevArray);
 
     rows.forEach((row) => {
-        if(row.dataset.id === data){
+        if(deleteJev.has(row.dataset.id)){
             row.remove();
         }
     })
