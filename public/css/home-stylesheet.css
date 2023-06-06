@@ -13,10 +13,10 @@ h3, h4, h5 {
     padding: 5% 3% 0 3%;
 }
 
-.suggested-item button {
-    display: inline;
+.suggested-item button, .suggested-btn button {
+    /* display: inline; */
     background: #fff;
-    width: 100%;
+    width: 10%;
     height: 45px;
     margin: 16px 16px 5px 5px;
     outline-style: none;
@@ -26,18 +26,18 @@ h3, h4, h5 {
     transition: .5s;
 }
 
-.suggested-item button:hover {
+.suggested-btn button:hover, .suggested-item button:hover {
     background-color: #E9EDEF;
     color: #379237;
     border-color: #379237;
 }
 
 /* Accounting Button */
-.suggested-item button i {
+.suggested-btn button i, .suggested-item button i {
     padding: 0 0 0 5px;
 }
 
-.suggested-item a{
+.suggested-btn a, .suggested-item a{
     text-decoration: none;
     display: inline-block;
     width: 15%

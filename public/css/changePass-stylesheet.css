@@ -1,0 +1,51 @@
+.pass-container{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding: 100px 0 0 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(1.5px);
+}
+
+.changepass-content{
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    width: 30%;
+    border-radius: 10px;
+}
+
+.inputs input{
+    height: 36px;
+    font: 14px;
+    width: 100%;
+}
+
+.inputs label{
+    font-size: 12px;
+}
+
+.btns{
+    margin: 16px 0 0;
+    text-align: right;
+}
+
+.btns button{
+    background-color: #ccc;
+    border: none;
+    width: 100px;
+    height: 36px;
+    border-radius: 10px;
+}
+
+#confirm{
+    background-color: #379237;
+    color: #fff;
+    transition: .4s;
+}
+#confirm:hover{
+    background-color: #266e26;
+}

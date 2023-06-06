@@ -27,7 +27,7 @@ let table = '';
                 ID      int IDENTITY(1,1)   PRIMARY KEY,
                 date0       VARCHAR(255)    NOT NULL,
                 uacs        VARCHAR(255)    NOT NULL,
-                description VARCHAR(255)    NOT NULL,
+                description VARCHAR(5000)    NOT NULL,
                 debit       VARCHAR(255)    NOT NULL,
                 credit      VARCHAR(255)    NOT NULL,
                 dateCreated VARCHAR(255)    NOT NULL,
@@ -99,8 +99,15 @@ const currentDate = () => {
         "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
     ];
 
+    const day = [
+        "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+        "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+        "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+        "31"
+    ]
+
     const currentMonth = month[newDate.getMonth()];
-    const currentDay = newDate.getDate();
+    const currentDay = day[newDate.getDate()];
     const currentYear = newDate.getFullYear();
 
     const formattedDate = currentMonth + ' ' + currentDay + ', ' + currentYear;

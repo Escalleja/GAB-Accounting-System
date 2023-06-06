@@ -20,7 +20,8 @@
     <!-- Local css -->
     <link rel="stylesheet" href="/css/home-stylesheet.css">
     <link rel="stylesheet" href="/css/login-stylesheet.css">
-    <link rel="stylesheet" href="/css/modal-stylesheet.css">
+    <!-- <link rel="stylesheet" href="/css/modal-stylesheet.css"> -->
+    <link rel="stylesheet" href="/css/changePass-stylesheet.css">
     <link rel="stylesheet" href="/css/table-stylesheet.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
 
@@ -36,14 +37,20 @@
                 </div>
 
                 <div class="search-bd">
-                    <form action="" class="search-bar">
-                        <button title="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        <input type="search" name="" id="" placeholder="Search JEV No. ">
+                    <form action="" id="search" class="search-bar">
+                        <button id="search-icon"> <i class="fa-solid fa-magnifying-glass"></i> </button>
+                            <%if(activeButton === 'home'){%>
+                                <input type="search" name="" id="search-record" placeholder="Search JEV No.">
+                            <%}else if(activeButton === 'userMng') {%>
+                                <input type="search" name="" id="search-user" placeholder="Search employee id">
+                            <%}%>
                     </form>
                 </div>
 
                 <div class="nav-content-bd ml-auto">
                     <ul>
+                        <li class="navbar-item <% if (activeButton === 'home'){%> active <%}%>" id="home"><a href="/homepage">Home</a></li>
+                        <li class="navbar-item <% if (activeButton === 'userMng'){%> active <%}%>" id="user-management"><a href="/userControl">User Management</a></li>
                         <li class="navbar-item dropdown">
                             <%= `${username}` %> &ThickSpace; 
                             <i class="fa-solid fa-caret-down"></i>
@@ -58,15 +65,48 @@
                                         <i class="fa-solid fa-moon switch-item"></i>
                                     </div>
                                 </div>
-                                <a href="" class="drop-item"><i class="fa-solid fa-lock"></i> Change password</a>
+                                <a class="drop-item" id="changePasswordBtn"><i class="fa-solid fa-lock"></i> Change password</a>
                                 <a href="/logout" class="drop-item"><i class="fa-solid fa-right-from-bracket"></i>
                                     Logout</a>
                             </div>
                         </li>
                     </ul>
                 </div>
-
+            </nav>
         </section>
+
+        <section class="pass-container">
+            <div class="changepass-content">
+                <div>
+                    <h4>Change Password</h4>
+                </div>
+                <form id="changePasswordForm">
+                    <div class="inputs">
+                        <label for="currentPass">Current Password</label>
+                        <input type="password" id="currentPass" required>
+                    </div>
+
+                    <div class="inputs">
+                        <label for="newPass">New Password</label>
+                        <input type="password" id="newPass" required>
+                    </div>
+
+                    <div class="inputs">
+                        <label for="confPass">Confirm Password</label>
+                        <input type="password" id="confPass" required>
+                    </div>
+
+                    <div class="btns">
+                        <button type="button" id="cancelChangePass">Cancel</button>
+                        <button type="submit" id="confirm">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <script src="socket.io/socket.io.js"></script>
+        <script src="/js/navbar-script.js"></script>
+        
+    </section>
     </body>
 
 </html>

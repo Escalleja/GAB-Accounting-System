@@ -1,0 +1,164 @@
+body{
+    font-family: 'Segoe UI';
+}
+.modal-bd {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding: 100px 0 0 0;
+    left: 0;
+    top: 0;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(1.5px);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    width: 40%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-back-btn button{
+    background-color: inherit;
+    height: 40px;
+    border: none;
+    color: #888888;
+    border-radius: 10px;
+    transition: .4s;
+}
+
+.modal-back-btn button:hover {
+    background-color: #ccc;
+    color: #22242C;
+}
+
+.modal-form input {
+    width: 100%;
+    min-height: 16px;   
+    font-size: 14px;
+    padding: 5px;
+    margin: 2px 0;
+    border: 1px solid #293051;
+    border-radius: 10px;
+    outline: none;
+    transition: .2s;
+}
+
+.modal-form input:focus-within {
+    border: 1.5px solid rgb(88, 88, 249);
+}
+
+.modal-form textarea:focus-within {
+    border: 1.5px solid rgb(88, 88, 249);
+}
+
+#add-user-form {
+    margin: 16px;
+}
+
+.cancel-btn {
+    background-color: #919191;
+    color: #fff;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    transition: .4s;
+}
+
+.save-btn {
+    background-color: #379237;
+    height: 36px;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    transition: .4s;
+}
+
+.save-btn:hover {
+    background-color: #246f24;
+    color: #fff;
+}
+.cancel-btn:hover{
+    background-color: #afafaf;
+}
+
+#toast-container {
+    position: fixed;
+    display: none;
+    bottom: 10px;
+    right: 10px;
+    width: 300px;
+    height: auto;
+    background-color: #3A98B9;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    backdrop-filter: none;
+    z-index: 5;
+}
+
+.input-label{
+    font-size: 12px;
+    padding: 0;
+}
+
+.grant-access input[type=checkbox] {
+    position: relative;
+    border: 2px solid #888888;
+    border-radius: 2px;
+    background: none;
+    line-height: 0;
+    margin: 0 .6em 0 0;
+    outline: 0;
+    padding: 0 !important;
+    vertical-align: middle;
+    height: 16px;
+    width: 16px;
+    -webkit-appearance: none;
+    opacity: .5;
+    cursor: pointer;
+  }
+  
+  .grant-access input[type=checkbox]:hover {
+    opacity: 1;
+  }
+  
+  .grant-access input[type=checkbox]:checked {
+    background-color: #379237;
+    border: 3px solid #379237;
+    opacity: 1;
+  }
+
+  .grant-access input[type=checkbox]:checked::before{content: '';
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    width: 5px;
+    height: 10px;
+    border: 3px solid #fff  ;  
+    border-width: 0 2px 2px 0;
+    margin: -1px -1px 0 -1px;
+    transform: rotate(45deg) translate(-50%, -50%);
+  }
+
+  .grant-access label{
+    display: block;
+    text-align: center;
+    padding: 10px 0 0 0;
+  }
+
+  .grant-access input{
+    align-items: center;
+    left: 45%;
+    transform: translateX(-50%);
+  }
+
+  .form-right-btn{
+    float: right;
+    margin: 16px 0 0 ;
+  }

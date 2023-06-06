@@ -28,18 +28,11 @@
 <body>
     <!--PARTIAL OF NAVBAR-->
     <section id="navbar-partial">
-        <%- include('../partial/navbar', {username}); %>   
+        <%- include('../partial/navbar', {username, activeButton}); %>   
     </section>
 
-    <section>
-        <div class="suggested">
-            <h5>Suggested</h5>
-            <div class="suggested-item">
-                <a href="/fund01"><button><i class="fa-solid fa-list"></i> Fund 01 - Regular</button></a>
-                <a href="/fund03"><button><i class="fa-solid fa-list"></i> Fund 03 - Special</button></a>
-                <a href="/fund07"><button><i class="fa-solid fa-list"></i> Fund 07 - Trust</button></a>
-            </div>
-        </div>
+    <section id="header">
+        <%- include('../partial/header') %>
     </section>
 
     <!--PARTIAL OF RECORDS-->
@@ -52,6 +45,8 @@
         <%- include('../partial/modal'); %>
    </section>
 
+   <script src="socket.io/socket.io.js"></script>
+   <script src="js/navbar-script.js"></script>
 </body>
 
 </html>

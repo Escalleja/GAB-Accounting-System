@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting - Fund 07</title>
+    <title>Accounting</title>
 
     <!-- favicon -->
     <link rel="icon" type="favicon" href="/img/brand.png">
@@ -19,36 +19,29 @@
 
     <!-- Local css -->
     <link rel="stylesheet" href="/css/home-stylesheet.css">
-    <link rel="stylesheet" href="/css/login-stylesheet.css">
     <link rel="stylesheet" href="/css/modal-stylesheet.css">
     <link rel="stylesheet" href="/css/table-stylesheet.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
-    <link rel="stylesheet" href="/css/pages-main-stylesheet.css">
+    <link rel="stylesheet" href="/css/preloader-style.css">
 
 </head>
-
 <body>
+   
+    <section id="headers">
+        <div class="suggested">
+            <h5>Suggested</h5>
+            <div class="suggested-btn">
+                <button id="reg-btn"><i class="fa-solid fa-list"></i> Fund 01 - Regular</button>
+                <button id="spcl-btn"><i class="fa-solid fa-list"></i> Fund 03 - Special</button>
+                <button id="trs-btn"><i class="fa-solid fa-list"></i> Fund 07 - Trust</button>
+            </div>
+        </div>
+    </section>
 
-        <!--PARTIAL OF NAVBAR-->
-        <section id="navbar-partial">
-            <%- include('../partial/navbar', {username}); %>   
-        </section>
-    
-        <!--PARTIAL OF RECORDS-->
-        <section id="records-partial">
-            <%- include('../partial/records', {data}); %>
-        </section>
-    
-        <!--PARTIAL OF ALL MODALS-->
-        <section id="modal-partial">
-            <%- include('../partial/modal'); %>
-        </section>
 
-        <!-- <script src="socket.io/socket.io.js"></script> -->
-        <!-- <script src="/js/accounting.js"></script> -->
-        <!-- <script src="/js/dataentry-script.js"></script> -->
-        <script src="/js/trustFund-script.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="/js/headers-script.js"></script>
+    <!-- <script src="js/table-script.js"></script> -->
 
 </body>
-
 </html>

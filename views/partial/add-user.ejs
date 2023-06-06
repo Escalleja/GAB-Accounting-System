@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="favicon" href="/img/brand.png">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/5bac83b9a1.js" crossorigin="anonymous"></script>
+
+    <!-- Local css -->
+    <link rel="stylesheet" href="/css/preloader-style.css">
+    <link rel="stylesheet" href="/css/add-user-style.css">
+
+</head>
+<body>
+    
+    <div>
+        <section id="modal" class="modal-bd">
+            <div class="modal-content">
+                <div class="header-modal">
+                    <span class="modal-back-btn">
+                        <button id="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                    </span>
+                </div>
+
+                <div class="modal-form">
+                    <form id="add-user-form">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="firstname" class="input-label">Firstname</label>
+                                <input type="text" id="firstname" required>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="lastname" class="input-label">Lastname</label>
+                                <input type="text" id="lastname" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="employee-id" class="input-label">Employee ID</label>
+                                <input type="text" id="employee-id" required>
+                            </div>
+                            <div class="col-lg-3 grant-access">
+                                <label for="admin" class="input-label">Admin</label>
+                                <input type="checkbox" id="adminCheck">
+                            </div>
+                            <div class="col-lg-3 grant-access">
+                                <label for="deletion" class="input-label">Deletion Permit</label>
+                                <input type="checkbox" id="deletionCheck">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="password" class="input-label">Password</label>
+                                <input type="password" id="password">
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="conPassword" class="input-label">Confirm password</label>
+                                <input type="password" id="conPassword">
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-right-btn">
+                            <button id='cancel' type="reset" class="cancel-btn">Cancel</button>
+                            <button id='save' type="submit" class="save-btn">
+                                <div class="loader"></div>
+                                <span class="submit-btn-text">Save</span>
+                            </button>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/usermanagement-script.js"></script>
+
+</body>
+</html>

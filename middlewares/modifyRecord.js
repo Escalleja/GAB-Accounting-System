@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const database = require('../configs/database');
 const modifyRecord = express.Router();
-const {modifiedData, insertData} = require('./recordsEventLister');
+const {modifiedData, searchResult, io} = require('./recordsEventLister');
 
 let jevId;
 const currentlyOpen = new Map();
@@ -100,6 +100,16 @@ modifyRecord.post('/insertRecord', (req, res) => {
 
 })
 
+modifyRecord.get('/searchRecord/:id', (req, res) => {
+    const term = req.params.id;
+    const sessionId = req.session.sessionId;
+
+    database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl${term}%'`, (err, data) => {
+        if(err) console.log(err);
+        searchResult(data.recordset, sessionId, term);
+        res.status(200).send({status: 'Success'});
+    })
+})
 const currentDate = () => {
     const dateNow = new Date();
 

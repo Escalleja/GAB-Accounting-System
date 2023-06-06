@@ -17,19 +17,13 @@ homepage.get('/homepage', (req, res) => {
         if(err) throw err;
         res.render('pages/home', {
             username: req.session.username,
-            data: data
+            data: data,
+            activeButton: 'home'
         })
     })
     } else {
         res.redirect('/');
     }
 });
-
-//LOGOUT
-homepage.get('/logout', (req, res) =>{
-    req.session.destroy();
-    res.redirect('/');
-    res.end();
-})
 
 module.exports = homepage;

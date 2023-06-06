@@ -1,3 +1,5 @@
+const socket = io();
+
 const form = document.getElementById('login-form');
 const submitBtn = document.getElementById('submit-btn');
 const message = document.querySelector('.invalid-error');
@@ -26,6 +28,10 @@ form.addEventListener('submit', async (e) => {
     if(result.redirect === 'invalid'){
         message.textContent =  'Invalid username or password';
     } else{
+        socket.emit('loadUsers');
+        sessionStorage.setItem('sessionId', `${result.sessionId}`)
+        localStorage.setItem('employeeId', result.id);
+        document.cookie = 'isAdmin=' + result.isAdmin;
         window.location.href = result.redirect;
     }
 

@@ -4,6 +4,8 @@ const socket = io.connect();
 //TO HAVE A CONNECTION TO SERVER
 socket.on('connect', () => {
     console.log('Successfully connected');
+    const sessionId = sessionStorage.getItem('sessionId');
+    socket.emit('loadLatestData', sessionId);
 })
 
 //THIS WILL UPDATE THE UI WITH LATEST DATA THIS WILL TRIGGER DURING THE ESTABLISHMENT OF CONNECTION WHEN PAGE LOADS
@@ -37,7 +39,6 @@ socket.on('latestData', (data) => {
     })
 })
 
-
 //UPDATING UI WITH UPDATED DATA
 socket.on('modifiedData', (data) => {
     
@@ -68,7 +69,6 @@ socket.on('deleteRecords', (data) => {
         }
     })
 })
-
 
 // UPDATE FRONT END TABLE REALTIME WHEN DATA WAS INSERTED
 socket.on('insertData', (data) => {
@@ -103,6 +103,141 @@ socket.on('insertData', (data) => {
     }
 
 });
+
+socket.on('sortReg', (data) => {
+    console.log('sortReg', data);
+    const tableRow = document.querySelector('#tbody-records');
+    tableRow.innerHTML = '';
+
+    data.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.setAttribute('class', 'table-content');
+        tr.setAttribute('data-id', `${item.jevNo}`);
+
+        tr.innerHTML = `
+            <td>
+                <i class="fa-solid fa-file"></i>&ThickSpace; ${item.jevNo.slice(3)}
+            </td>
+            <td>
+                <span class="date">${item.dateCreated}</span>
+                <span class="byName"> by </span>
+                <span class="byName"> ${item.createdBy}</span>
+            </td>
+            <td>
+                <span id="date-modified" class="date">${item.dateModified}</span>
+                <span class="byName"> by </span>
+                <span id="name-modified" class="byName">${item.modifiedBy}</span>
+            </td>
+            <td id="selected-item">
+                <input type="checkbox" name="chk" id="">
+            </td>
+        `;
+        tableRow.append(tr);
+    })
+})
+
+socket.on('sortSpe', (data) => {
+    const tableRow = document.querySelector('#tbody-records');
+    tableRow.innerHTML = '';
+
+    data.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.setAttribute('class', 'table-content');
+        tr.setAttribute('data-id', `${item.jevNo}`);
+
+        tr.innerHTML = `
+            <td>
+                <i class="fa-solid fa-file"></i>&ThickSpace; ${item.jevNo.slice(3)}
+            </td>
+            <td>
+                <span class="date">${item.dateCreated}</span>
+                <span class="byName"> by </span>
+                <span class="byName"> ${item.createdBy}</span>
+            </td>
+            <td>
+                <span id="date-modified" class="date">${item.dateModified}</span>
+                <span class="byName"> by </span>
+                <span id="name-modified" class="byName">${item.modifiedBy}</span>
+            </td>
+            <td id="selected-item">
+                <input type="checkbox" name="chk" id="">
+            </td>
+        `;
+        tableRow.append(tr);
+    })
+})
+
+socket.on('sortTrs', (data) => {
+    const tableRow = document.querySelector('#tbody-records');
+    tableRow.innerHTML = '';
+
+    data.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.setAttribute('class', 'table-content');
+        tr.setAttribute('data-id', `${item.jevNo}`);
+
+        tr.innerHTML = `
+            <td>
+                <i class="fa-solid fa-file"></i>&Thickspace; ${item.jevNo.slice(3)}
+            </td>
+            <td>
+                <span class="date">${item.dateCreated}</span>
+                <span class="byName"> by </span>
+                <span class="byName"> ${item.createdBy}</span>
+            </td>
+            <td>
+                <span id="date-modified" class="date">${item.dateModified}</span>
+                <span class="byName"> by </span>
+                <span id="name-modified" class="byName">${item.modifiedBy}</span>
+            </td>
+            <td id="selected-item">
+                <input type="checkbox" name="chk" id="">
+            </td>
+        `;
+        tableRow.append(tr);
+    })
+})
+
+//FUNCTION FOR SEARCH
+socket.on('searchResult', (data, term) => {
+    
+    if (data.length > 0){
+        
+        data.forEach((jev) => {
+            const firstRow = document.querySelector('.table-content');
+            const searchedRow = document.querySelector(`.table-content[data-id='${jev.jevNo}']`);
+            const searchRow = document.createElement('tr');
+            searchRow.setAttribute('class', 'table-content');
+            searchRow.setAttribute('data-id', `${jev.jevNo}`);
+
+            searchRow.innerHTML = `
+            <td>
+                <i class="fa-solid fa-file"></i>&ThickSpace; ${jev.jevNo.slice(3)}
+            </td>
+            <td>
+                <span class="date">${jev.dateCreated}</span>
+                <span class="byName"> by </span>
+                <span class="byName">${jev.createdBy}</span>
+            </td>
+            <td>
+                <span id="date-modified" class="date">${jev.dateModified}</span>
+                <span class="byName"> by </span>
+                <span id="name-modified" class="byName">${jev.modifiedBy}</span>
+            </td>
+            <td id="selected-item">
+                <input type="checkbox" name="chk" id="">
+            </td>
+            `;
+
+            if(firstRow !== null && searchedRow !== null){
+                firstRow.parentNode.insertBefore(searchRow, firstRow);
+                searchedRow.remove();
+            }
+        })
+    }else{
+        alert(`No results found for '${term}'`);
+    }
+})
     //#region FUNCTION FOR CHECKBOX
     let chktable = document.querySelector('#tbody-records');
     let checkedRow = new Set();

@@ -45,81 +45,67 @@ async function isRecordOpen(){
         const result = await response.json();
         
         if (result.status === 'data retrieved') {
-            
-            selectedModal.style.display = 'block';
+            clearDynamicInput();
             jevId = sessionStorage.getItem('jevId');
-                sessionStorage.setItem('recordOpen', 'true');
-                sessionStorage.setItem('jevId', `${jevId}`);
+            sessionStorage.setItem('recordOpen', 'true');
+            sessionStorage.setItem('jevId', `${jevId}`);
 
             result.data.recordset.forEach((d) => {
-
-                // selectedModal.style.display = 'block';
-
+                selectedModal.style.display = 'block';
                 const inputDiv = document.createElement('div');
-
                 inputDiv.setAttribute('class', 'form-row');
                 inputDiv.setAttribute('id', 'selectedJev');
                 inputDiv.setAttribute('data-id', d.ID);
-                
+
                 inputDiv.innerHTML = `
-                    <!-- Date & UACS-->
-                    <div class="form-group col-lg-6 date-group">
-                        <label for="selectedDateForm" class="label">Date mm/dd/yyyy</label>
-                        <input type="text" class="form-control col-lg-12 date-form" id="selectedDateForm" name="selectedDateForm"
-                         value="${d.date0}" required></input>
+                <!-- Date and UACS -->
+                <div class="form-group col-lg-6 date-group">
+                    <label for="selectedDateForm" class="label mb-0">Date (mm/dd/yyyy)</label>
 
-                        <label for="uacs" class="label">UACS</label>
-                        <input id="selectedUacs" class="form-control col-lg-12 mb-2 uacs-form" name="uacs"
-                           value="${d.uacs}" required></input>
-                    </div>
+                    <input type="text" class="form-control col-lg-12 mb-2 date-form" id="selectedDateForm" name="selectedDateForm"
+                    value="${d.date0}" required></input>
 
-                    <!-- Account -->  
-                    <div class="form-group col-lg-6 description-group">
-                        <label for="description" class="label">Description</label>
-                        <textarea name="text" id="selectedDescription" rows="4" cols="90"
-                            id="description" class="form-control col-lg-12 description-form" name="description">${d.description}</textarea>
-                    </div>
+                    <label for="uacs" class="label">UACS</label>
+                    <input type="text" id="selectedUacs" class="form-control col-lg-12 mb-0 uacs-form" name="uacs"
+                    value="${d.uacs}" required></input>
+                </div>
 
-                    <!-- Debit and Credit form -->
-                    <div class="form-group col-lg-6 debit-group">
-                        <label for="debit" class="label">Debit</label>
-                        <input type="text" id="selectedDebit" class="form-control ol-lg-12 debit-form.value;
-                        " name="debit"
-                        value="${d.debit}">
-                    </div>
+                <!-- Account -->  
+                <div class="form-group col-lg-6 description-group">
+                    <label for="description" class="label">Account</label>
 
-                    <div class="form-group col-lg-6 credit-group">    
-                        <label for="credit" class="label">Credit</label>
-                        <input type="text" id="selectedCredit" class="form-control col-lg-12 credit-form" name="credit" value="${d.credit}">
-                    </div>
+                    <textarea name="text" rows="4" cols="90" id="selectedDescription" class="form-control col-lg-12 description-form" name="description">${d.description}</textarea>
+                </div>
+                
+                <!-- Debit -->
+                <div class="form-group col-lg-6 debit-group mb-0 mt-0">
+                    <label for="debit" class="label">Debit</label>
+                    
+                    <input id="selectedDebit" class="form-control col-lg-12 debit-form" name="debit" value="${d.debit}"></input>
+                </div>
+
+                <!-- Credit -->
+                <div class="form-group col-lg-6 credit-data">
+                    <label for="credit" class="label">Credit</label>
+                    
+                    <input id="selectedCredit" class="form-control col-lg-12 credit-form" name="credit"
+                    value="${d.credit}"></input>
+                </div>
+
+                <!-- Delete Button -->
+                <div class="form-group col-lg-12 delete-btn" style="padding: 0 25px">
+                    <button id="deleteBtn" class="delete-button">Delete</button>
+                </div>
 
                     <div class="form-group col-lg-12">
-                        <hr>
+                    <hr>
                     </div>
-                `;
+                    `;
                 
-                
-                selectedInputFieldContainer.append(inputDiv);
+                    selectedInputFieldContainer.append(inputDiv);
 
-                var fnf = document.getElementById("selectedDebit");
-                fnf.addEventListener('keypress', function (e) {
-                    const key = e.key;
-                    if(/\d|\.|,/.test(key)) {
-                        return true;
-                    }
-                    e.preventDefault();
-                });
-                var credit = document.getElementById("selectedCredit");
-                credit.addEventListener('keypress', function (e) {
-                    const key = e.key;
-                    if(/\d|\.|,/.test(key)) {
-                        return true;
-                    }
-                    e.preventDefault();
-
-                });
             })
-        } else if (result.status === 'unavailable'){
+        } else if (result.status === 'unavailable') {
             alert('Someone is interacting with this record');
         } else{
             alert('Something went wrong.');
@@ -366,7 +352,7 @@ form.addEventListener('submit', async (e) => {
             modal.style.display = "none";
             jevModal.style.display = "none";
             preloader.style.display = 'none';
-            saveText.style.display = 'none';
+            saveText.style.display = 'block';
             saveBtn.disabled = false;
             
         }
@@ -603,7 +589,7 @@ selectedForm.addEventListener('submit', async (e) => {
     if (confirm(text)){
         preloader.style.display = 'block';
         saveText.style.display = 'none';
-        saveBtn.disabled = 'true';
+        saveBtn.disabled = true;
         if (forInsert) {
             const dateForm = document.querySelector('#insertedDate').value;
             const uacs = document.querySelector('#insertedUacs').value;
@@ -637,12 +623,18 @@ selectedForm.addEventListener('submit', async (e) => {
                 sessionStorage.removeItem('jevId');
                 sessionStorage.removeItem('recordOpen');
                 selectedModal.style.display = "none";
+                preloader.style.display = 'none';
+                saveText.style.display = 'block';
+                saveBtn.disabled = false;
             }else{
                 removeFromMap(jevId);
                 sessionStorage.removeItem('jevId');
                 sessionStorage.removeItem('recordOpen');
                 selectedModal.style.display = "none";
                 alert('Something went wrong.');
+                preloader.style.display = 'none';
+                saveText.style.display = 'block';
+                saveBtn.disabled = false;
             }
         }else {
             const rows = document.querySelectorAll('#selectedJev');
@@ -675,12 +667,18 @@ selectedForm.addEventListener('submit', async (e) => {
                         sessionStorage.removeItem('jevId');
                         sessionStorage.removeItem('recordOpen');
                         selectedModal.style.display = "none";
+                        preloader.style.display = 'none';
+                        saveText.style.display = 'block';
+                        saveBtn.disabled = false;
                     }else{
                         removeFromMap(jevId);
                         sessionStorage.removeItem('jevId');
                         sessionStorage.removeItem('recordOpen');
                         selectedModal.style.display = "none";
                         alert('Something went wrong.');
+                        preloader.style.display = 'none';
+                        saveText.style.display = 'block';
+                        saveBtn.disabled = false;
                     }
                 }
             }

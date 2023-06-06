@@ -17,7 +17,8 @@ adminHomepage.get('/adminHomepage', (req, res) => {
         if(err) throw err;
         res.render('pages/admin', {
             username: req.session.username,
-            data: data
+            data: data,
+            activeButton: 'home'
         })
     })
     } else {
