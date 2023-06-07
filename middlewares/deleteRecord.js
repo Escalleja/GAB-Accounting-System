@@ -17,7 +17,7 @@ deleteRecord.post('/jevDelete/:id', (req, res) => {
     const recordIds = new Set(idString.split(','));
     const ids = Array.from(recordIds);
 
-    console.log(ids);
+    if(req.session.loggedin){
     database.query(`DELETE FROM refJevHomepagetbl WHERE jevNo IN ('${ids.join("','")}')`, (err, data) => {
         if (err) {
             console.log("Error: ", err);
@@ -51,6 +51,9 @@ deleteRecord.post('/jevDelete/:id', (req, res) => {
                 });
         }
     });
+    }else{
+        res.redirect('/');
+    }
 });
 
 
@@ -59,10 +62,14 @@ deleteRecord.post('/deleteRow/:id', (req, res) => {
     const jev = req.body.jev;
     console.log(jev + ''+ rowId);
 
-    database.query(`DELETE FROM [${jev}] WHERE ID = ${rowId}`, (err, data) => {
-        if(err) console.log(err)
-        res.status(200).send({status: 'Success'})
-    })
+    if(req.session.loggedin){
+        database.query(`DELETE FROM [${jev}] WHERE ID = ${rowId}`, (err, data) => {
+            if(err) console.log(err)
+            res.status(200).send({status: 'Success'})
+        })
+    }else{
+        res.redirect('/');
+    }
 })
 
 

@@ -5,38 +5,43 @@ const {permissions, updatePermitUI} = require('../middlewares/recordsEventLister
 
 permission.get('/deletionPermit/:id', (req, res) => {
     const employeeId = req.params.id
+    if(req.session.loggedin){
+            database.query(`UPDATE accountTbl SET isAction = '1' WHERE employee_id = '${employeeId}'`, (err, result) => {
+                if(err) console.log(err);
 
-    database.query(`UPDATE accountTbl SET isAction = '1' WHERE employee_id = '${employeeId}'`, (err, result) => {
-        if(err) console.log(err);
+                database.query(`SELECT * FROM accountTbl WHERE employee_id = '${employeeId}'`, (err, result) => {
+                    if(err) console.log(err);
 
-        database.query(`SELECT * FROM accountTbl WHERE employee_id = '${employeeId}'`, (err, result) => {
-            if(err) console.log(err);
+                    const status = 'check'
 
-            const status = 'check'
-
-            updatePermitUI( status ,result.recordset[0].employeeId);
-            permissions(result.recordset[0].sessionId);
-            res.status(200).send('allowed');
-        })
-    })
+                    updatePermitUI( status ,result.recordset[0].employeeId);
+                    permissions(result.recordset[0].sessionId);
+                    res.status(200).send('allowed');
+                })
+            })
+    }else{
+        res.redirect('/');
+}
 })
 
 permission.get('/removePermit/:id', (req, res) => {
     const employeeId = req.params.id;
 
-    database.query(`UPDATE accountTbl SET isAction = '0' WHERE employee_id = '${employeeId}'`, (err, result) => {
-        if(err) console.log(err)
+    if(req.session.loggedin){
+        database.query(`UPDATE accountTbl SET isAction = '0' WHERE employee_id = '${employeeId}'`, (err, result) => {
+            if(err) console.log(err)
 
-        database.query(`SELECT * FROM accountTbl WHERE employee_id '${employeeId}`, (err, result) => {
-            if(err) console.log(err);
+            database.query(`SELECT * FROM accountTbl WHERE employee_id '${employeeId}`, (err, result) => {
+                if(err) console.log(err);
 
-            const status = 'uncheck'
+                const status = 'uncheck'
 
-            updatePermitUI( status ,result.recordset[0].employeeId);
-            permissions(result.recordset[0].sessionId);
-            res.status(200).send('!allowed');
+                updatePermitUI( status ,result.recordset[0].employeeId);
+                permissions(result.recordset[0].sessionId);
+                res.status(200).send('!allowed');
+            })
         })
-    })
+    }
 })
 
 module.exports = permission;

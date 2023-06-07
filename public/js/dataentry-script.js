@@ -257,20 +257,19 @@ document.getElementById("addInput").addEventListener('click', function (e) {
     newDescriptionInput.className = 'form-group col-lg-6 description-group'
     newDescriptionInput.innerHTML = `
     <label for="description" class="label dynamic-label">Account</label> 
-    <textarea name="text" id="description" rows="4" cols="90" id="description" class="form-control col-lg-12 mb-2 dynamic-input" name="description" required></textarea>`;
+    <textarea name="text" id="description" rows="4" cols="90" id="description" class="form-control col-lg-12 mb-2 dynamic-input" name="description"></textarea>`;
 
     var newDebitInput = document.createElement('div');
     newDebitInput.className = 'form-group col-lg-6 debit-group';
     newDebitInput.innerHTML = `
     <label for="debit" class="label dynamic-label">Debit</label> 
-    <input type="text" id="debit" class="form-control ol-lg-12 debit-form dynami.value;
-    c-input dynamic-input-debit" name="debit"></input>`;
+    <input type="text" id="debit" class="form-control ol-lg-12 debit-form dynamic-input dynamic-input-debit" name="debit"></input>`;
 
     var newCreditInput = document.createElement('div');
     newCreditInput.className = 'form group col-lg-6 credit-group'
     newCreditInput.innerHTML = `
     <label for="credit" class="label dynamic-label">Credit</label>
-    <input type="text" id="credit" class="form-control col-lg-12 credit-form dynamic-input dynami-input-credit" name="credit"></input>
+    <input type="text" id="credit" class="form-control col-lg-12 credit-form dynamic-input dynamic-input-credit" name="credit"></input>
     `
 
     const divider = document.createElement('hr');
@@ -290,13 +289,16 @@ document.getElementById("addInput").addEventListener('click', function (e) {
 //#region FUNCTION FOR NEW ENTRY OF JEV
 
 const form = document.getElementById('entry-form');
+const preloader = document.querySelector('.loader');
+let saveText = document.querySelector('.save-text');
+let saveBtn = document.getElementById('save');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const text = "Are you sure you want to save?";
-    const preloader = document.querySelector('.loader');
-    const saveText = document.querySelector('.save-text');
-    const saveBtn = document.getElementById('save');
+    preloader.style.display = 'block';
+    saveText.style.display = 'none';
+    saveBtn.disabled = true;
 
     const dateForm = document.getElementById('dateForm').value;
     const uacs = document.getElementById('uacs').value;
@@ -329,9 +331,6 @@ form.addEventListener('submit', async (e) => {
     };
 
     if (confirm(text) == true) {
-        preloader.style.display = 'block';
-        saveText.style.display = 'none';
-        saveBtn.disabled = true;
         
         let insertUpdate = '/newEntry';
 
@@ -354,10 +353,13 @@ form.addEventListener('submit', async (e) => {
             preloader.style.display = 'none';
             saveText.style.display = 'block';
             saveBtn.disabled = false;
-            
+        }else{
+            return;
         }
     }
 })
+
+
 //#endregion
 
 //TO RETRIEVE SPECIFIC RECORD WHEN USER CLICKED
@@ -448,11 +450,11 @@ table.addEventListener('click', async (e) => {
                     selectedInputFieldContainer.append(inputDiv);
 
             })
-        } else if (result.status === 'unavailable') {
+        } else if(result.status === 'unavailable') {
             alert('Someone is interacting with this record');
-        } else{
-            alert('Something went wrong.');
-            jevModal.style.display = 'none';
+        } else if(result.status === 'Failed'){
+            alert('This jev is empty. Please delete and recreate it.');
+            return;
         }
         
     }

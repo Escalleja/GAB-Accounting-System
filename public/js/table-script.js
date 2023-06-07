@@ -178,7 +178,7 @@ socket.on('sortTrs', (data) => {
 
         tr.innerHTML = `
             <td>
-                <i class="fa-solid fa-file"></i>&Thickspace; ${item.jevNo.slice(3)}
+                <i class="fa-solid fa-file"></i>&ThickSpace; ${item.jevNo.slice(3)}
             </td>
             <td>
                 <span class="date">${item.dateCreated}</span>

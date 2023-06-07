@@ -5,41 +5,52 @@ const {sortRegular, sortSpecial, sortTrust} = require('../middlewares/recordsEve
 
 sortData.get('/sortedRegular', (req, res) => {
     const id = req.session.sessionId;
-    
-    database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl01%'`, (err, sorted) => {
+    if(req.session.loggedin){
+        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl01%'`, (err, sorted) => {
 
-        if(err){
-            res.status(400).send('Error Request');
-        }
-        sortRegular(sorted.recordset, id);
-        res.status(200).send({status: 'sorted'});
-    })
+            if(err){
+                res.status(400).send('Error Request');
+            }
+            sortRegular(sorted.recordset, id);
+            res.status(200).send({status: 'sorted'});
+        })
+    }else{
+        res.redirect('/');
+    }
 })
 
 sortData.get('/sortedSpecial', (req, res) => {
     const id = req.session.sessionId;
 
-    database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl03%'`, (err, sorted) => {
-        if(err){
-            res.status(400).send('Error Request');
-        }
+    if(req.session.loggedin){
+        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl03%'`, (err, sorted) => {
+            if(err){
+                res.status(400).send('Error Request');
+            }
 
-        sortSpecial(sorted.recordset, id);
-        res.status(200).send({status: 'sorted'});
-    })
+            sortSpecial(sorted.recordset, id);
+            res.status(200).send({status: 'sorted'});
+        })
+    }else{
+        res.redirect('/');
+    }
 })
 
 sortData.get('/sortedTrust', (req, res) => {
     const id = req.session.sessionId;
 
-    database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl07%'`, (err, sorted) => {
-        if(err){
-            res.status(400).send('Error Request');
-        }
+    if(req.session.loggedin){
+        database.query(`SELECT * FROM refJevHomepagetbl WHERE jevNo LIKE '%tbl07%'`, (err, sorted) => {
+            if(err){
+                res.status(400).send('Error Request');
+            }
 
-        sortTrust(sorted.recordset, id);
-        res.status(200).send({status: 'sorted'});
-    })
+            sortTrust(sorted.recordset, id);
+            res.status(200).send({status: 'sorted'});
+        })
+    }else{
+        res.redirect('/');
+    }
 })
 
 module.exports = sortData;
