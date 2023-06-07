@@ -28,13 +28,11 @@ deleteRecord.post('/jevDelete/:id', (req, res) => {
                 return new Promise((resolve, reject) => {
                     const formattedTableName = tableName.replace(/^\((.*)\)$/, '$1');
                     const dropQuery = `DROP TABLE [${formattedTableName}]`;
-                    console.log(dropQuery);
                     database.query(dropQuery, (dropErr, dropData) => {
                         if (dropErr) {
                             console.log(`Error dropping table ${formattedTableName}: `, dropErr);
                             reject(dropErr);
                         } else {
-                            console.log(`Dropped table ${formattedTableName}`);
                             resolve();
                         }
                     });
