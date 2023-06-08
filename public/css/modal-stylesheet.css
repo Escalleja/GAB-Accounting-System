@@ -229,12 +229,12 @@ div.delete-btn{
     width: 100%;
     float: right;
 }
-a{
+a.uacs-link{
     float: right;
     color: #888;
     transition: .4s;
 }
-a:hover{
+a.uacs-link:hover{
     color: #379237;
     text-decoration: none;
 }

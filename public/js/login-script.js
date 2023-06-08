@@ -31,6 +31,7 @@ form.addEventListener('submit', async (e) => {
         socket.emit('loadUsers');
         sessionStorage.setItem('sessionId', `${result.sessionId}`)
         localStorage.setItem('employeeId', result.id);
+        sessionStorage.setItem('name', `${result.username}`)
         document.cookie = 'isAdmin=' + result.isAdmin;
         window.location.href = result.redirect;
     }

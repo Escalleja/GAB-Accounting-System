@@ -4,6 +4,8 @@ displayPrint();
 printFunc();
 
 function displayPrint(){
+    let totalDebit = 0;
+    let totalCredit = 0;
     const dataFeedLine = printData.replace(/\n/g, '[LF]');
 
     const sanitizedData = dataFeedLine.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
@@ -14,17 +16,71 @@ function displayPrint(){
         const contentRow = document.getElementById('content-row');
         const footer = document.getElementById('tfoot');
         const tr = document.createElement('TR');
+        const trBlank = document.createElement('TR');
 
+        const jevFund = document.getElementById('jev-fund');
+        const jevNo = document.getElementById('jev-no');
+        const jevDate = document.getElementById('jev-date');
+        const employee = document.getElementById('employee');
+
+        jevFund.textContent = data.TableName.slice(3, 5);
+        jevNo.textContent = data.TableName.slice(6);
+        employee.textContent = sessionStorage.getItem('name');
+        jevDate.textContent = data.date0;
+
+        let indent = data.debit === '' ? `<td class="center debit-indent">${data.description}</td>` : `<td class="center credit-indent">${data.description}</td>`
+
+        trBlank.innerHTML = `
+        <tr>
+        <td contenteditable="true"><span>&ThickSpace;</span></td>
+        <td><span>&ThickSpace;</span></td>
+        <td><span>&ThickSpace;</span></td>
+        <td><span>&ThickSpace;</span></td>
+        <td><span>&ThickSpace;</span></td>
+        </tr>
+        `;
         tr.innerHTML = `
-        <td class="center">${data.date0}</td>
-        <td class="center">${data.TableName.slice(3)} </td>
-        <td>${data.description}</td>
-        <td class="center">${data.uacs}</td>
+        <td class="center"contenteditable="true"></td>
+        ${indent}
+        <td>${data.uacs}</td>
         <td class="right">${data.debit}</td>
         <td class="right">${data.credit}</td>
         `;
+        let debitStr = data.debit;
+        let creditStr = data.credit;
+
+        if(debitStr != ''){
+            let debitValue = parseFloat(debitStr.replace(/,/g, ''));
+            totalDebit += debitValue;
+        }
+        if(creditStr != ''){
+            let creditValue = parseFloat(creditStr.replace(/,/g, ''));
+            totalCredit += creditValue;
+        }
+
         contentRow.append(tr);
+        contentRow.append(trBlank);
     });
+    formatTotal(totalDebit, totalCredit);
+}
+
+function formatTotal(totalDebit, totalCredit){
+    const debitTotalAmount = document.getElementById('totalDebit');
+    const creditTotalAmount = document.getElementById('totalCredit');
+    const totalDebitStr = String(totalDebit);
+    const totalCreditStr = String(totalCredit);
+
+    if(totalDebitStr.includes(".")){
+        debitTotalAmount.textContent = totalDebit.toLocaleString('en-US');
+    }else{
+        debitTotalAmount.textContent = totalDebit.toLocaleString('en-US') + ".00";
+    }
+
+    if(totalCreditStr.includes(".")){
+        creditTotalAmount.textContent = totalCredit.toLocaleString('en-US');
+    }else{
+        creditTotalAmount.textContent = totalCredit.toLocaleString('en-US') + ".00";
+    }
 }
 
 function printFunc(){

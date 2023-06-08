@@ -33,6 +33,7 @@ exports.users = (users) => {
 }
 
 exports.permissions = (id) => {
+    console.log(id);
     io.to(`room-${id}`).emit('permissionChanged');
 }
 

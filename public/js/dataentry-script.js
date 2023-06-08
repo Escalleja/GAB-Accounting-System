@@ -63,11 +63,11 @@ async function isRecordOpen(){
                     <label for="selectedDateForm" class="label mb-0">Date (mm/dd/yyyy)</label>
 
                     <input type="text" class="form-control col-lg-12 mb-2 date-form" id="selectedDateForm" name="selectedDateForm"
-                    value="${d.date0}" required></input>
+                    value="${d.date0}"></input>
 
                     <label for="uacs" class="label">UACS</label>
                     <input type="text" id="selectedUacs" class="form-control col-lg-12 mb-0 uacs-form" name="uacs"
-                    value="${d.uacs}" required></input>
+                    value="${d.uacs}"></input>
                 </div>
 
                 <!-- Account -->  
@@ -248,10 +248,10 @@ document.getElementById("addInput").addEventListener('click', function (e) {
     newDateUacsInput.className = 'form-group col-lg-6 date-group';
     newDateUacsInput.innerHTML = `
     <label for="dateForm" class="label dynamic-label">Date (mm/dd/yyyy)</label> 
-    <input id="dateForm" class="form-control col-lg-12 mb-0 date-form dynamic-input" name="date" required></input>
+    <input id="dateForm" class="form-control col-lg-12 mb-0 date-form dynamic-input" name="date"></input>
     
     <label for="uacs" class="label dynamic-label">UACS Code</label>
-    <input id="uacs" class="form-control col-lg-12 uacs-form mb-2 dynamic-input" name="uacs" required></input>`;
+    <input id="uacs" class="form-control col-lg-12 uacs-form mb-2 dynamic-input" name="uacs"></input>`;
 
     var newDescriptionInput = document.createElement('div');
     newDescriptionInput.className = 'form-group col-lg-6 description-group'
@@ -408,11 +408,11 @@ table.addEventListener('click', async (e) => {
                     <label for="selectedDateForm" class="label mb-0">Date (mm/dd/yyyy)</label>
 
                     <input type="text" class="form-control col-lg-12 mb-2 date-form" id="selectedDateForm" name="selectedDateForm"
-                    value="${d.date0}" required></input>
+                    value="${d.date0}"></input>
 
                     <label for="uacs" class="label">UACS</label>
                     <input type="text" id="selectedUacs" class="form-control col-lg-12 mb-0 uacs-form" name="uacs"
-                    value="${d.uacs}" required></input>
+                    value="${d.uacs}"></input>
                 </div>
 
                 <!-- Account -->  
@@ -520,11 +520,11 @@ document.getElementById("selectedAdd").addEventListener('click', function (e) {
     newDateUacsInput.innerHTML = `
     <label for="selectedDateForm" class=" label dynamic-label mb-0">Date (mm/dd/yyyy)</label> 
     
-        <input type="text" class="form-control  col-lg-12 mb-2 selected-date-form selected-dynamic-input" id="insertedDate" name="selectedDateForm" required></input>
+        <input type="text" class="form-control  col-lg-12 mb-2 selected-date-form selected-dynamic-input" id="insertedDate" name="selectedDateForm"></input>
         
         <label for="uacs" class="label">UACS Code</label>
         
-        <input type="text" id="insertedUacs" class="form-control col-lg-12  selected-uacs-form selected-dynamic-input" name="uacs" required></input>`;
+        <input type="text" id="insertedUacs" class="form-control col-lg-12  selected-uacs-form selected-dynamic-input" name="uacs"></input>`;
     
         var newDescriptionInput = document.createElement('div');
         newDescriptionInput.className = 'form-group col-lg-6 description-group'
@@ -731,16 +731,16 @@ btnCancelSelected.onclick = function (e) {
 }
 
 btnBackSelected = document.getElementById('btnBackSelected');
-btnBackSelected.onclick = function (e) {
+btnBackSelected.addEventListener('click', (e) => {
     selectedModal.style.display = "none";
     removeFromMap(jevId);
     sessionStorage.removeItem('jevId');
     sessionStorage.removeItem('recordOpen');
-}
+});
 
 btnDelBtn = document.getElementById('del-btn');
 
-btnDelBtn.addEventListener('click', async () => {
+btnDelBtn.addEventListener('click', async (e) => {
     
     const response = await fetch(`/authDelete`, {
         method: 'GET',

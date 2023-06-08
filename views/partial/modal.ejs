@@ -85,10 +85,9 @@
                         <!-- Date and UACS-->
                         <div class="form-group col-lg-6 date-group">
                             <label for="dateForm" class="label">Date (mm/dd/yyyy)</label>
-                            <input type="text" class="form-control col-lg-12 date-form mb-0" id="dateForm" name="dateForm"
-                                required></input>
+                            <input type="text" class="form-control col-lg-12 date-form mb-0" id="dateForm" name="dateForm"></input>
                                 <label for="uacs" class="label">UACS Code</label>
-                                <input id="uacs" class="form-control col-lg-12 mb-2 uacs-form" name="uacs" required>
+                                <input id="uacs" class="form-control col-lg-12 mb-2 uacs-form" name="uacs">
                         </div>
 
                         <!-- Account -->
@@ -148,12 +147,13 @@
             <div class="modal-content" id="style-1">
                 <div class="header-modal">
                     <div class="left">
-                        <span class="btnBack"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
+                        <span class="btnBack" id="btnBackSelected"><i class="fa-sharp fa-solid fa-angle-left"></i>&ThickSpace; Back</span>
                     </div>
                     <div class="right">
                         <a href="https://www.uacs.gov.ph/resources/latest-uacs/106/object-code" target="_blank" class="uacs-link">
                             <i class="fa fa-info-circle"></i>&ThickSpace;Object Code
                         </a>
+                    </div>
                 </div>  
                 <form id="entry-selected-form">
                     <!-- For Added Input Fields -->

@@ -1,3 +1,4 @@
+
 const userMngAnchor = document.getElementById('user-management');
 const homeAnchor = document.getElementById('home');
 
@@ -6,6 +7,21 @@ const isAdmin = document.cookie.replace('isAdmin=', '');
 if(isAdmin === 'false'){
     userMngAnchor.style.display = 'none';
 }
+
+const logoutAnchor = document.getElementById('logout')
+logoutAnchor.addEventListener('click', async () => {
+    const response = await fetch('/logout', {
+        method: 'GET',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+    const result = await response.json();
+
+    if(result.status === 'loggedout'){
+        socket.emit('loadUsers');
+        window.location.href = result.url;
+    }
+})
 
 const searchBtn = document.getElementById('search');
 searchBtn.addEventListener('submit', async (e) => {

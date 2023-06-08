@@ -59,9 +59,9 @@ socket.on('modifiedData', (data) => {
 //UPDATING UI TO REMOVE THE DELETED DATA
 socket.on('deleteRecords', (data) => {
     const rows = document.querySelectorAll('.table-content');
-    const jevIdStr = `"${data}"`
-    const jevArray = jevIdStr.match(/\w+/g);
-    const deleteJev = new Set(jevArray);
+    // const jevIdStr = `"${data}"`
+    // const jevArray = jevIdStr.match(/\w+/g);
+    const deleteJev = new Set(data);
 
     rows.forEach((row) => {
         if(deleteJev.has(row.dataset.id)){
@@ -236,6 +236,21 @@ socket.on('searchResult', (data, term) => {
         })
     }else{
         alert(`No results found for '${term}'`);
+    }
+})
+
+socket.on('permissionChanged', async () => {
+    await alert('Your access level has changed, click ok and login');
+    
+    const response = await fetch('/logout', {
+        method: 'GET',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+    const result = await response.json();
+
+    if(result.status === 'loggedout'){
+        window.location.href = result.url;
     }
 })
     //#region FUNCTION FOR CHECKBOX

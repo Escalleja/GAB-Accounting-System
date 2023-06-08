@@ -96,6 +96,8 @@ app.post('/deleteRow/:id', deleteRecord);
 
 app.get('/print/:id', printRecords);
 app.get('/printFormat/:id', printRecords);
+app.get('/printJev/:id', printRecords);
+
 //TODO add the other later
 
 server.listen(port, () =>{

@@ -1,0 +1,161 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: 'Times New Roman';
+    background-color: #fff;
+    padding: 0 1%;
+}
+/* #region HEADER */
+
+    /* #region BUTTONS */
+    #header{
+        padding: 3% 0 2% 0;
+        text-align: center;
+        font-style: normal;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+    .header-title{
+        padding: 3% 0 2% 0;
+        text-align: right;
+        font-style: italic;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+    .jev-no{
+        font-weight: 400;
+    }
+    .left{
+        text-align: left;
+    }
+    .right{
+        text-align: right;
+        padding: 5px;
+    }
+    .center{
+        text-align: center;
+    }
+    .position{
+        margin-bottom: 10%;
+        line-height: 10%;
+    }
+    .chief{
+        width: 50%;
+    }
+    .accountEn{
+        padding: 2%;
+    }
+    .payee{
+        text-align: left;
+        padding: 5px;
+        font-size: 12pt;
+        font-style: italic;
+    }
+    .total{
+        font-weight: 600;
+        text-align: right;
+    }
+    .totalAmount{
+        text-align: right;
+        padding: 5px;
+    }
+    .preBy td{
+        border: none;
+    }
+    tbody#content-row{
+        border: 1px solid black;
+    }
+    .btns{
+        display: flex;
+        color: #EDF2FA;
+        width: fit-content;
+        border-radius: 10px;
+    }
+
+    .btns i{
+        padding: 10px;
+    }
+
+    .fa-solid{
+        color: #39423f;
+        cursor: pointer;
+    }
+
+    .fa-solid:hover{
+        color: rgb(255, 255, 255);
+        background-color: rgba(0, 0, 0, 0.36);
+        border-radius: 20px;
+    }
+
+    .fa-check{
+        display: none;
+    }
+
+    .icon{
+        font-size: 14pt;
+    }
+    .small{
+        font-size: 11pt;
+    }
+    /* #endregion */
+/* #endregion */
+
+/* #region TABLE */
+table{
+    border: 2px solid black;
+    border-collapse: collapse;
+    /* table-layout: fixed; */
+    width: 100%;
+}
+th, tr{
+    padding: 5px;
+    /* border-collapse: collapse;
+    
+    */
+    text-align: center;
+    border: 2px solid black;
+    /* font-family: Calibri; */
+    font-size: 11pt;
+}
+tr td{
+    font-size: 11pt;
+    border: 2px solid black;
+    padding: 1px;
+    word-wrap: break-word;
+    /* font-family: Calibri; */
+} 
+.label{
+    font-size: 10pt;
+}
+.JEV-data, td.JEV-data{
+    border-collapse: initial;
+    border: 1px white;
+}
+.jev{
+    font-size: 14pt;
+    text-transform: uppercase;
+}
+/* #endregion */
+@page{
+    size: A4 Portrait;
+    margin: 8px 0 10px 20px;
+}
+@media print{
+    .btns{
+        display: none;
+    }
+    body{
+        margin: 1.7cm, 1cm, 0.6cm, 0.8cm;
+    }
+}
+
+.credit-indent{
+    text-align: left;
+}
+
+.debit-indent{
+    text-indent: 2rem;
+    text-align: left;
+}

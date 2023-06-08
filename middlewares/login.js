@@ -40,12 +40,12 @@ login.post('/auth', (req, res) => {
             req.session.isAction = data.recordset[0].isAction;
             req.session.sessionId = sessionId;
 
-        database.query(`UPDATE accountTbl SET isActive = '1' WHERE employee_id = '${employeeId}'`, (err, result) => {
+        database.query(`UPDATE accountTbl SET session_id = '${sessionId}' WHERE employee_id = '${employeeId}'`, (err, result) => {
             if(err) console.log(err);
                 if(req.session.isAdmin){
-                    res.status(200).send({redirect: '/adminHomepage', sessionId : req.session.sessionId, isAdmin : req.session.isAdmin, id : employeeId});
+                    res.status(200).send({redirect: '/adminHomepage', sessionId : req.session.sessionId, isAdmin : req.session.isAdmin, id : employeeId, username : req.session.username});
                 } else{
-                    res.status(200).send({redirect: '/homepage', sessionId : req.session.sessionId, isAdmin : req.session.isAdmin, id : employeeId});
+                    res.status(200).send({redirect: '/homepage', sessionId : req.session.sessionId, isAdmin : req.session.isAdmin, id : employeeId, username : req.session.username});
                 }
             });
         }else{
@@ -58,8 +58,7 @@ login.get('/logout', (req, res) =>{
     database.query(`UPDATE accountTbl SET isActive = '0' WHERE employee_id = '${req.session.employeeId}'`, (err, result) => {
         if(err)console.log(err);
         req.session.destroy();
-        res.redirect('/');
-        res.end();
+        res.status(200).send({status : 'loggedout', url: '/'});
     });
 })
 

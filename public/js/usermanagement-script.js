@@ -239,7 +239,7 @@ function handleNewUserList(user){
                 </td>
             `;
             userList.prepend(tr);
-        }
+
 
 const checkDelPermit = document.querySelectorAll("#delPermit");
 
@@ -335,7 +335,7 @@ socket.on('updatePermitUI', (status, employeeId) => {
         }
     }
 })
-
+}
 socket.on('deletedAcc', (id) => {
     const users = document.querySelectorAll('.user');
 
@@ -347,7 +347,6 @@ socket.on('deletedAcc', (id) => {
         }
     })
 })
-
 
 socket.on('userList', (users) => {
     handleUserList(users)
