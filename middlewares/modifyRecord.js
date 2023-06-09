@@ -18,7 +18,7 @@ modifyRecord.post('/selectRecord/:id', (req, res) => {
                 if(req.session.id != null){
                     
                     if(currentlyOpen.has(jevId)){
-                        console.log(currentlyOpen.values().next().value);
+                        // console.log(currentlyOpen.values().next().value);
                         if(currentlyOpen.values().next().value === req.session.employeeId){
                             res.send({status: 'data retrieved', data});
                         }else{

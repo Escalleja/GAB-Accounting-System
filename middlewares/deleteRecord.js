@@ -58,7 +58,7 @@ deleteRecord.post('/jevDelete/:id', (req, res) => {
 deleteRecord.post('/deleteRow/:id', (req, res) => {
     const rowId = req.params.id;
     const jev = req.body.jev;
-    console.log(jev + ''+ rowId);
+    // console.log(jev + ''+ rowId);
 
     if(req.session.loggedin){
         database.query(`DELETE FROM [${jev}] WHERE ID = ${rowId}`, (err, data) => {

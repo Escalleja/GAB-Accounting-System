@@ -15,7 +15,6 @@ printRecords.get('/print/:id', (req, res) => {
 });
 
 printRecords.get('/printFormat/:id', async (req, res) => {
-    console.log('passed');
     const encodedId = req.params.id;
     const idString = decodeURIComponent(encodedId);
     const jevIds = new Set(idString.split(','));
@@ -62,7 +61,7 @@ Promise.all(queryPromises)
     }
 })
 printRecords.get('/printJev/:id', async (req, res) => {
-  console.log('passed');
+  // console.log('passed');
   const encodedId = req.params.id;
   const idString = decodeURIComponent(encodedId);
   const jevIds = new Set(idString.split(','));

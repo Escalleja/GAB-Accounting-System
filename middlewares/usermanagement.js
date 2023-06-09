@@ -83,7 +83,6 @@ usermanagement.post('/changePass', (req, res) => {
     if(req.session.loggedin){
         database.query(`SELECT * FROM accountTbl WHERE employee_id = '${employeeId}' and pass = '${currentPass}'`, (err, result) => {
             if(err) console.log(err);
-            console.log(result);
 
             if(result.rowsAffected > 0){
                 database.query(`UPDATE accountTbl SET pass = '${newPass}' WHERE employee_id = '${employeeId}'`, (err, result) => {

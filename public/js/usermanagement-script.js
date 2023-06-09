@@ -19,9 +19,7 @@ function handleUserList(users){
             if(user.isAdmin){
                 isAdmin = `<span class='admin-label'>(Admin)</span>`
                 delStatus = `disabled`;
-                if(user.isAction){
-                    delChecked = `checked`;
-                }
+                delChecked = `checked disabled`
             }
 
             if(!user.isAdmin){

@@ -33,7 +33,7 @@ exports.users = (users) => {
 }
 
 exports.permissions = (id) => {
-    console.log(id);
+    // console.log(id);
     io.to(`room-${id}`).emit('permissionChanged');
 }
 
@@ -68,7 +68,7 @@ exports.searchResult = (data, id, term) => {
 
 //TO CHECK THE CONNECTION IS ESTABLISHED
 io.on('connection', socket => {
-    console.log('Socket connected: ', socket.id);
+    // console.log('Socket connected: ', socket.id);
     // const sessionId = sessionStorage.getItem('sessionId');
     socket.on('loadLatestData', (Id) => {
         sessionId = Id;
