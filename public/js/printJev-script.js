@@ -11,10 +11,10 @@ function displayPrint(){
     const sanitizedData = dataFeedLine.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
     const withFeedLine = sanitizedData.replace(/\[LF\]/g, '\<br>');
     const parsedData = JSON.parse(withFeedLine);
-
-    parsedData.forEach((data) => {
+    let firstDate = '';
+    parsedData.forEach((data, index) => {
         const contentRow = document.getElementById('content-row');
-        const footer = document.getElementById('tfoot');
+        // const footer = document.getElementById('tfoot');
         const tr = document.createElement('TR');
         const trBlank = document.createElement('TR');
 
@@ -26,9 +26,16 @@ function displayPrint(){
         jevFund.textContent = data.TableName.slice(3, 5);
         jevNo.textContent = data.TableName.slice(6);
         employee.textContent = sessionStorage.getItem('name');
-        jevDate.textContent = data.date0;
-
-        let indent = data.debit === '' ? `<td class="center debit-indent">${data.description}</td>` : `<td class="center credit-indent">${data.description}</td>`
+        // jevDate.textContent = data.date0;
+        if (data.date0 !== '') {
+            jevDate.textContent = data.date0;
+            if (index === 0){
+                firstDate = data.date0;
+            }
+        } else {
+            jevDate.textContent = firstDate;
+          }        
+          let indent = data.debit === '' ? `<td class="center debit-indent">${data.description}</td>` : `<td class="center credit-indent">${data.description}</td>`
 
         trBlank.innerHTML = `
         <tr>
@@ -92,46 +99,47 @@ printBtn.addEventListener('click', () => {
 }
 
 const editBtn = document.getElementById('edit-btn');
-const checkBtn = document.getElementById('check-btn');
+editBtn.style.display = 'none';
+// const checkBtn = document.getElementById('check-btn');
 
-editBtn.addEventListener('click', () => {
-    editBtn.style.display = 'none';
-    checkBtn.style.display = 'block';
+// editBtn.addEventListener('click', () => {
+//     editBtn.style.display = 'none';
+//     checkBtn.style.display = 'block';
 
-    let editTitleYear = document.getElementById('year');
-    let editFundNo = document.getElementById('fundNo');
+//     let editTitleYear = document.getElementById('year');
+//     let editFundNo = document.getElementById('fundNo');
 
-    let inputTitleYear = document.createElement('input');
-    let inputFundNo = document.createElement('input');
+//     let inputTitleYear = document.createElement('input');
+//     let inputFundNo = document.createElement('input');
 
-    inputTitleYear.setAttribute('class', 'edit-input');
-    inputFundNo.classList.add('edit-input', 'red');
+//     inputTitleYear.setAttribute('class', 'edit-input');
+//     inputFundNo.classList.add('edit-input', 'red');
 
-    inputTitleYear.value = editTitleYear.innerHTML;
-    inputFundNo.value = editFundNo.innerHTML;
+//     inputTitleYear.value = editTitleYear.innerHTML;
+//     inputFundNo.value = editFundNo.innerHTML;
 
-    editTitleYear.parentNode.replaceChild(inputTitleYear, editTitleYear);
-    editFundNo.parentNode.replaceChild(inputFundNo, editFundNo);
+//     editTitleYear.parentNode.replaceChild(inputTitleYear, editTitleYear);
+//     editFundNo.parentNode.replaceChild(inputFundNo, editFundNo);
 
-    checkBtn.addEventListener('click', () => {
-        editBtn.style.display = 'block';
-        checkBtn.style.display = 'none';
+//     checkBtn.addEventListener('click', () => {
+//         editBtn.style.display = 'block';
+//         checkBtn.style.display = 'none';
 
-        let pTitleYear = document.createElement('p');
-        let pFundNo = document.createElement('p');
+//         let pTitleYear = document.createElement('p');
+//         let pFundNo = document.createElement('p');
 
-        pTitleYear.innerHTML = inputTitleYear.value;
-        pFundNo.innerHTML = inputFundNo.value;
+//         pTitleYear.innerHTML = inputTitleYear.value;
+//         pFundNo.innerHTML = inputFundNo.value;
 
-        pTitleYear.setAttribute('id', 'year');
-        pFundNo.setAttribute('id', 'fundNo');
-        pFundNo.setAttribute('class', 'red');
+//         pTitleYear.setAttribute('id', 'year');
+//         pFundNo.setAttribute('id', 'fundNo');
+//         pFundNo.setAttribute('class', 'red');
 
-        inputTitleYear.parentNode.replaceChild(pTitleYear, inputTitleYear);
-        inputFundNo.parentNode.replaceChild(pFundNo, inputFundNo);
+//         inputTitleYear.parentNode.replaceChild(pTitleYear, inputTitleYear);
+//         inputFundNo.parentNode.replaceChild(pFundNo, inputFundNo);
 
-    });
-});
+//     });
+// });
 
 const backBtn = document.getElementById('back-btn');
 
